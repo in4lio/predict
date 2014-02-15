@@ -1,0 +1,64 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Configuration file.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($implement-named)
+
+#include "include.h"
+
+#define __SEC  ($q ($PROGRAM))
+
+bool ini_set_file( char *fn )
+{
+	FILE *f;
+
+	f = fopen( fn, "r" );
+	if ( f == NULL ) {
+		ERROR( file_open, fn, strerror( errno ));
+		return ( false );
+	}
+	fclose( f );
+	ini_path = fn;
+	printf( __CRLF__"Configure file: %s", ini_path );
+	return ( true );
+}
+
+($import "ini-dict.yu")
+
+void ini_load( void )
+{
+
+#if __DO_NOT_IMPLEMENTED__
+	set_config_file( ini_path );
+
+	($each-INI \i.]
+		ini_($i INI) = get_config_($i INI_TYPE)( __SEC, ($q ($i INI)), ini_($i INI) );
+
+	[ )
+
+#endif
+}
+
+void ini_save( void )
+{
+
+#if __DO_NOT_IMPLEMENTED__
+	set_config_file( ini_path );
+
+	($each-INI \i.]
+		set_config_($i INI_TYPE)( __SEC, ($q ($i INI)), ini_($i INI) );
+
+	[ )
+	flush_config_file();
+
+#endif
+}

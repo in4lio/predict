@@ -1,0 +1,87 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Application.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($implement-named)
+
+#include "include.h"
+
+/**
+ *  \addtogroup app
+ *  \{
+ */
+
+#ifdef LINK_UT
+
+/**
+ *  \brief Get current time (for unit testing).
+ */
+static uint32_t ut_get_time( void )
+{
+	return ( clock_time_running() / 10 );
+}
+
+/**
+ *  \brief Event handler of unit testing stage starting.
+ *  \param t Stage of testing.
+ */
+static void ut_started( int t )
+{
+	if ( t == 1 ) char_retarding_fputc = 1;
+}
+
+/**
+ *  \brief Event handler of unit testing stage completion.
+ *  \param t Stage of testing.
+ *  \param result Testing result.
+ */
+static void ut_finished( int t, bool result )
+{
+	if ( t == 1 ) char_retarding_fputc = 0;
+	if ( !result ) ERROR( ut, t );
+}
+
+#endif
+
+int app_init( int argc, char *argv[])
+{
+	if ( argc > 1 ) {
+		ini_set_file( argv[ 1 ]);
+	}
+	clock_init();
+	ini_load();
+
+#ifdef LOGGING
+	log_open( "a+" );
+
+#endif
+
+#ifdef LINK_UT
+	ut_get_time_callback = ut_get_time;
+	ut_started_callback = ut_started;
+	ut_finished_callback = ut_finished;
+
+#endif
+
+	return ( 1 );
+}
+
+void app_uninit( void )
+{
+#ifdef LOGGING
+	log_close();
+
+#endif
+
+}
+
+/** \} */

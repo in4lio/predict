@@ -1,0 +1,49 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($!
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                               *
+ *             A P P L I C A T I O N             *
+ *                                               *
+ * * * * * * * * * * * * * * * * * * * * * * * * * )
+
+
+($!
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                               *
+ *             D E B U G   T O O L S             *
+ *                                               *
+ * * * * * * * * * * * * * * * * * * * * * * * * * )
+
+($def LOGGING )
+($def DEBUG )
+($def LINK_CONSOLE )
+
+($!
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                               *
+ *              U N I T   T E S T S              *
+ *                                               *
+ * * * * * * * * * * * * * * * * * * * * * * * * * )
+
+($def LINK_UT )
+
+($def LINK_UT_UT   )
+($def LINK_UT_CORO )
+($def LINK_UT_DATA )
+
+($!
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                               *
+ *               F R A M E W O R K               *
+ *                                               *
+ * * * * * * * * * * * * * * * * * * * * * * * * * )
+
+($!
+	Don't finish the program even in case all coroutines were completed.
+)
+($set predict-alive-coro-completed 1)

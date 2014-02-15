@@ -1,0 +1,312 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Application state vector.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+/**
+ *  \defgroup data Application state vector
+ *  \ingroup core
+ *
+ *	Structure of <b>data-dict.yu</b> file:
+ *
+ *  <b>DATA_TYPE</b> - Dictionary of variables types.
+ *  \param DATA_TYPE Data type.
+ *  \param TYPE_FORMAT Format string for values output.
+ *  \param TYPE_STRTO string-to-value function.
+ *
+ *  <b>DATA_THREAD</b> - Dictionary of threads that watch the changes of state vector (watching threads).
+ *  \param DATA_THREAD Thread name.
+ *
+ *  <b>DATA_VAR</b> - Dictionary of variables.
+ *  \param DATA_VAR Variable name.
+ *  \param VAR_TYPE Variable type.
+ *  \param VAR_LEN Array length (single variable if equals to 1).
+ *  \param VAR_STRING value-to-string function.
+ *
+ *  Usage example:
+ *
+ *  \code
+ *  // Set value of variable
+ *  data_set_word( var_name, value );
+ *
+ *  // Check that value has been changed
+ *  if ( data_get_changed( peek_thread, var_name )) {
+ *
+ *      // Get value
+ *      value = data_get_word( var_name )
+ *
+ *      // Reset data changes flag of variable
+ *      data_reset( peek_thread, var_name );
+ *  }
+ *  \endcode
+ *
+ *  Support of triple modular redundancy.
+ *  <b>DATA_VOTED</b> - Majority opinion variable.
+ *  \param DATA_VOTED Variable name.
+ *  \param VOTED_TYPE Variable type.
+ *  \param VOTED_STRING value-to-string function.
+ *
+ *  Usage example:
+ *
+ *  \code
+ *  // Set channel value of variable
+ *  voted_set_byte( var_name, channel, value, &vote_byte );
+ *
+ *  // Check that majority opinion has been changed
+ *  if ( data_get_changed( peek_thread, var_name )) {
+ *
+ *      // Check that majority opinion is valid
+ *      if ( voted_valid( var_name )) {
+ *
+ *          // Get majority opinion value
+ *          value = data_get_byte( var_name )
+ *      }
+ *      // Reset data changes flag of variable
+ *      data_reset( peek_thread, var_name );
+ *  }
+ *  \endcode
+ *  \{
+ */
+
+typedef int thread_t;
+typedef int var_t;
+
+($import "data-dict.yu")
+
+($DOC__DATA_VAR)
+
+/**
+ *  \brief Identifiers of watching threads.
+ */
+enum {
+	($each-DATA_THREAD \i.]
+		peek_($i DATA_THREAD),
+
+	[ )
+	peek_COUNT
+};
+
+/**
+ *  \brief Data types identifiers.
+ */
+enum {
+	($each-DATA_TYPE \i.]
+		type_($upper ($i DATA_TYPE)),
+
+	[ )
+	type_COUNT
+};
+
+/**
+ *  \brief Variables identifiers.
+ */
+enum {
+	($each-DATA_VAR \i.]
+		($set VAR ($i DATA_VAR))
+		($unfold ($i VAR_LEN) [var_($VAR), var_($VAR)_0 = var_($VAR), ]\ii.[var_($VAR)_($ii), ])
+
+	[ )
+	($each-DATA_VOTED \i.]
+		($set VAR ($i DATA_VOTED))
+		($unfold 4 [var_($VAR), var_($VAR)_0 = var_($VAR), ]\ii.[var_($VAR)_($ii), ])
+		($unfold 4 [var_($VAR)__VALID, var_($VAR)__VALID_0 = var_($VAR)__VALID, ]\ii.[var_($VAR)__VALID_($ii), ])
+
+	[ )
+	var_COUNT
+};
+
+/**
+ *  \brief Set data changes flag.
+ *  \param item Variable.
+ */
+($h-extern) void data_set_changed( const var_t item );
+
+/**
+ *  \brief Reset data changes flag for all watching threads.
+ *  \param item Variable.
+ */
+($h-extern) void data_reset_changed( const var_t item );
+
+/**
+ *  \brief Set data changes flags for all variables of watching thread.
+ *  \param thread Watching thread.
+ */
+($h-extern) void data_set_all_changed( const thread_t thread );
+
+/**
+ *  \brief Get data changes flag of variable.
+ *  \param thread Watching thread.
+ *  \param item Variable.
+ */
+($h-extern) int data_get_changed( const thread_t thread, const var_t item );
+
+/**
+ *  \brief At least one variable from watching list of thread has been changed.
+ *  \param thread Watching thread.
+ */
+($h-extern) int data_get_changed_any( const thread_t thread );
+
+/**
+ *  \brief Add variables to watching list of thread.
+ *  \param thread Watching thread.
+ *  \param vars Variables list (var_COUNT is list terminator).
+ *  Only first variable of array will be added if array in list.
+ */
+($h-extern) void data_watch( const thread_t thread, const var_t *vars );
+
+/**
+ *  \brief Add arrays to watching list of thread.
+ *  \param thread Watching thread.
+ *  \param vars Arrays list (var_COUNT is list terminator).
+ *  Variable and the rest of array will be added if variable in list.
+ */
+($h-extern) void data_watch_array( const thread_t thread, const var_t *vars );
+
+/**
+ *  \brief Clear watching list of thread.
+ *  \param thread Watching thread.
+ */
+($h-extern) void data_clear_watch( const thread_t thread );
+
+/**
+ *  \brief Reset data changes flag of variable.
+ *  \param thread Watching thread.
+ *  \param item Variable.
+ */
+($h-extern) void data_reset( const thread_t thread, const var_t item );
+
+/**
+ *  \brief Reset data changes flags of all variables of thread.
+ *  \param thread Watching thread.
+ */
+($h-extern) void data_reset_all( const thread_t thread );
+
+/**
+ *  \brief Search variable by name.
+ *  \param s Variable name.
+ *  \return Variable or var_COUNT.
+ */
+($h-extern) var_t data_atovar( const char *s );
+
+/**
+ *  \brief Get variable name.
+ *  \param item Variable.
+ */
+($h-extern) char *data_vartoa( const var_t item );
+
+($each-DATA_TYPE \i.]
+	($set T ($i DATA_TYPE))
+	/**
+	 *  \brief ($T)-to-string converting.
+	 *  \param s String buffer.
+	 *  \param value Value.
+	 *  \return String.
+	 */
+	($h-extern) char *string_($T)( char *s, ($T) value );
+
+	/**
+	 *  \brief Get value of ($T) variable.
+	 *  \param item Variable.
+	 *  \return Value.
+	 */
+	($h-extern) ($T) data_get_($T)( const var_t item );
+
+	/**
+	 *  \brief Get value of ($T) variable as string.
+	 *  \param s String buffer.
+	 *  \param item Variable.
+	 *  \return String.
+	 */
+	($h-extern) char *data_get_string_($T)( char *s, const var_t item );
+
+	/**
+	 *  \brief Set value of ($T) variable.
+	 *  \param item Variable.
+	 *  \param value Value.
+	 */
+	($h-extern) void data_set_($T)( const var_t item, ($T) value );
+
+	/**
+	 *  \brief Set channel value of ($T) variable and recalculate voted value.
+	 *  \param item Variable.
+	 *  \param h Channel (1..3).
+	 *  \param value Channel value.
+	 *  \param voter Vote function.
+	 */
+	($h-extern) void voted_set_($T)( const var_t item, byte h, ($T) value
+	, bool ( *voter )( ($T) *, bool, ($T), bool, ($T), bool, ($T) ));
+
+	/**
+	 *  \brief Set voted and channels value of ($T) variable at once.
+	 *  \param item Variable.
+	 *  \param value Channel value.
+	 */
+	($h-extern) void joint_set_($T)( const var_t item, ($T) value );
+
+[ )
+
+/**
+ *  \brief Set value of variable of any type.
+ *  \param item Variable.
+ *  \param value Value pointer.
+ *  Useful only in case variable type is unknown in compile-time.
+ */
+($h-extern) void data_set( const var_t item, void *value );
+
+/**
+ *  \brief Set taken from string value of variable.
+ *  \param item Variable.
+ *  \param s String.
+ *  Useful only in case variable type is unknown in compile-time.
+ */
+($h-extern) void data_set_string( const var_t item, const char *s );
+
+/**
+ *  \brief Get value of variable as string.
+ *  \param s String buffer.
+ *  \param item Variable.
+ *  \return String.
+ *  Useful only in case variable type is unknown in compile-time.
+ */
+($h-extern) char *data_get_string( char *s, const var_t item );
+
+/**
+ *  \brief Get variable type as string.
+ *  \param item Variable.
+ */
+($h-extern) char *data_get_type( const var_t item );
+
+/**
+ *  \brief Check voted value of variable is valid.
+ *  \param item Variable.
+ *  \return Validity flag.
+ */
+($h-extern) bool voted_valid( const var_t item );
+
+/**
+ *  \brief Lock data access (callback).
+ */
+($h-extern) void ( *data_lock_callback )( void );
+
+/**
+ *  \brief Unlock data access (callback).
+ */
+($h-extern) void ( *data_unlock_callback )( void );
+
+/** \} */
+
+($extern-c-end)
+
+($h-end)

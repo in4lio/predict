@@ -1,0 +1,142 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Debug console.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+#ifdef LINK_CONSOLE
+
+/**
+ *  \defgroup console Debug console.
+ *  \ingroup core
+ *
+ *	Structure of <b>console-dict.yu</b> file:
+ *
+ *  <b>CONSOLE_CMD</b> - Dictionary of console commands.
+ *  \param CONSOLE_CMD Console command.
+ *  \param CMD_PAR_N Command parameters count.
+ *  \param CMD_CYCLIC Cyclic command flag.
+ *  \{
+ */
+
+/**
+ *  \brief Command line prompt.
+ *  \hideinitializer
+ */
+#define CONSOLE_PROMPT       "$"
+
+/**
+ *  \brief Command line prompt in case of selecting command from list.
+ *  \hideinitializer
+ */
+#define CONSOLE_PROMPT_LIST  "#"
+
+/**
+ *  \brief Print message.
+ *  \param PRE Message type.
+ *  \param FORMAT Message format.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+($define,,__echo( PRE, FORMAT, ... ),,($do ]
+	printf( __CRLF__ "*** " PRE " *** %s() %s (%d)" __CRLF__ "    " FORMAT,
+	__FUNCTION__, __FILE__, __LINE__, ## __VA_ARGS__ );
+[ ))
+
+/**
+ *  \brief Print message about function call.
+ *  \param FORMAT Message format.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+#define __echo_call( FORMAT, ... ) __echo( "CALL", FORMAT, ## __VA_ARGS__ )
+
+/**
+ *  \brief Print debug message.
+ *  \param FORMAT Message format.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+#define __echo_debug( FORMAT, ... ) __echo( "INFO", FORMAT, ## __VA_ARGS__ )
+
+/**
+ *  \brief Print warning.
+ *  \param FORMAT Message format.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+($define,,__echo_warn( FORMAT, ... ),,($do ]
+	__echo( "WARN", );
+	printf( FORMAT, ## __VA_ARGS__ );
+[ ))
+
+/**
+ *  \brief Print error.
+ *  \param FORMAT Message format.
+ *  \param err Error number.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+($define,,__echo_error( FORMAT, err, ... ),,($do ]
+	__echo( "ERROR #%X", COMMA err );
+	printf( FORMAT, ## __VA_ARGS__ );
+[ ))
+
+($import "console-dict.yu")
+
+($DOC__CONSOLE)
+
+/**
+ *  \brief Console commands count.
+ */
+#define CONSOLE_COMMAND_COUNT  ($len each-CONSOLE_CMD)
+
+/**
+ *  \brief List of console commands.
+ */
+($h-extern) const char * const console_command[];
+
+/**
+ *  \brief Index of selected from list command.
+ */
+($h-extern) int console_index;
+
+#define cyclic_delay_MIN  1
+#define cyclic_delay_MAX  600
+
+/**
+ *  \brief Print prompt.
+ */
+($h-extern) __inline void console_prompt( void );
+
+/**
+ *  \brief Check console is waiting for command.
+ */
+($h-extern) __inline bool console_command_waited( void );
+
+/** \} */
+
+#else /* LINK_CONSOLE */
+
+#define __echo( PRE, FORMAT, ... ) NULL
+#define __echo_call( FORMAT, ... ) NULL
+#define __echo_debug( FORMAT, ... ) NULL
+#define __echo_warn( FORMAT, ... ) NULL
+#define __echo_error( FORMAT, err, ... ) NULL
+
+#endif /* LINK_CONSOLE */
+
+($extern-c-end)
+
+($h-end)

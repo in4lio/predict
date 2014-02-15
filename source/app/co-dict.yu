@@ -1,0 +1,33 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($macro DOC__CORO ()
+/**
+ *  \page coro List of coroutines
+ *
+ *  \section t_receive_char receive_char
+ *  Coroutine of message receiving on debug interface.
+ *
+ *  \section t_console console
+ *  Coroutine of debug console.
+ *
+ *  \section t_console_cyclic console_cyclic
+ *  Coroutine of cyclic console commands.
+ *
+ *  \section t_ut_2 ut_2
+ *  Coroutine of unit testing of 2nd stage.
+ */
+)
+
+($dict CORO
+	(` CORO )
+	(`
+	(  receive_char    ) ? LINK_CONSOLE
+	(  console         ) ? LINK_CONSOLE
+	(  console_cyclic  ) ? LINK_CONSOLE
+	(  ut_2            ) ? LINK_UT
+	)
+)

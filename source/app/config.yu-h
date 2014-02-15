@@ -1,0 +1,25 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Configuration.)
+
+($import "stdlib.yu")
+($import "h.yu")
+
+($h-begin-named)
+
+/**
+ *  \defgroup config Application configuration
+ *  \ingroup app
+ *  \{
+ */
+
+($import "config.yu")
+
+/** \} */
+
+($h-end)

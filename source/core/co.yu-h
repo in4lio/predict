@@ -1,0 +1,72 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Coroutines and unit tests declarations.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "coroutine.yu")
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+($coro-h)
+
+/**
+ *  \defgroup coro Coroutines.
+ *  \ingroup core
+ *  \{
+ */
+
+($import "co-dict.yu")
+
+($DOC__CORO)
+
+($each-CORO \i.]
+	($set C ($i CORO))
+	/** ($C) coroutine local context. */
+	($h-extern-init,,($coro-context ($C)),,NULL)
+	/** ($C) coroutine alive flag. */
+	($h-extern-init,,int ($C)_alive,,CO_SKIP)
+	/** ($C) coroutine. */
+	extern ($coro-declare ($C));
+	/** Initialize ($C) coroutine. */
+	extern int ($C)_init( void );
+	/** Uninitialize ($C) coroutine. */
+	extern void ($C)_uninit( void );
+
+[ )
+
+/** Restart unit testing of 2nd stage. */
+extern void ut_2_restart( void );
+
+/** \} */
+
+#ifdef LINK_UT
+
+/**
+ *  \addtogroup ut
+ *  \{
+ */
+
+($import "ut-dict.yu")
+
+($each-UT_1 \i.]
+	/** ($i UT_1) unit test of 1st stage. */
+	extern void ($i UT_1)( void );
+
+[ )
+
+/** \} */
+
+#endif /* LINK_UT */
+
+($extern-c-end)
+
+($h-end)

@@ -1,0 +1,106 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,predict - an embedded application framework.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "coroutine.yu")
+($import "config.yu")
+
+($implement co)
+
+#include "include.h"
+
+/**
+ *  \addtogroup core
+ *  \{
+ */
+
+($import "co-dict.yu")
+
+/**
+ *  \brief Initialize all coroutines.
+ */
+static void coro_init( void )
+{
+	($each-CORO \i.]
+		($coro-context-init ($i CORO));
+		($i CORO)_alive = ($i CORO)_init();
+
+	[ )
+}
+
+/**
+ *  \brief Uninitialize all coroutines.
+ */
+static void coro_uninit( void )
+{
+	($each-CORO \i.]
+		($i CORO)_uninit();
+
+	[ )
+}
+
+/**
+ *  \brief Call coroutines according to dictionary.
+ */
+static int coro_schedule( void )
+{
+	($each-CORO \i.]
+		if ($coro-alive [($i CORO)_alive]) ($i CORO)_alive = ($coro-call ($i CORO));
+
+	[ )
+	return ( ($predict-alive-coro-completed)
+	($each-CORO \i.]
+		|| ($coro-alive [($i CORO)_alive])
+
+	[ )
+	);
+}
+
+#ifdef LINK_UT
+
+($import "ut-dict.yu")
+
+/**
+ *  \brief 1st stage of unit testing (before coroutines call loop).
+ */
+static void ut_1( void )
+{
+	($each-UT_1 \i.]
+		($i UT_1)();
+
+	[ )
+}
+
+#endif /* LINK_UT */
+
+/**
+ *  \brief Application life-cycle.
+ */
+int main( int argc, char *argv[])
+{
+	app_alive = app_init( argc, argv );
+	coro_init();
+
+#ifdef LINK_UT
+	ut_stage_1( ut_1 );
+
+#endif
+
+	/* Coroutines call loop */
+	while ( app_alive ) {
+		if ( coro_schedule() == 0 ) break;
+	}
+	coro_uninit();
+	app_uninit();
+
+	return ( app_return );
+}
+
+/** \} */

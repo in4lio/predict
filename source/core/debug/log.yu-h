@@ -1,0 +1,205 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Logging.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+/**
+ *  \defgroup log_level Logging level
+ *  \ingroup log
+ *  \{
+ */
+#define LOG_LEVEL_OFF    0  /**< Logging off. \hideinitializer */
+#define LOG_LEVEL_ERROR  1  /**< Errors. \hideinitializer */
+#define LOG_LEVEL_WARN   2  /**< Errors and warnings. \hideinitializer */
+#define LOG_LEVEL_INFO   3  /**< Errors, warnings and info. \hideinitializer */
+
+/** \} */
+
+#ifdef LOGGING
+
+/**
+ *  \defgroup log Logging
+ *  \ingroup core
+ *
+ *	Structure of <b>log-dict.yu</b> file:
+ *
+ *  <b>LOG_WARN</b> - Dictionary of warnings.
+ *  \param LOG_WARN Identifier of warning.
+ *  \param WARN_FORMAT Message format.
+ *  \param WARN_REPEAT Flag of repeated warning logging.
+ *
+ *  <b>LOG_INFO</b> - Dictionary of info messages.
+ *  \param LOG_WARN Identifier of info.
+ *  \param LOG_FORMAT Message format.
+ *  \param LOG_REPEAT Flag of repeated info logging.
+ *  \{
+ */
+
+/**
+ *  \defgroup log_repeat Repeated logging flags
+ *  \{
+ */
+#define LOG_NEVER  0    /**< Do not log message. \hideinitializer */
+#define LOG_ONCE   1    /**< Log message once. \hideinitializer */
+#define LOG_EVER   255  /**< Log message every time. \hideinitializer */
+
+/** \} */
+
+/**
+ *  \brief Write message into log-file.
+ *  \param pre Message type.
+ *  \param format Message format.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+($define,,log_printf( pre, format, ... ),,($do ]
+	if ( log_file == NULL ) break;
+	fprintf( log_file, "\n%s\t" pre "\t", clock_stamp( NULL, __log_str ));
+	fprintf( log_file, format, ## __VA_ARGS__ );
+	fflush( log_file );
+[ ))
+
+/**
+ *  \brief Write message for dictionary into log-file.
+ *  \param pre Message type.
+ *  \param name Identifier.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+($macro log_message (pre name)($do ]
+	if ( log_file == NULL ) break;
+	if (( ini_log_level >= LOG_LEVEL_($upper ($pre)) ) && ($pre)_repeat[ ($pre)_($name) ]) {
+		if ( log_lock_callback ) log_lock_callback();
+		log_printf( ($q ($upper ($pre))), ($pre)_format[ ($pre)_($name) ], ## __VA_ARGS__ );
+		fflush( log_file );
+		if ( ($pre)_repeat[ ($pre)_($name) ] < LOG_EVER ) {
+			if ( --($pre)_repeat[ ($pre)_($name) ] == LOG_NEVER ) {
+				fprintf( log_file, " (this message is reported last time)" );
+			}
+		}
+		if ( log_unlock_callback ) log_unlock_callback();
+	}
+[ ))
+
+/**
+ *  \brief Write error into log-file.
+ *  \param name Identifier.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+($define,,LOG_ERROR( name, ... ),,($log_message,,error,,##name))
+
+/**
+ *  \brief Write warning into log-file.
+ *  \param name Identifier.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+($define,,LOG_WARN( name, ... ),,($log_message,,warn,,##name))
+
+/**
+ *  \brief Write info message into log-file.
+ *  \param name Identifier.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+($define,,LOG_INFO( name, ... ),,($log_message,,info,,##name))
+
+($import "log-dict.yu")
+
+enum {
+	($each-LOG_WARN \i.]
+		warn_($i LOG_WARN),
+
+	[ )
+};
+
+enum {
+	($each-LOG_INFO \i.]
+		info_($i LOG_INFO),
+
+	[ )
+};
+
+($h-extern-init,,FILE *log_file,,NULL)
+
+($h-extern) char __log_str[ 32 ];
+
+/**
+ *  \brief Warnings formats.
+ */
+($h-extern) const char * const warn_format[];
+
+/**
+ *  \brief Info messages formats.
+ */
+($h-extern) const char * const info_format[];
+
+/**
+ *  \brief Error writing counters.
+ */
+($h-extern) uint8_t error_repeat[];
+
+/**
+ *  \brief Warning writing counters.
+ */
+($h-extern) uint8_t warn_repeat[];
+
+/**
+ *  \brief Info message writing counters.
+ */
+($h-extern) uint8_t info_repeat[];
+
+/**
+ *  \brief Open log-file.
+ *  \param mode "wa" or "a+".
+ */
+($h-extern) void log_open( const char *mode );
+
+/**
+ *  \brief Close log-file.
+ */
+($h-extern) void log_close( void );
+
+/**
+ *  \brief Clear log-file.
+ */
+($h-extern) void log_clear( void );
+
+/**
+ *  \brief Lock log-file access (callback).
+ */
+($h-extern) void ( *log_lock_callback )( void );
+
+/**
+ *  \brief Unlock log-file access (callback).
+ */
+($h-extern) void ( *log_unlock_callback )( void );
+
+/** \} */
+
+#else /* LOGGING */
+
+#define log_printf( pre, format, ... ) NULL
+#define log_message( pre, name, ... ) NULL
+#define LOG_ERROR( name, ... ) NULL
+#define LOG_WARN( name, ... ) NULL
+#define LOG_INFO( name, ... ) NULL
+
+#endif /* LOGGING */
+
+($extern-c-end)
+
+($h-end)

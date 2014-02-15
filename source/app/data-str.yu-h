@@ -1,0 +1,57 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,String converting.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+/**
+ *  \addtogroup data
+ *  \{
+ */
+
+#define __strtol( s, end )      strtol( s, end, 0 )
+#define __strtoul( s, end )     strtoul( s, end, 0 )
+#define __strtoll( s, end )     strtoll( s, end, 0 )
+#define __strtoull( s, end )    strtoull( s, end, 0 )
+#define __strtof( s, end )      (( float ) strtod( s, end ))
+
+/**
+ *  \brief byte-to-hex converting.
+ *  \param s String buffer.
+ *  \param val Value.
+ *  \return String.
+ */
+($h-extern) char *string_byte_h( char *s, byte val );
+
+/**
+ *  \brief word-to-hex converting.
+ *  \param s String buffer.
+ *  \param val Value.
+ *  \return String.
+ */
+($h-extern) char *string_word_h( char *s, word val );
+
+/**
+ *  \brief dword-to-hex converting.
+ *  \param s String buffer.
+ *  \param val Value.
+ *  \return String.
+ */
+($h-extern) char *string_dword_h( char *s, dword val );
+
+/** \} */
+
+($extern-c-end)
+
+($h-end)

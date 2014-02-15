@@ -1,0 +1,23 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($macro data_get_error ()data_get_word( var_error ))
+
+($macro data_set_error (mask)($do ]
+	data_set_word( var_error, SET_VALUE( ($data_get_error), ($mask) ));
+[ ))
+
+($macro data_clear_error (mask)($do ]
+	data_set_word( var_error, CLEAR_VALUE( ($data_get_error), ($mask) ));
+[ ))
+
+($macro data_equal_error (mask value)($do ]
+	data_set_word( var_error, EQUAL_VALUE( ($data_get_error), ($mask), ($value) ));
+[ ))
+
+($macro data_clear_error_all ()($do ]
+	data_set_word( var_error, 0 );
+[ ))

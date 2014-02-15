@@ -1,0 +1,19 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($dict LOG_WARN
+	(` LOG_WARN         WARN_FORMAT                         WARN_REPEAT  )
+	(`
+	(  unused           "Don't worry, be happy!"            LOG_EVER     )
+	)
+)
+
+($dict LOG_INFO
+	(` LOG_INFO         INFO_FORMAT                         INFO_REPEAT  )
+	(`
+	(  unused           "Hello world!"                      LOG_ONCE     )
+	)
+)

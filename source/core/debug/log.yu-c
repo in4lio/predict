@@ -1,0 +1,105 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Logging.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($implement-named)
+
+#include "include.h"
+
+($skip-if-not LOGGING)
+
+/**
+ *  \addtogroup log
+ *  \{
+ */
+
+($import "log-dict.yu")
+($import "error-dict.yu")
+
+const char * const warn_format[] = {
+	($each-LOG_WARN \i.]
+		($i WARN_FORMAT),
+
+	[ )
+};
+
+const char * const info_format[] = {
+	($each-LOG_INFO \i.]
+		($i INFO_FORMAT),
+
+	[ )
+};
+
+uint8_t error_repeat[] = {
+	($each-DATA_ERROR \i.]
+		($i ERROR_REPEAT),
+
+	[ )
+};
+
+uint8_t warn_repeat[] = {
+	($each-LOG_WARN \i.]
+		($i WARN_REPEAT),
+
+	[ )
+};
+
+uint8_t info_repeat[] = {
+	($each-LOG_INFO \i.]
+		($i INFO_REPEAT),
+
+	[ )
+};
+
+void log_open( const char *mode )
+{
+	char s[ 32 ];
+	char sd[ 32 ];
+	struct timeval t;
+
+	gettimeofday( &t, NULL );
+	strftime( sd, sizeof( sd ), "%d.%m.%Y", localtime( &t.tv_sec ));
+
+	clock_stamp( &t, s );
+
+	log_file = fopen( ini_log_path, mode );
+	if ( log_file == NULL ) {
+		fprintf( stderr, "\nopen(\"%s\") failed: %s\n", ini_log_path, strerror( errno ));
+		log_file = stderr;
+	}
+	fprintf( log_file, "\n\n%s\tlogging started %s", s, sd );
+	fflush( log_file );
+}
+
+void log_close( void )
+{
+	char s[ 32 ];
+
+	if ( log_file != NULL ) {
+		fprintf( log_file, "\n%s\tlogging stopped", clock_stamp( NULL, s ));
+		fclose( log_file );
+		log_file = NULL;
+	}
+}
+
+void log_clear( void )
+{
+	if ( log_lock_callback ) log_lock_callback();
+
+	log_close();
+	log_open( "wa" );
+	log_printf( "INFO", "log cleaned" );
+
+	if ( log_unlock_callback ) log_unlock_callback();
+}
+
+/** \} */

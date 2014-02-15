@@ -1,0 +1,95 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Unit testing of 2nd stage.)
+
+($import "stdlib.yu")
+($import "coroutine.yu")
+($import "config.yu")
+
+#include "include.h"
+
+($skip-if-not LINK_UT)
+
+/**
+ *  \addtogroup ut
+ *  \{
+ */
+
+($import "ut-dict.yu")
+
+($each-UT_2 \i.]
+	($set T ($i UT_2))
+	/** ($T) test coroutine local context. */
+	static ($coro-context ($T));
+	/** ($T) test coroutine alive flag. */
+	static int ($T)_alive;
+	/** ($T) test coroutine. */
+	extern ($coro-declare ($T));
+	/** Initialize ($T) test coroutine. */
+	extern int ($T)_init( void );
+	/** Uninitialize ($T) coroutine. */
+	extern void ($T)_uninit( void );
+[ )
+
+int ut_2_init( void )
+{
+	($each-UT_2 \i.]
+		($coro-context-init ($i UT_2));
+		($i UT_2)_alive = ($i UT_2)_init();
+
+	[ )
+
+	return ( CO_READY ); /* CO_SKIP */
+}
+
+void ut_2_uninit( void )
+{
+	($each-UT_2 \i.]
+		($i UT_2)_uninit();
+
+	[ )
+}
+
+/**
+ *  \brief Schedule of test coroutines.
+ *  \return true if testing is not complete.
+ */
+static int ut_2_schedule( void )
+{
+	($each-UT_2 \i.]
+		if ($coro-alive [($i UT_2)_alive]) ($i UT_2)_alive = ($coro-call ($i UT_2));
+
+	[ )
+	return ( 0
+	($each-UT_2 \i.]
+		|| ($coro-alive [($i UT_2)_alive])
+
+	[ )
+	);
+}
+
+/**
+ *  \brief Coroutine of unit testing of 2nd stage.
+ */
+($coro-define ut_2 ]
+	ut_stage_2_start( ($len each-UT_2) );  /* Start unit testing of 2nd stage */
+	($coro-yield);
+
+	/* Test coroutines call loop */
+	while ( ut_stage_2( ut_2_schedule )) ($coro-yield);
+[ )
+
+void ut_2_restart( void )
+{
+	if ( ut_2_alive == CO_END ) {
+		($coro-context-init ut_2);
+		ut_2_alive = ut_2_init();
+	}
+}
+
+/** \} */

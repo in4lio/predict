@@ -1,13 +1,8 @@
-# Compiled Object files
-*.slo
-*.lo
+*.ast
+*.bak
+*.exe
+*.log
 *.o
+*.sublime-workspace
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+.tags

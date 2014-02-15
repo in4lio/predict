@@ -3,4 +3,9 @@
     |   |  _   _|   | |  _   _|
     |  _|_| |___ ___|_|___  |
     |_|                   |_|
-    an embedded application framework
+
+    predict is a portable C framework for embedded applications development.
+    The parental framework was based on the standard C preprocessor and had
+    been rewritten using yupp C preprocessor (https://github.com/in4lio/yupp/).
+
+    COMING SOON... ))

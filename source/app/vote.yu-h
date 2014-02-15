@@ -1,0 +1,57 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Data voting.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+/**
+ *  \addtogroup data
+ *  \{
+ */
+
+($macro vote_t (T)bool vote_($T)( ($T) *result, bool valid_1, ($T) value_1, bool valid_2, ($T) value_2, bool valid_3, ($T) value_3 ))
+
+/**
+ *  \brief Voting of byte values (on exact matching).
+ *  \param result Voted value pointer.
+ *  \param valid_1 Validity flag of 1st channel.
+ *  \param value_1 Value of 1st channel.
+ *  \param valid_2 Validity flag of 2nd channel.
+ *  \param value_2 Value of 2nd channel.
+ *  \param valid_3 Validity flag of 3th channel.
+ *  \param value_3 Value of 3th channel.
+ *  \return Validity flag of majority opinion.
+ */
+($h-extern) ($vote_t,,byte);
+
+($macro vote_bit_t (T)bool vote_bit_($T)( dword *result, bool _1, ($T) value_1, bool _2, ($T) value_2, bool _3, ($T) value_3 ))
+
+/**
+ *  \brief Voting of dword values (bit-by-bit).
+ *  \param result Voted value pointer.
+ *  \param _1 (unused)
+ *  \param value_1 Value of 1st channel.
+ *  \param _2 (unused)
+ *  \param value_2 Value of 2nd channel.
+ *  \param _3 (unused)
+ *  \param value_3 Value of 3th channel.
+ *  \return true.
+ */
+($h-extern) ($vote_bit_t,,dword);
+
+/** \} */
+
+($extern-c-end)
+
+($h-end)

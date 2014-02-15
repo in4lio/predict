@@ -1,0 +1,263 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Debug interface.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "coroutine.yu")
+($import "config.yu")
+
+($implement-named)
+#include "include.h"
+
+($skip-if-not LINK_CONSOLE)
+
+/**
+ *  \addtogroup char
+ *  \{
+ */
+
+#define __ ""
+
+/**
+ *  \brief Debug interface title message.
+ *  \hideinitializer
+ */
+static const char * const TITLE = __CRLF__
+	__ "               _ _     _   " __CRLF__
+	__ " ___ ___ ___ _| |_|___| |_ " __CRLF__
+	__ "|   |  _   _|   | |  _   _|" __CRLF__
+	__ "|  _|_| |___ ___|_|___  |  " __CRLF__
+	__ "|_|                   |_|  " __CRLF__;
+
+#undef __
+
+/**
+ *  \brief Program version format.
+ *  \hideinitializer
+ */
+const char * const VERSION_STRING =
+	__CRLF__ ($q ($PROGRAM)) " " ($q ($VERSION))
+	__CRLF__ "Compiled with " ($q ($COMPILER)) " " __VERSION__;
+
+/**
+ *  \brief Input buffer.
+ */
+static char rx_buf[ RX_SIZE ];
+static uint32_t rx_pos;
+static bool is_msg;
+
+#define FINE_BACKSPACE  "\x08\x20\x08"  /**< Sequence for delete last input char. \hideinitializer */
+#define CLEAR_CMD       "                    \r" CONSOLE_PROMPT /**< Clear command line. \hideinitializer */
+
+// LINUX /////////////////////////////////////////
+#ifdef __linux__
+
+#include <termios.h>
+
+#define CHAR_BACKSPACE  '\x7F'
+#define CHAR_UP         '\x41'
+#define CHAR_DOWN       '\x42'
+
+static struct termios getch_o_attr;
+
+static void getch_init( void )
+{
+	struct termios n_attr;
+
+	/* Set terminal to raw mode */
+	tcgetattr( fileno( stdin ), &getch_o_attr );
+	memcpy( &n_attr, &getch_o_attr, sizeof( struct termios ));
+	n_attr.c_lflag &= ~( ECHO | ICANON );
+	n_attr.c_cc[ VTIME ] = 0;
+	n_attr.c_cc[ VMIN  ] = 0;
+	tcsetattr( fileno( stdin ), TCSANOW, &n_attr );
+}
+
+static void getch_uninit( void )
+{
+	/* Restore original terminal attributes */
+	tcsetattr( fileno( stdin ), TCSANOW, &getch_o_attr );
+}
+
+static int getch( void )
+{
+	/* Read character from STDIN stream without blocking. Returns EOF (-1) if no character is available. */
+	return fgetc( stdin );
+}
+
+static __inline int getch_1( void )
+{
+	return getch();
+}
+
+static __inline bool getch_esc( int chr )
+{
+	return (( chr == '\x1B' ) && ( getch() == '\x5B' ));
+}
+
+// DJGPP /////////////////////////////////////////
+#else
+
+#include <conio.h>
+
+#define CHAR_BACKSPACE  '\x08'
+#define CHAR_UP         '\x48'
+#define CHAR_DOWN       '\x50'
+
+static void getch_init( void )
+{
+}
+
+static void getch_uninit( void )
+{
+}
+
+static __inline int getch_1( void )
+{
+	return ( kbhit() ? getch() : EOF );
+}
+
+static __inline bool getch_esc( int chr )
+{
+	return ( chr == '\x00' );
+}
+
+//////////////////////////////////////////////////
+#endif
+
+/**
+ *  \brief Print greeting and initialize debug interface.
+ */
+int receive_char_init( void )
+{
+	printf( TITLE );
+	print_version();
+	printf( __CRLF__ );
+
+	rx_pos = 0;
+	is_msg = false;
+
+	char_echo = 1;
+	getch_init();
+
+	return ( CO_READY ); /* CO_SKIP */
+}
+
+void receive_char_uninit( void )
+{
+	getch_uninit();
+}
+
+/**
+ *  \brief Coroutine of message receiving on debug interface.
+ */
+($coro-define receive_char ]
+	for ( ; ; ) {
+		/* Wait character */
+		($coro-wait,, ( chr = getch_1()) != EOF );
+
+		if ( getch_esc( chr )) {
+			chr = getch();
+			/* Choose console command in list */
+			if ( console_command_waited()  /* Console is waiting for command, no cyclic command, */
+			&& ( rx_pos == 0 )) {          /* no one input character */
+
+				printf( CLEAR_CMD );
+				switch ( chr ) {
+
+				case CHAR_UP:
+					console_index = ( console_index > 1 ) ? console_index - 1 : CONSOLE_COMMAND_COUNT - 1;
+					goto up_or_down_l;
+
+				case CHAR_DOWN:
+					console_index = ( console_index < CONSOLE_COMMAND_COUNT - 1 ) ? console_index + 1 : 1;
+
+				up_or_down_l:
+					/* Print command */
+					printf( "%s\r" CONSOLE_PROMPT_LIST, console_command[ console_index ]);
+					break;
+
+				default:
+					console_index = 0;
+				}
+			}
+		} else {
+			if ( console_index && ( chr != CHAR_ENTER )) {
+				/* Reset choice */
+				console_index = 0;
+				printf( CLEAR_CMD );
+			}
+			/* Handle character */
+			switch ( chr ) {
+
+			case CHAR_SPACE ... LAST_CHAR:
+				rx_buf[ rx_pos++ ] = chr;
+				if ( char_echo ) {
+					printf( "%c", chr );
+					fflush( stdout );
+				}
+				if ( rx_pos < RX_SIZE - 1 ) break;
+				/* fallthrough */
+
+			case CHAR_ENTER:
+				is_msg = true;
+				break;
+
+			case CHAR_BACKSPACE:
+				if ( rx_pos ) {
+					--rx_pos;
+					if ( char_echo ) printf( FINE_BACKSPACE );
+				}
+				break;
+			}
+		}
+		($coro-yield);
+
+		/* Prepare message */
+		if ( is_msg ) {
+			rx_buf[ rx_pos ] = 0;
+			rx_pos = 0;
+			char_received = rx_buf;
+			is_msg = false;
+
+			/* Wait message is handled */
+			($coro-wait,, char_received == NULL );
+		}
+	}
+[ \enter ]
+	static char chr;
+[ )
+
+__inline void char_clear_input( void ) {
+	rx_pos = 0;
+}
+
+void printhr( byte *data, uint32_t len, uint32_t cols )
+{
+	uint32_t i;
+
+	if ( cols == 0 ) cols = 16;
+
+	for ( i = 0; i < len; i++ ) {
+		if (( i % cols ) == 0 ) printf( __CRLF__ );
+		printf( "%02X ", data[ i ]);
+	}
+}
+
+void printh( byte *data, uint32_t len )
+{
+	while ( len-- ) printf( "%02X ", data[ len ]);
+}
+
+__inline void print_version( void )
+{
+	printf( VERSION_STRING );
+}
+
+/** \} */

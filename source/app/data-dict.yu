@@ -1,0 +1,80 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($macro DOC__DATA_VAR ()
+/**
+ *  \page data List of state vector variables
+ *
+ *  \section d_error Variable error
+ *  Pool of errors bits. See errors dictionary \ref error-dict.yu .
+ *
+ *  \section d__ut_ Variables _ut_*
+ *  Used for \ref ut "unit testing".
+ */
+)
+
+($!
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                               *
+ *        W A T C H I N G   T H R E A D S        *
+ *                ( C O M M O N )                *
+ *                                               *
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+)
+
+($dict DATA_THREAD
+	(` DATA_THREAD  )
+	(`
+	(  _ut_data_1   ) ? LINK_UT_DATA
+	(  _ut_data_2   ) ? LINK_UT_DATA
+	)
+)
+
+($!
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                               *
+ *      T Y P E S   O F   V A R I A B L E S      *
+ *                                               *
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+)
+
+($dict DATA_TYPE
+	(` DATA_TYPE  TYPE_FORMAT  TYPE_STRTO  )
+	(`
+	(  byte       "%u"         __strtoul   )
+	(  word       "%u"         __strtoul   )
+	(  dword      "%lu"        __strtoll   )
+	(  float      "%.2f"       __strtof    )
+	(  int        "%d"         __strtol    )
+	)
+)
+
+($!
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                               *
+ *   S T A T E  V E C T O R  V A R I A B L E S   *
+ *                ( C O M M O N )                *
+ *                                               *
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+)
+
+($dict DATA_VAR
+	(` DATA_VAR       VAR_TYPE  VAR_LEN  VAR_STRING      )
+	(`
+	(  error          word      1        string_word_h   )
+	(  _ut_byte       byte      1        string_byte     ) ? LINK_UT_DATA
+	(  _ut_word       word      1        string_word_h   ) ? LINK_UT_DATA
+	(  _ut_array      dword     4        string_dword_h  ) ? LINK_UT_DATA
+	(  _ut_float      float     1        string_float    ) ? LINK_UT_DATA
+	)
+)
+
+($dict DATA_VOTED
+	(` DATA_VOTED     VOTED_TYPE         VOTED_STRING    )
+	(`
+	(  _ut_vote       byte               string_byte     ) ? LINK_UT_DATA
+	)
+)

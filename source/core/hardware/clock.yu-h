@@ -1,0 +1,118 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Real-time clock.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+($! based on Andrey Panin (pazke@donpac.ru) timeout.c)
+
+/**
+ *  \defgroup hardware Hardware
+ *  \{
+ *
+ *  \defgroup clock Real-time clock
+ *  \{
+ */
+
+#define TICK_PER_SEC  1000  /**< Ticks per second. \hideinitializer */
+
+/**
+ *  \brief Initialize clock.
+ */
+($h-extern) void clock_init( void );
+
+/**
+ *  \brief time-to-string converting.
+ *  \param tval time pointer (current time is used in case of NULL).
+ *  \param str String buffer.
+ *  \return String.
+ */
+($h-extern) const char *clock_stamp( const struct timeval *tval, char *str );
+
+/**
+ *  \brief time-to-string converting without centiseconds.
+ *  \param str String buffer.
+ *  \return String.
+ */
+($h-extern) const char *clock_stamp_short( char *str );
+
+/**
+ *  \brief Current time setup.
+ *  \param Hours.
+ *  \param m Minutes.
+ *  \param s Seconds.
+ *  \param cs Centiseconds.
+ *  Function is not implemented.
+ */
+($h-extern) void clock_set_time( uint32_t h, uint32_t m, uint32_t s, uint32_t cs );
+
+/**
+ *  \brief Get time of program running.
+ *  \return Time in centiseconds.
+ */
+($h-extern) uint32_t clock_time_running( void );
+
+/**
+ *  \brief Calculate time when timer interval has expired (timeout).
+ *  \param mc Interval in milliseconds.
+ *  \return Timeout.
+ */
+($h-extern) struct timeval clock_t_set( const int mc );
+
+($h-extern) void __clock_t_add( struct timeval *t, const int mc );
+($h-extern) int __clock_time_after( struct timeval *t );
+($h-extern) int __clock_t_rest( struct timeval *t );
+($h-extern) void __clock_t_sleep( struct timeval *t );
+
+/**
+ *  \brief Prolong timeout.
+ *  \param t Timeout.
+ *  \param mc Additional interval in milliseconds.
+ */
+#define clock_t_add( t, mc ) __clock_t_add(&( t ), ( mc ))
+
+/**
+ *  \brief Check timeout.
+ *  \param t Timeout.
+ *  \return Timeout flag.
+ */
+#define clock_time_after( t ) __clock_time_after( &( t ))
+
+/**
+ *  \brief Check timeout.
+ *  \param t Timeout.
+ *  \return NO timeout flag.
+ */
+#define clock_time_before( t ) ( !clock_time_after( t ))
+
+/**
+ *  \brief Calculate remaining time until timeout.
+ *  \param t Timeout.
+ *  \return Remaining time.
+ */
+#define clock_t_rest( t ) __clock_t_rest( &( t ))
+
+/**
+ *  \brief Sleep until timeout.
+ *  \param t Timeout.
+ */
+#define clock_t_sleep( t ) __clock_t_sleep( &( t ))
+
+/** \} */
+
+/** \} */
+
+($extern-c-end)
+
+($h-end)

@@ -1,0 +1,102 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Error messages.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+/**
+ *  \defgroup error Error messages
+ *  \ingroup core
+ *
+ *	Structure of <b>error-dict.yu</b> file:
+ *
+ *  <b>DATA_ERROR</b> - Dictionary of errors.
+ *  \param DATA_ERROR Identifier of error.
+ *  \param ERROR_BIT Bit in pool of errors (var_error).
+ *  \param ERROR_FORMAT Message format.
+ *  \param ERROR_REPEAT Flag of repeated error logging.
+ *  \{
+ */
+
+($import "data-error.yu")
+
+/**
+ *  \brief Output error message and set flag in pool of errors.
+ *  \param err Identifier of error.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+($define,,ERROR( err, ... ),,($do ]
+	($data_set_error,,BIT( err_bit_##err ));
+	LOG_ERROR( err, ## __VA_ARGS__ );
+	__echo_error( error_format[ error_##err ], err_bit_##err, ## __VA_ARGS__ );
+[ ))
+
+/**
+ *  \brief Clear flag in pool of errors.
+ *  \param err Identifier of error.
+ *  \hideinitializer
+ */
+($define,,ERROR_CLEAR( err ),,($do ]
+	($data_clear_error,,BIT( err_bit_##err ));
+[ ))
+
+/**
+ *  \brief Clear all error flags.
+ *  \hideinitializer
+ */
+($define,,ERROR_CLEAR_ALL(),,($do ]
+	($data_clear_error_all);
+[ ))
+
+/**
+ *  \brief Verify error flag is cleared.
+ *  \param err Identifier of error.
+ *  \param op Operation if verification failed.
+ *  \hideinitializer
+ */
+($define,,assert_unerring( err, op ),,($do ]
+	bool bit = ( BIT( err_bit_##err ) & ($data_get_error));
+	if ( bit ) {
+		ut_fault( "expected unerring", __FILE__,  __FUNCTION__, __LINE__ );
+		op;
+	}
+[ ))
+
+($import "error-dict.yu")
+
+enum {
+	($each-DATA_ERROR \i.]
+		error_($i DATA_ERROR),
+
+	[ )
+};
+
+enum {
+	($each-DATA_ERROR \i.]
+		err_bit_($i DATA_ERROR) = ($i ERROR_BIT),
+
+	[ )
+};
+
+/**
+ *  \brief Error messages formats.
+ */
+($h-extern) const char * const error_format[];
+
+/** \} */
+
+($extern-c-end)
+
+($h-end)

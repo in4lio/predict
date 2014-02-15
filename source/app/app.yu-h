@@ -1,0 +1,47 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Application.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+/**
+ *  \defgroup app Application
+ *  \{
+ */
+
+/**
+ *  \brief Show-must-go-on flag.
+ */
+($h-extern) int app_alive;
+
+/**
+ *  \brief Application exit status.
+ */
+($h-extern-init,,int app_return,,0)
+
+/**
+ *  \brief Initialize application.
+ */
+($h-extern) int app_init( int argc, char *argv[]);
+
+/**
+ *  \brief Uninitialize application.
+ */
+($h-extern) void app_uninit( void );
+
+/** \} */
+
+($extern-c-end)
+
+($h-end)

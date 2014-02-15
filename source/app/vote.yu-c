@@ -1,0 +1,63 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Data voting.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($implement-named)
+
+#include "include.h"
+
+/**
+ *  \addtogroup data
+ *  \{
+ */
+
+($macro vote_t (T)
+bool vote_($T)( ($T) *result
+, bool valid_1, ($T) value_1
+, bool valid_2, ($T) value_2
+, bool valid_3, ($T) value_3 )
+{
+	if ( valid_1 && valid_2 && ( value_1 == value_2 )) {
+		*result = value_1;
+		return ( true );
+	}
+
+	if ( valid_2 && valid_3 && ( value_2 == value_3 )) {
+		*result = value_2;
+		return ( true );
+	}
+
+	if ( valid_3 && valid_1 && ( value_3 == value_1 )) {
+		*result = value_3;
+		return ( true );
+	}
+
+	return ( false );
+})
+
+($vote_t,,byte)
+
+($macro vote_bit_t (T)
+bool vote_bit_($T)( dword *result
+, bool __attribute__(( unused )) _1, ($T) value_1
+, bool __attribute__(( unused )) _2, ($T) value_2
+, bool __attribute__(( unused )) _3, ($T) value_3 )
+{
+	/* Должно получиться 2 из 3 */
+	*result = ( value_1 & value_2 ) | (( value_1 | value_2 ) & value_3 );
+
+	return ( true );
+})
+
+($vote_bit_t,,dword)
+
+/** \} */

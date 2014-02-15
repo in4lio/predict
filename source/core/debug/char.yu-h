@@ -1,0 +1,106 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Debug interface.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+#ifdef LINK_CONSOLE
+
+/**
+ *  \defgroup char Debug interface
+ *  \ingroup console
+ *  \{
+ */
+
+#define RX_SIZE  80  /**< Size of input buffer. \hideinitializer */
+
+/**
+ *  \brief "Unretarding" (0) or "retarding" (1) output.
+ *  \note "Retarding" output appends delays in program execution.
+ */
+($h-extern-init,,int char_retarding_fputc,,0)
+
+/**
+ *  \brief Received message pointer.
+ *  \note Must be reset in NULL after message handling.
+ */
+($h-extern) char *char_received;
+
+/**
+ *  \brief Flag of displaying of received characters.
+ */
+($h-extern) int char_echo;
+
+/**
+ *  \brief Clear input message.
+ */
+($h-extern) __inline void char_clear_input( void );
+
+/**
+ *  \brief Print data in hex format.
+ *  \param data Data pointer.
+ *  \param len Data length.
+ */
+($h-extern) void printh( byte *data, uint32_t len );
+
+/**
+ *  \brief Print data in hex format by columns.
+ *  \param data Data pointer.
+ *  \param len Data length.
+ *  \param cols Columns count.
+ */
+($h-extern) void printhr( byte *data, uint32_t len, uint32_t cols );
+
+/**
+ *  \brief Print program version.
+ */
+($h-extern) __inline void print_version( void );
+
+/** \} */
+
+#endif /* LINK_CONSOLE */
+
+/**
+ *  \defgroup char_char Characters definitions
+ *  \ingroup char
+ *  \{
+ */
+
+#define CHAR_TAB    '\x09'
+#define CHAR_LF     '\x0A'
+#define CHAR_CR     '\x0D'
+#define CHAR_ESC    '\x1B'
+#define CHAR_SPACE  '\x20'
+#define LAST_CHAR   '\x7E'  /**< Last character to be displayed. */
+
+// LINUX /////////////////////////////////////////
+#ifdef __linux__
+
+#define __CRLF__    "\x0A"
+#define CHAR_ENTER  CHAR_LF
+
+// DJGPP /////////////////////////////////////////
+#else
+
+#define __CRLF__    "\x0D\x0A"
+#define CHAR_ENTER  CHAR_CR
+
+//////////////////////////////////////////////////
+#endif
+
+/** \} */
+
+($extern-c-end)
+
+($h-end)

@@ -1,0 +1,48 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Configuration file.)
+
+($import "stdlib.yu")
+($import "h.yu")
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+/**
+ *  \defgroup ini Configuration file
+ *  \ingroup core
+ *  \{
+ */
+
+($import "ini-dict.yu")
+
+($DOC__INI)
+
+($each-INI \i.]
+	($h-extern-init,,($i INI_TYPE) ini_($i INI)($if {($i INI_LEN) > 1} [[ ($i INI_LEN) ]]),,($i INI_DEFAULT))
+
+[ )
+
+/**
+ *  \brief Configuration file name.
+ */
+($h-extern-init,,char *ini_path,,($q,,./($PROGRAM).cfg))
+
+($h-extern) bool ini_set_file( char *fn );
+
+($h-extern) void ini_load( void );
+
+($h-extern) void ini_save( void );
+
+/** \} */
+
+($extern-c-end)
+
+($h-end)

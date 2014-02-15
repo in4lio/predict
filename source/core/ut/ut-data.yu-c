@@ -1,0 +1,268 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "version.yu")
+($TITLE,,Unit test of application state vector.)
+
+($import "stdlib.yu")
+($import "coroutine.yu")
+($import "config.yu")
+
+#include "include.h"
+
+($skip-if-not LINK_UT_DATA)
+
+/**
+ *  \defgroup ut_data Unit test of application state vector
+ *  \ingroup ut
+ *  \{
+ */
+
+/* Count of testing cycles */
+#define CYCLE_COUNT  ( USHRT_MAX + 1 )
+
+static char __str[ 100 ];
+
+static const int _ut_data_1_watch[] = {
+	var__ut_word,
+	var__ut_array_3,
+	var__ut_float,
+	var_COUNT
+};
+
+static const int _ut_data_2_watch[] = {
+	var__ut_byte,
+	var__ut_array_1,
+	var__ut_float,
+	var__ut_vote,
+	var_COUNT
+};
+
+static const int _ut_data_array_watch[] = {
+	var__ut_byte,
+	var__ut_array_1,
+	var_COUNT
+};
+
+int _ut_data_1_init( void )
+{
+	return ( CO_READY ); /* CO_SKIP */
+}
+
+($coro-define _ut_data_1 ]
+	data_clear_watch( peek__ut_data_1 );
+	data_watch( peek__ut_data_1, _ut_data_1_watch );
+
+	/* Test of error messages */
+	ut_quiet_begin();
+
+	data_set_byte( var_COUNT, 0 );                   /* Wrong variable */
+	data_set_dword( var__ut_word, 0 );               /* Wrong type */
+	data_get_word( var_COUNT );                      /* Wrong variable */
+	data_get_float( var__ut_byte );                  /* Wrong type */
+	data_get_changed( peek_COUNT, var__ut_array_2 ); /* Wrong thread */
+
+	ut_quiet_end( 5 );                               /* 5 errors */
+
+	data_set_byte( var__ut_byte, 1 );
+	data_set_dword( var__ut_array_1, 1 );
+	data_set_float( var__ut_float, 0.0 );
+	data_reset_all( peek__ut_data_2 );
+
+	/* Main operations */
+
+	for ( i = 0; i < CYCLE_COUNT; i++ ) {
+
+/* 1 */ data_set_byte( var__ut_byte, i );
+
+		($coro-wait,, data_get_changed( peek__ut_data_1, var__ut_word ));
+/* 3 */ data_reset( peek__ut_data_1, var__ut_word );
+		assert_int_eq(( word ) i, data_get_word( var__ut_word ), );
+
+		data_set_dword( var__ut_array_1, ( dword ) i << 8 );
+
+		($coro-wait,, data_get_changed( peek__ut_data_1, var__ut_array_3 ));
+/* 5 */ data_reset( peek__ut_data_1, var__ut_array_3 );
+		assert_int_eq( data_get_dword( var__ut_array_1 ), data_get_dword( var__ut_array_3 ), );
+
+		data_set_dword( var__ut_array_0, data_get_dword( var__ut_array_2 ));
+		data_set_dword( var__ut_array_2, 0 );
+
+		data_set_float( var__ut_float, data_get_float( var__ut_float ) + 0.25 );
+		data_reset( peek__ut_data_1, var__ut_float );
+		($coro-wait,, data_get_changed( peek__ut_data_1, var__ut_float ));
+	}
+	assert_int_eq( 0x55555555, data_get_dword( var__ut_array_0 ), );
+
+	/* Auxiliary operations */
+
+	data_set_all_changed( peek__ut_data_1 );
+	assert(( data_get_changed( peek__ut_data_1, var__ut_word )
+		  && data_get_changed( peek__ut_data_1, var__ut_array_3 )
+		  && data_get_changed( peek__ut_data_1, var__ut_float )
+		  && !data_get_changed( peek__ut_data_1, var__ut_array_1 )
+		  && !data_get_changed( peek__ut_data_1, var__ut_array_2 ))
+	, );
+	data_reset_all( peek__ut_data_1 );
+	assert_not( data_get_changed_any( peek__ut_data_1 ), );
+	data_set_changed( var__ut_byte );
+	assert_not( data_get_changed_any( peek__ut_data_1 ), );
+	data_set_changed( var__ut_float );
+	assert( data_get_changed_any( peek__ut_data_1 ), );
+
+	data_clear_watch( peek__ut_data_1 );
+	assert_not( data_get_changed_any( peek__ut_data_1 ), );
+	data_watch_array( peek__ut_data_1, _ut_data_array_watch );
+	data_set_changed( var__ut_float );
+	data_set_changed( var__ut_word );
+	data_set_changed( var__ut_array_0 );
+	assert_not( data_get_changed_any( peek__ut_data_1 ), );
+	data_set_changed( var__ut_array_1 );
+	assert( data_get_changed( peek__ut_data_1, var__ut_array_1 ), );
+	data_set_changed( var__ut_array_2 );
+	assert( data_get_changed( peek__ut_data_1, var__ut_array_2 ), );
+	data_set_changed( var__ut_array_3 );
+	assert( data_get_changed( peek__ut_data_1, var__ut_array_3 ), );
+	data_set_changed( var__ut_byte );
+	assert( data_get_changed( peek__ut_data_1, var__ut_byte ), );
+
+	assert_int_eq( var__ut_array, data_atovar( data_vartoa( var__ut_array_0 )), );
+	assert_str_eq( "_ut_byte", data_vartoa( data_atovar( "_ut_byte" )), );
+
+	_AS_DWORD( i ) = 0xABCDEF;
+	data_set( var__ut_array_3, &i );
+	assert_str_eq( "0x00ABCDEF", data_get_string( __str, var__ut_array_3 ), );
+	data_set_string( var__ut_float, "8080.02" );
+	assert_str_eq( "8080.02", data_get_string( __str, var__ut_float ), );
+
+	assert_str_eq( "word", data_get_type( var__ut_word ), );
+[ \enter ]
+	static int i;
+[ )
+
+int _ut_data_2_init( void )
+{
+	data_watch( peek__ut_data_2, _ut_data_2_watch );
+
+	return ( CO_READY ); /* CO_SKIP */
+}
+
+($coro-define _ut_data_2 ]
+	data_set_word( var__ut_word, 1 );
+	data_set_dword( var__ut_array_3, 1 );
+	data_reset_all( peek__ut_data_1 );
+	data_set_dword( var__ut_array_0, 0x55555555 );
+
+	for ( i = 0; i < CYCLE_COUNT; i++ ) {
+
+		($coro-wait,, data_get_changed( peek__ut_data_2, var__ut_byte ));
+/* 2 */ data_reset( peek__ut_data_2, var__ut_byte );
+		assert_int_eq(( byte ) i, data_get_byte( var__ut_byte ), );
+
+		data_set_word( var__ut_word, i );
+
+		($coro-wait,, data_get_changed( peek__ut_data_2, var__ut_array_1 ));
+/* 4 */ data_reset( peek__ut_data_2, var__ut_array_1 );
+
+		data_set_dword( var__ut_array_3, ( dword ) i << 8 );
+		assert_int_eq( data_get_dword( var__ut_array_3 ), data_get_dword( var__ut_array_1 ), );
+
+		data_set_dword( var__ut_array_2, data_get_dword( var__ut_array_0 ));
+		data_set_dword( var__ut_array_0, 0 );
+
+		($coro-wait,, data_get_changed( peek__ut_data_2, var__ut_float ));
+/* 6 */ data_set_float( var__ut_float, data_get_float( var__ut_float ) + 0.25 );
+		data_reset( peek__ut_data_2, var__ut_float );
+	}
+	assert_float_eq(( float )( CYCLE_COUNT >> 1 ), data_get_float( var__ut_float ), 0.0, );
+
+	/* Voting operations */
+
+	/* I: -  II: -  III: -  M: -  */
+	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	assert_not( voted_valid( var__ut_vote ), );
+	/* I: -  II: 0  III: -  M: -  */
+	voted_set_byte( var__ut_vote, 2, 0, &vote_byte );
+	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	assert_not( voted_valid( var__ut_vote ), );
+	/* I: -  II: 0  III: 0  M: 0  */
+	voted_set_byte( var__ut_vote, 3, 0, &vote_byte );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	data_reset( peek__ut_data_2, var__ut_vote );
+	assert( voted_valid( var__ut_vote ), );
+	assert_int_eq( 0, data_get_byte( var__ut_vote ), );
+	/* I: -  II: 0  III: 1  M: -  */
+	voted_set_byte( var__ut_vote, 3, 1, &vote_byte );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	data_reset( peek__ut_data_2, var__ut_vote );
+	assert_not( voted_valid( var__ut_vote ), );
+	/* I: 1  II: 0  III: 1  M: 1  */
+	voted_set_byte( var__ut_vote, 1, 1, &vote_byte );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	data_reset( peek__ut_data_2, var__ut_vote );
+	assert( voted_valid( var__ut_vote ), );
+	assert_int_eq( 1, data_get_byte( var__ut_vote ), );
+	/* I: 1  II: 0  III: 0  M: 0  */
+	voted_set_byte( var__ut_vote, 3, 0, &vote_byte );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	data_reset( peek__ut_data_2, var__ut_vote );
+	assert( voted_valid( var__ut_vote ), );
+	assert_int_eq( 0, data_get_byte( var__ut_vote ), );
+	/* I: 1  II: 2  III: 0  M: -  */
+	voted_set_byte( var__ut_vote, 2, 2, &vote_byte );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	data_reset( peek__ut_data_2, var__ut_vote );
+	assert_not( voted_valid( var__ut_vote ), );
+	/* I: 3  II: 2  III: 3  M: 3  */
+	voted_set_byte( var__ut_vote, 1, 3, &vote_byte );
+	voted_set_byte( var__ut_vote, 3, 3, &vote_byte );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	data_reset( peek__ut_data_2, var__ut_vote );
+	assert( voted_valid( var__ut_vote ), );
+	assert_int_eq( 3, data_get_byte( var__ut_vote ), );
+	/* I: 3  II: 3  III: 3  M: 3  */
+	voted_set_byte( var__ut_vote, 2, 3, &vote_byte );
+	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	assert( voted_valid( var__ut_vote ), );
+	assert_int_eq( 3, data_get_byte( var__ut_vote ), );
+	/* I: 4  II: 3  III: 3  M: 3  */
+	voted_set_byte( var__ut_vote, 1, 4, &vote_byte );
+	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	assert( voted_valid( var__ut_vote ), );
+	assert_int_eq( 3, data_get_byte( var__ut_vote ), );
+	/* RESET */
+	voted_set_byte( var__ut_vote, 3, 2, &vote_byte );
+	data_reset( peek__ut_data_2, var__ut_vote );
+[ \enter ]
+	static int i;
+[ )
+
+int ut_data_init( void )
+{
+	return ( CO_READY ); /* CO_SKIP */
+}
+
+void ut_data_uninit( void )
+{
+}
+
+($coro-define ut_data ]
+	ut_2_begin();
+	($coro-yield);
+
+	($coro-context-init _ut_data_1);
+	_ut_data_1_init();
+
+	($coro-context-init _ut_data_2);
+	_ut_data_2_init();
+
+	($coro-wait-coro,,($coro-call _ut_data_1 ) & ($coro-call _ut_data_2 ));
+[ \enter ]
+	static ($coro-context _ut_data_1);
+	static ($coro-context _ut_data_2);
+[ )
+
+/** \} */
