@@ -37,7 +37,7 @@ bool ini_set_file( char *fn )
 void ini_load( void )
 {
 
-#if __DO_NOT_IMPLEMENTED__
+#if __NOT_IMPLEMENTED__
 	set_config_file( ini_path );
 
 	($each-INI \i.]
@@ -51,7 +51,7 @@ void ini_load( void )
 void ini_save( void )
 {
 
-#if __DO_NOT_IMPLEMENTED__
+#if __NOT_IMPLEMENTED__
 	set_config_file( ini_path );
 
 	($each-INI \i.]

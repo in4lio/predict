@@ -48,7 +48,7 @@ static void test_array( void )
 
 	for ( i = 0; i < 5; i++ ) actual[ i ] = i + 1;
 
-	/* Проверить первые 3 байта */
+	/* Check the first 3 bytes */
 	assert_array_eq( expected, actual, 3, );
 }
 

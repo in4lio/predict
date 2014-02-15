@@ -27,7 +27,8 @@ void clock_init( void )
 void clock_set_time( uint32_t h, uint32_t m, uint32_t s, uint32_t cs )
 {
 	uint32_t __attribute__(( unused )) t = ( h * ( 100 * 60 * 60 ) + m * ( 100 * 60 ) + s * 100 + cs );
-	/* function is not implemented */
+
+	printf( __CRLF__"clock_set_time() is not implemented" );
 }
 
 uint32_t clock_time_running( void )

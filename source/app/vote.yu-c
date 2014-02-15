@@ -52,7 +52,7 @@ bool vote_bit_($T)( dword *result
 , bool __attribute__(( unused )) _2, ($T) value_2
 , bool __attribute__(( unused )) _3, ($T) value_3 )
 {
-	/* Должно получиться 2 из 3 */
+	/* Should be two of three... */
 	*result = ( value_1 & value_2 ) | (( value_1 | value_2 ) & value_3 );
 
 	return ( true );
