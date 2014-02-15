@@ -9,7 +9,7 @@
  *  \page data List of state vector variables
  *
  *  \section d_error Variable error
- *  Pool of errors bits. See errors dictionary \ref error-dict.yu .
+ *  Pool of error bits. See errors dictionary \ref error-dict.yu .
  *
  *  \section d__ut_ Variables _ut_*
  *  Used for \ref ut "unit testing".

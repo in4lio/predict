@@ -496,7 +496,6 @@ static bool __partoul( const char *s, uint32_t *result )
 }
 
 #if __PAR_64
-
 static bool __partoull( const char *s, uint64_t *result )
 {
 	char *end;

@@ -13,7 +13,7 @@
 ($h-begin-named)
 
 /**
- *  \defgroup config Application configuration
+ *  \defgroup config Configuration
  *  \ingroup app
  *  \{
  */
