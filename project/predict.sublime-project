@@ -3,7 +3,7 @@
 	[
 		{
 			"path": "../",
-			"file_exclude_patterns": ["*.bak", "*.bat", "*.log", "*.git*", "*.ast", "_netrc", "args", ".tags" ],
+			"file_exclude_patterns": ["args", "*.bak", "*.log", "*.git*", ".tags"],
 			"folder_exclude_patterns": ["project", "etc", "object", "source_c"]
 		}
 	],

@@ -5,13 +5,13 @@
 #   |_|                   |_|
 #   yu-c makefile
 
-# -- binary name without extension
+# -- binary name (without extension)
 BIN = predict
 
-# -- make map file option
+# -- creating MAP file
 MAP = 0
 
-# -- preprocessor
+# -- preprocessor (yupp)
 PP = python -u $(YUPP_HOME)/yup.py
 
 # -- compilers
@@ -59,7 +59,7 @@ D_BIN = .
 D_OBJ = object
 D_OBJ := $(if $(D_PLATFORM), $(D_OBJ)/$(D_PLATFORM), $(D_OBJ))
 
-# -- list, map directory
+# -- LIST and MAP directories
 D_MAP = object
 D_LIST = object
 
@@ -83,7 +83,7 @@ else
 E_BIN =
 endif
 
-# -- list, map suffix
+# -- LIST and MAP suffixes
 E_MAP = .map
 E_LIST = .listing
 
@@ -153,7 +153,7 @@ define wrap
 endef
 endif
 
-# -- final optional tools
+# -- optional final tools
 ifeq ($(OS),Windows_NT)
 define final
 	stubedit $1 minstack=$(MINSTACK) bufsize=$(BUFSIZE)
@@ -163,7 +163,7 @@ define final
 endef
 endif
 
-# -- remove
+# -- removal list
 R = $(D_BIN)/$(BIN)$(E_BIN) $(O) $(G_H) $(G_C) $(G_CXX)
 ifeq ($(MAP), 1)
 R := $(R) $(D_MAP)/$(BIN)$(E_MAP)
