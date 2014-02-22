@@ -163,6 +163,7 @@ static bool __partoull( const char *s, uint64_t *result );
 
 ($macro stop_job (cmd)static __inline void cyclic_stop_($cmd)( void ))
 
+/* Command handles */
 ($import "console-inc.yu")
 
 int console_init( void )
@@ -210,7 +211,6 @@ void console_uninit( void )
 			parse_par( arg_current );       /* Handle parameter */
 			break;
 		}
-
 		char_received = NULL;               /* Reset received message */
 
 		if ( stt == stt_CMD_WAIT ) {
@@ -312,7 +312,6 @@ static void parse_cmd( const char *msg )
 
 	/* Empty command */
 	case id_NONE:
-
 		break;
 
 	default:

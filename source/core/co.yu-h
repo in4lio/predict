@@ -43,9 +43,6 @@
 
 [ )
 
-/** Restart unit testing of 2nd stage. */
-extern void ut_2_restart( void );
-
 /** \} */
 
 #ifdef LINK_UT
@@ -55,11 +52,16 @@ extern void ut_2_restart( void );
  *  \{
  */
 
+/**
+ * \brief Restart unit testing of 2nd stage.
+ */
+extern void ut_2_restart( void );
+
 ($import "ut-dict.yu")
 
 ($each-UT_1 \i.]
-	/** ($i UT_1) unit test of 1st stage. */
-	extern void ($i UT_1)( void );
+	/** ut_($i UT_1) unit test of 1st stage. */
+	extern void ut_($i UT_1)( void );
 
 [ )
 

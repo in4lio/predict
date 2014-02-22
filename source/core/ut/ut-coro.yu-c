@@ -23,7 +23,7 @@
 
 #define CYCLE_COUNT  1024
 
-#define B_SIZE       8
+#define B_SIZE  8
 static int buf[ B_SIZE ];
 static int pos = 0;
 
@@ -153,9 +153,7 @@ int test_4_init( void )
 ($coro-define test_4 ]
 	do {
 		assert_not( inside_test_3, );
-
 		($coro-yield);
-
 	} while ( inside_test_3 != -1 );
 [ )
 

@@ -93,7 +93,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include "data-str.h"
-#include "vote.h"
+#include "data-vote.h"
 #include "ini.h"
 
 #ifdef __cplusplus

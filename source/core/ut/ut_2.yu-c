@@ -23,7 +23,7 @@
 ($import "ut-dict.yu")
 
 ($each-UT_2 \i.]
-	($set T ($i UT_2))
+	($set T,,ut_($i UT_2))
 	/** ($T) test coroutine local context. */
 	static ($coro-context ($T));
 	/** ($T) test coroutine alive flag. */
@@ -39,8 +39,9 @@
 int ut_2_init( void )
 {
 	($each-UT_2 \i.]
-		($coro-context-init ($i UT_2));
-		($i UT_2)_alive = ($i UT_2)_init();
+		($set T,,ut_($i UT_2))
+		($coro-context-init ($T));
+		($T)_alive = ($T)_init();
 
 	[ )
 
@@ -50,7 +51,7 @@ int ut_2_init( void )
 void ut_2_uninit( void )
 {
 	($each-UT_2 \i.]
-		($i UT_2)_uninit();
+		ut_($i UT_2)_uninit();
 
 	[ )
 }
@@ -62,12 +63,13 @@ void ut_2_uninit( void )
 static int ut_2_schedule( void )
 {
 	($each-UT_2 \i.]
-		if ($coro-alive [($i UT_2)_alive]) ($i UT_2)_alive = ($coro-call ($i UT_2));
+		($set T,,ut_($i UT_2))
+		if ($coro-alive [($T)_alive]) ($T)_alive = ($coro-call ($T));
 
 	[ )
 	return ( 0
 	($each-UT_2 \i.]
-		|| ($coro-alive [($i UT_2)_alive])
+		|| ($coro-alive [ut_($i UT_2)_alive])
 
 	[ )
 	);
@@ -81,7 +83,9 @@ static int ut_2_schedule( void )
 	($coro-yield);
 
 	/* Test coroutines call loop */
-	while ( ut_stage_2( ut_2_schedule )) ($coro-yield);
+	while ( ut_stage_2( ut_2_schedule )) {
+		($coro-yield);
+	}
 [ )
 
 void ut_2_restart( void )

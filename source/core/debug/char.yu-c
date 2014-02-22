@@ -15,6 +15,17 @@
 ($implement-named)
 #include "include.h"
 
+/** \mainpage <CENTER><BR>predict - an embedded application framework</CENTER>
+
+<CENTER><TT><BR>
+                 _ _     _     <BR>
+   ___ ___ ___ _| |_|___| |_   <BR>
+  |   |  _   _|   | |  _   _|  <BR>
+  |  _|_| |___ ___|_|___  |    <BR>
+  |_|                   |_|    <BR><BR><BR><BR>
+</TT></CENTER>
+ */
+
 ($skip-if-not LINK_CONSOLE)
 
 /**
@@ -234,7 +245,8 @@ void receive_char_uninit( void )
 	static char chr;
 [ )
 
-__inline void char_clear_input( void ) {
+__inline void char_clear_input( void )
+{
 	rx_pos = 0;
 }
 

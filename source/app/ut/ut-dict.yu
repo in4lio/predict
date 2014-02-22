@@ -5,16 +5,16 @@
     |_|                   |_)
 
 ($dict UT_1
-	(` UT_1     )
+	(` UT_1  )
 	(`
-	(  ut_ut    ) ? LINK_UT_UT
+	(  ut    ) ? LINK_UT_UT
 	)
 )
 
 ($dict UT_2
-	(` UT_2     )
+	(` UT_2  )
 	(`
-	(  ut_coro  ) ? LINK_UT_CORO
-	(  ut_data  ) ? LINK_UT_DATA
+	(  coro  ) ? LINK_UT_CORO
+	(  data  ) ? LINK_UT_DATA
 	)
 )

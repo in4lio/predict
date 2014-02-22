@@ -20,11 +20,11 @@
  *  \{
  */
 
-#define __strtol( s, end )      strtol( s, end, 0 )
-#define __strtoul( s, end )     strtoul( s, end, 0 )
-#define __strtoll( s, end )     strtoll( s, end, 0 )
-#define __strtoull( s, end )    strtoull( s, end, 0 )
-#define __strtof( s, end )      (( float ) strtod( s, end ))
+#define __strtol( s, end )    strtol( s, end, 0 )
+#define __strtoul( s, end )   strtoul( s, end, 0 )
+#define __strtoll( s, end )   strtoll( s, end, 0 )
+#define __strtoull( s, end )  strtoull( s, end, 0 )
+#define __strtof( s, end )    (( float ) strtod( s, end ))
 
 /**
  *  \brief byte-to-hex converting.

@@ -320,13 +320,13 @@ void voted_set_($T)( const var_t item, byte h, ($T) value, bool ( *voter )( ($T)
 	) {
 		data_set_($T)( item, result );
 		if ( !data_get_byte( item + 4 )) {
-			  data_set_byte( item + 4, true );
+			  data_set_byte( item + 4, 1 );
 			  data_set_changed( item );
 		}
 	} else {
 		/* Invalid voted */
 		if ( data_get_byte( item + 4 )) {
-			 data_set_byte( item + 4, false );
+			 data_set_byte( item + 4, 0 );
 			 data_set_changed( item );
 		}
 	}

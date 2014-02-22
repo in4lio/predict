@@ -5,11 +5,6 @@
     |_|                   |_)
 
 /**
- *  \addtogroup console
- *  \{
- */
-
-/**
  *  \brief Interval of cyclic command execution.
  */
 ($handle_cmd,,c_delay)
@@ -322,5 +317,3 @@ static uint16_t __cyclic_delay;
 {
 	print_version();
 }
-
-/** \} */

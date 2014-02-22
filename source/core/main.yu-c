@@ -73,7 +73,7 @@ static int coro_schedule( void )
 static void ut_1( void )
 {
 	($each-UT_1 \i.]
-		($i UT_1)();
+		ut_($i UT_1)();
 
 	[ )
 }
@@ -92,7 +92,6 @@ int main( int argc, char *argv[])
 	ut_stage_1( ut_1 );
 
 #endif
-
 	/* Coroutines call loop */
 	while ( app_alive ) {
 		if ( coro_schedule() == 0 ) break;

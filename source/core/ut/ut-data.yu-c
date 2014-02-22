@@ -73,19 +73,17 @@ int _ut_data_1_init( void )
 	data_reset_all( peek__ut_data_2 );
 
 	/* Main operations */
-
 	for ( i = 0; i < CYCLE_COUNT; i++ ) {
-
-/* 1 */ data_set_byte( var__ut_byte, i );
+/* 1 */	data_set_byte( var__ut_byte, i );
 
 		($coro-wait,, data_get_changed( peek__ut_data_1, var__ut_word ));
-/* 3 */ data_reset( peek__ut_data_1, var__ut_word );
+/* 3 */	data_reset( peek__ut_data_1, var__ut_word );
 		assert_int_eq(( word ) i, data_get_word( var__ut_word ), );
 
 		data_set_dword( var__ut_array_1, ( dword ) i << 8 );
 
 		($coro-wait,, data_get_changed( peek__ut_data_1, var__ut_array_3 ));
-/* 5 */ data_reset( peek__ut_data_1, var__ut_array_3 );
+/* 5 */	data_reset( peek__ut_data_1, var__ut_array_3 );
 		assert_int_eq( data_get_dword( var__ut_array_1 ), data_get_dword( var__ut_array_3 ), );
 
 		data_set_dword( var__ut_array_0, data_get_dword( var__ut_array_2 ));
@@ -98,13 +96,12 @@ int _ut_data_1_init( void )
 	assert_int_eq( 0x55555555, data_get_dword( var__ut_array_0 ), );
 
 	/* Auxiliary operations */
-
 	data_set_all_changed( peek__ut_data_1 );
 	assert(( data_get_changed( peek__ut_data_1, var__ut_word )
-		  && data_get_changed( peek__ut_data_1, var__ut_array_3 )
-		  && data_get_changed( peek__ut_data_1, var__ut_float )
-		  && !data_get_changed( peek__ut_data_1, var__ut_array_1 )
-		  && !data_get_changed( peek__ut_data_1, var__ut_array_2 ))
+	&& data_get_changed( peek__ut_data_1, var__ut_array_3 )
+	&& data_get_changed( peek__ut_data_1, var__ut_float )
+	&& !data_get_changed( peek__ut_data_1, var__ut_array_1 )
+	&& !data_get_changed( peek__ut_data_1, var__ut_array_2 ))
 	, );
 	data_reset_all( peek__ut_data_1 );
 	assert_not( data_get_changed_any( peek__ut_data_1 ), );
@@ -159,13 +156,13 @@ int _ut_data_2_init( void )
 	for ( i = 0; i < CYCLE_COUNT; i++ ) {
 
 		($coro-wait,, data_get_changed( peek__ut_data_2, var__ut_byte ));
-/* 2 */ data_reset( peek__ut_data_2, var__ut_byte );
+/* 2 */	data_reset( peek__ut_data_2, var__ut_byte );
 		assert_int_eq(( byte ) i, data_get_byte( var__ut_byte ), );
 
 		data_set_word( var__ut_word, i );
 
 		($coro-wait,, data_get_changed( peek__ut_data_2, var__ut_array_1 ));
-/* 4 */ data_reset( peek__ut_data_2, var__ut_array_1 );
+/* 4 */	data_reset( peek__ut_data_2, var__ut_array_1 );
 
 		data_set_dword( var__ut_array_3, ( dword ) i << 8 );
 		assert_int_eq( data_get_dword( var__ut_array_3 ), data_get_dword( var__ut_array_1 ), );
@@ -174,13 +171,12 @@ int _ut_data_2_init( void )
 		data_set_dword( var__ut_array_0, 0 );
 
 		($coro-wait,, data_get_changed( peek__ut_data_2, var__ut_float ));
-/* 6 */ data_set_float( var__ut_float, data_get_float( var__ut_float ) + 0.25 );
+/* 6 */	data_set_float( var__ut_float, data_get_float( var__ut_float ) + 0.25 );
 		data_reset( peek__ut_data_2, var__ut_float );
 	}
 	assert_float_eq(( float )( CYCLE_COUNT >> 1 ), data_get_float( var__ut_float ), 0.0, );
 
 	/* Voting operations */
-
 	/* I: -  II: -  III: -  M: -  */
 	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ), );
 	assert_not( voted_valid( var__ut_vote ), );
