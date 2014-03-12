@@ -275,7 +275,7 @@ void console_cyclic_uninit( void )
 	static struct timeval t_cycle = { 0, 0 };
 [ )
 
-__inline void console_prompt( void )
+void console_prompt( void )
 {
 	if ( char_echo ) {
 		if ( stt == stt_CMD_WAIT ) {
@@ -288,7 +288,7 @@ __inline void console_prompt( void )
 	}
 }
 
-__inline bool console_command_waited( void )
+bool console_command_waited( void )
 {
 	return (( stt == stt_CMD_WAIT ) && ( cyclic_stt == cyclic_stt_IDLE ));
 }

@@ -83,9 +83,7 @@ static int ut_2_schedule( void )
 	($coro-yield);
 
 	/* Test coroutines call loop */
-	while ( ut_stage_2( ut_2_schedule )) {
-		($coro-yield);
-	}
+	($coro-wait,, !ut_stage_2( ut_2_schedule ));
 [ )
 
 void ut_2_restart( void )

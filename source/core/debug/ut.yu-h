@@ -150,9 +150,9 @@
 [ ))
 
 ($h-extern) void ut_fault( const char *error, const char *path, const char *func, uint32_t line );
-($h-extern) __inline void ut_quiet( void );
-($h-extern) __inline void ut_loud( void );
-($h-extern) __inline uint32_t ut_get_quiet( void );
+($h-extern) void ut_quiet( void );
+($h-extern) void ut_loud( void );
+($h-extern) uint32_t ut_get_quiet( void );
 
 ($h-extern) void ut_1_unit_begin( const char *path );
 ($h-extern) void ut_1_unit_end( void );

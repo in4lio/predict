@@ -65,9 +65,11 @@ void log_open( const char *mode )
 	char s[ 32 ];
 	char sd[ 32 ];
 	struct timeval t;
+	time_t sec;
 
 	gettimeofday( &t, NULL );
-	strftime( sd, sizeof( sd ), "%d.%m.%Y", localtime( &t.tv_sec ));
+	sec = t.tv_sec;
+	strftime( sd, sizeof( sd ), "%d.%m.%Y", localtime( &sec ));
 
 	clock_stamp( &t, s );
 

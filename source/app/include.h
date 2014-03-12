@@ -18,14 +18,18 @@
 
 #include <stdbool.h>
 
-// LINUX /////////////////////////////////////////
-#ifdef __linux__
-#include <stdint.h>
+// WIN32 /////////////////////////////////////////
+#if defined( __WIN32__ )
+#include "timer.h"
 
-// DOS ///////////////////////////////////////////
-#else
+// MSDOS /////////////////////////////////////////
+#elif defined( __MSDOS__ )
 #include "stdint.h"
 #include "timer.h"
+
+// UNIX //////////////////////////////////////////
+#else
+#include <stdint.h>
 
 //////////////////////////////////////////////////
 #endif
@@ -37,6 +41,7 @@
 #include <math.h>
 #include <errno.h>
 #include <unistd.h>
+#include <time.h>
 #include <sys/time.h>
 
 #ifdef __cplusplus

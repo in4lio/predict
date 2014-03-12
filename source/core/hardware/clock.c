@@ -55,20 +55,22 @@ const char *clock_stamp( const struct timeval *tval, char *str )
 {
 	struct timeval t;
 	char *p = str;
-	unsigned int cs;
+	unsigned int csec;
+	time_t sec;
 
 	if ( !tval ) {
 		gettimeofday( &t, NULL );
 	} else {
 		t = *tval;
 	}
-	cs = ( unsigned int ) rint(( double ) t.tv_usec / 1000 / 10 );
-	if ( cs == 100 ) {
-		++t.tv_sec;
-		cs = 0;
+	sec = t.tv_sec;
+	csec = ( unsigned int ) rint(( double ) t.tv_usec / 1000 / 10 );
+	if ( csec == 100 ) {
+		++sec;
+		csec = 0;
 	}
-	p += strftime( p, 16, "%H:%M:%S", localtime( &t.tv_sec ));
-	sprintf( p, ".%02i", cs );
+	p += strftime( p, 16, "%H:%M:%S", localtime( &sec ));
+	sprintf( p, ".%02i", csec );
 
 	return ( str );
 }

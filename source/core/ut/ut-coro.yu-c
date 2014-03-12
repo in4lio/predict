@@ -181,7 +181,7 @@ void ut_coro_uninit( void )
 	($coro-context-init test_2);
 	test_2_init();
 
-	($coro-wait-coro,,($coro-call test_1 ) & ($coro-call test_2 ));
+	($coro-wait-coro,,($coro-call test_1 ) | ($coro-call test_2 ));
 	assert_int_eq( answer_last, answer, );
 
 	($coro-context-init test_3);
@@ -190,7 +190,7 @@ void ut_coro_uninit( void )
 	($coro-context-init test_4);
 	test_4_init();
 
-	($coro-wait-coro,,($coro-call test_3 ) & ($coro-call test_4 ));
+	($coro-wait-coro,,($coro-call test_3 ) | ($coro-call test_4 ));
 [ \enter ]
 	static ($coro-context test_1);
 	static ($coro-context test_2);

@@ -45,7 +45,7 @@
 /**
  *  \brief Clear input message.
  */
-($h-extern) __inline void char_clear_input( void );
+($h-extern) void char_clear_input( void );
 
 /**
  *  \brief Print data in hex format.
@@ -65,7 +65,7 @@
 /**
  *  \brief Print program version.
  */
-($h-extern) __inline void print_version( void );
+($h-extern) void print_version( void );
 
 /** \} */
 
@@ -84,17 +84,20 @@
 #define CHAR_SPACE  '\x20'
 #define LAST_CHAR   '\x7E'  /**< Last character to be displayed. */
 
-// LINUX /////////////////////////////////////////
-#ifdef __linux__
-
-#define __CRLF__    "\x0A"
-#define CHAR_ENTER  CHAR_LF
-
-// DJGPP /////////////////////////////////////////
-#else
-
+// WIN32 /////////////////////////////////////////
+#if defined( __WIN32__ )
 #define __CRLF__    "\x0D\x0A"
 #define CHAR_ENTER  CHAR_CR
+
+// MSDOS /////////////////////////////////////////
+#elif defined( __MSDOS__ )
+#define __CRLF__    "\x0D\x0A"
+#define CHAR_ENTER  CHAR_CR
+
+// UNIX //////////////////////////////////////////
+#else
+#define __CRLF__    "\x0A"
+#define CHAR_ENTER  CHAR_LF
 
 //////////////////////////////////////////////////
 #endif

@@ -265,17 +265,17 @@ void ut_fault( const char *error, const char *path, const char *func, uint32_t l
 	__unlock();
 }
 
-__inline void ut_quiet( void )
+void ut_quiet( void )
 {
 	__quiet = 1;
 }
 
-__inline void ut_loud( void )
+void ut_loud( void )
 {
 	__quiet = 0;
 }
 
-__inline uint32_t ut_get_quiet( void )
+uint32_t ut_get_quiet( void )
 {
 	return __quiet;
 }

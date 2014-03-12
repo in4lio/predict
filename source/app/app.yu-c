@@ -36,7 +36,10 @@ static uint32_t ut_get_time( void )
  */
 static void ut_started( int t )
 {
+#ifdef LINK_CONSOLE
 	if ( t == 1 ) char_retarding_fputc = 1;
+
+#endif
 }
 
 /**
@@ -46,7 +49,10 @@ static void ut_started( int t )
  */
 static void ut_finished( int t, bool result )
 {
+#ifdef LINK_CONSOLE
 	if ( t == 1 ) char_retarding_fputc = 0;
+
+#endif
 	if ( !result ) ERROR( ut, t );
 }
 

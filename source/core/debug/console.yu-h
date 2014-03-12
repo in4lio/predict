@@ -100,7 +100,7 @@
 /**
  *  \brief Console commands count.
  */
-#define CONSOLE_COMMAND_COUNT  ($len each-CONSOLE_CMD)
+#define CONSOLE_COMMAND_COUNT  (($len each-CONSOLE_CMD) + 1 )
 
 /**
  *  \brief List of console commands.
@@ -118,12 +118,12 @@
 /**
  *  \brief Print prompt.
  */
-($h-extern) __inline void console_prompt( void );
+($h-extern) void console_prompt( void );
 
 /**
  *  \brief Check console is waiting for command.
  */
-($h-extern) __inline bool console_command_waited( void );
+($h-extern) bool console_command_waited( void );
 
 /** \} */
 

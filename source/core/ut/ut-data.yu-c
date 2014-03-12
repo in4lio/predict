@@ -255,7 +255,7 @@ void ut_data_uninit( void )
 	($coro-context-init _ut_data_2);
 	_ut_data_2_init();
 
-	($coro-wait-coro,,($coro-call _ut_data_1 ) & ($coro-call _ut_data_2 ));
+	($coro-wait-coro,,($coro-call _ut_data_1 ) | ($coro-call _ut_data_2 ));
 [ \enter ]
 	static ($coro-context _ut_data_1);
 	static ($coro-context _ut_data_2);

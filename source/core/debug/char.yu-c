@@ -66,9 +66,66 @@ static bool is_msg;
 #define FINE_BACKSPACE  "\x08\x20\x08"  /**< Sequence for delete last input char. \hideinitializer */
 #define CLEAR_CMD       "                    \r" CONSOLE_PROMPT /**< Clear command line. \hideinitializer */
 
-// LINUX /////////////////////////////////////////
-#ifdef __linux__
+// WIN32 /////////////////////////////////////////
+#if defined( __WIN32__ )
+#include <conio.h>
 
+#define CHAR_BACKSPACE  '\x08'
+#define CHAR_UP         '\x48'
+#define CHAR_DOWN       '\x50'
+
+static void getch_init( void )
+{
+}
+
+static void getch_uninit( void )
+{
+}
+
+static __inline int getch_1( void )
+{
+	static struct timeval t = { 0, 0 };
+
+	if ( clock_time_before( t )) return EOF;
+	t = clock_t_set( 100 );
+
+	/* Unfortunately, this version of kbhit() has long delay. */
+	return ( kbhit() ? _getch() : EOF );
+}
+
+static __inline bool getch_esc( int chr )
+{
+	return (( chr == '\x00' ) || ( chr == '\xE0' ));
+}
+
+// MSDOS /////////////////////////////////////////
+#elif defined( __MSDOS__ )
+#include <conio.h>
+
+#define CHAR_BACKSPACE  '\x08'
+#define CHAR_UP         '\x48'
+#define CHAR_DOWN       '\x50'
+
+static void getch_init( void )
+{
+}
+
+static void getch_uninit( void )
+{
+}
+
+static __inline int getch_1( void )
+{
+	return ( kbhit() ? getch() : EOF );
+}
+
+static __inline bool getch_esc( int chr )
+{
+	return ( chr == '\x00' );
+}
+
+// UNIX //////////////////////////////////////////
+#else
 #include <termios.h>
 
 #define CHAR_BACKSPACE  '\x7F'
@@ -112,33 +169,6 @@ static __inline bool getch_esc( int chr )
 	return (( chr == '\x1B' ) && ( getch() == '\x5B' ));
 }
 
-// DJGPP /////////////////////////////////////////
-#else
-
-#include <conio.h>
-
-#define CHAR_BACKSPACE  '\x08'
-#define CHAR_UP         '\x48'
-#define CHAR_DOWN       '\x50'
-
-static void getch_init( void )
-{
-}
-
-static void getch_uninit( void )
-{
-}
-
-static __inline int getch_1( void )
-{
-	return ( kbhit() ? getch() : EOF );
-}
-
-static __inline bool getch_esc( int chr )
-{
-	return ( chr == '\x00' );
-}
-
 //////////////////////////////////////////////////
 #endif
 
@@ -171,7 +201,7 @@ void receive_char_uninit( void )
 ($coro-define receive_char ]
 	for ( ; ; ) {
 		/* Wait character */
-		($coro-wait,, ( chr = getch_1()) != EOF );
+		($coro-wait,,( chr = getch_1()) != EOF );
 
 		if ( getch_esc( chr )) {
 			chr = getch();
@@ -245,7 +275,7 @@ void receive_char_uninit( void )
 	static char chr;
 [ )
 
-__inline void char_clear_input( void )
+void char_clear_input( void )
 {
 	rx_pos = 0;
 }
@@ -267,7 +297,7 @@ void printh( byte *data, uint32_t len )
 	while ( len-- ) printf( "%02X ", data[ len ]);
 }
 
-__inline void print_version( void )
+void print_version( void )
 {
 	printf( VERSION_STRING );
 }

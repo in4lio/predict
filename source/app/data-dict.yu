@@ -23,11 +23,13 @@
  *                ( C O M M O N )                *
  *                                               *
  * * * * * * * * * * * * * * * * * * * * * * * * *
+ _not_empty is unused, it's needed only if there are no other.
 )
 
 ($dict DATA_THREAD
 	(` DATA_THREAD  )
 	(`
+	(  _not_empty   )
 	(  _ut_data_1   ) ? LINK_UT_DATA
 	(  _ut_data_2   ) ? LINK_UT_DATA
 	)
