@@ -479,7 +479,7 @@ var_t data_atovar( const char *s )
 	var_t i;
 
 	for ( i = 0; i < var_COUNT; i++ ) {
-		if ( !strcmp( data_descry[ i ].name, s )) return ( i );
+		if ( strcmp( data_descry[ i ].name, s ) == 0 ) return ( i );
 	}
 	return ( var_COUNT );
 }
