@@ -7,12 +7,13 @@
 ($import "version.yu")
 ($TITLE,,Debug interface.)
 
-($import "stdlib.yu")
-($import "h.yu")
-($import "coroutine.yu")
+($import stdlib)
+($import h)
+($import coroutine)
 ($import "config.yu")
 
 ($implement-named)
+
 #include "include.h"
 
 /** \mainpage <CENTER><BR>predict - an embedded application framework</CENTER>
@@ -33,20 +34,20 @@
  *  \{
  */
 
-#define __ ""
-
 /**
  *  \brief Debug interface title message.
  *  \hideinitializer
  */
 static const char * const TITLE = __CRLF__
-	__ "               _ _     _   " __CRLF__
-	__ " ___ ___ ___ _| |_|___| |_ " __CRLF__
-	__ "|   |  _   _|   | |  _   _|" __CRLF__
-	__ "|  _|_| |___ ___|_|___  |  " __CRLF__
-	__ "|_|                   |_|  " __CRLF__;
-
-#undef __
+#ifdef __CONSOLE_TITLE__
+	__CONSOLE_TITLE__;
+#else
+	"               _ _     _   " __CRLF__
+	" ___ ___ ___ _| |_|___| |_ " __CRLF__
+	"|   |  _   _|   | |  _   _|" __CRLF__
+	"|  _|_| |___ ___|_|___  |  " __CRLF__
+	"|_|                   |_|  " __CRLF__;
+#endif
 
 /**
  *  \brief Program version format.

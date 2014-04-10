@@ -7,9 +7,9 @@
 ($import "version.yu")
 ($TITLE,,predict - an embedded application framework.)
 
-($import "stdlib.yu")
-($import "h.yu")
-($import "coroutine.yu")
+($import stdlib)
+($import h)
+($import coroutine)
 ($import "config.yu")
 
 ($implement co)

@@ -7,8 +7,8 @@
 ($import "version.yu")
 ($TITLE,,Unit test of coroutines.)
 
-($import "stdlib.yu")
-($import "coroutine.yu")
+($import stdlib)
+($import coroutine)
 ($import "config.yu")
 
 #include "include.h"

@@ -7,8 +7,8 @@
 ($import "version.yu")
 ($TITLE,,Configuration.)
 
-($import "stdlib.yu")
-($import "h.yu")
+($import stdlib)
+($import h)
 
 ($h-begin-named)
 

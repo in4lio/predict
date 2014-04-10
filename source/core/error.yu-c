@@ -7,8 +7,8 @@
 ($import "version.yu")
 ($TITLE,,Error messages.)
 
-($import "stdlib.yu")
-($import "h.yu")
+($import stdlib)
+($import h)
 ($import "config.yu")
 
 ($implement-named)

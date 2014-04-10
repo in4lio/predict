@@ -7,8 +7,8 @@
 ($import "version.yu")
 ($TITLE,,Debug console.)
 
-($import "stdlib.yu")
-($import "h.yu")
+($import stdlib)
+($import h)
 ($import "config.yu")
 
 ($h-begin-named)
@@ -43,18 +43,6 @@
 #define CONSOLE_PROMPT_LIST  "#"
 
 /**
- *  \brief Print message.
- *  \param PRE Message type.
- *  \param FORMAT Message format.
- *  \param ... Message arguments.
- *  \hideinitializer
- */
-($define,,__echo( PRE, FORMAT, ... ),,($do ]
-	printf( __CRLF__ "*** " PRE " *** %s() %s (%d)" __CRLF__ "    " FORMAT,
-	__FUNCTION__, __FILE__, __LINE__, ## __VA_ARGS__ );
-[ ))
-
-/**
  *  \brief Print message about function call.
  *  \param FORMAT Message format.
  *  \param ... Message arguments.
@@ -79,6 +67,7 @@
 ($define,,__echo_warn( FORMAT, ... ),,($do ]
 	__echo( "WARN", );
 	printf( FORMAT, ## __VA_ARGS__ );
+	fflush( stdout );
 [ ))
 
 /**
@@ -91,6 +80,7 @@
 ($define,,__echo_error( FORMAT, err, ... ),,($do ]
 	__echo( "ERROR #%X", COMMA err );
 	printf( FORMAT, ## __VA_ARGS__ );
+	fflush( stdout );
 [ ))
 
 ($import "console-dict.yu")

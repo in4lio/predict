@@ -7,8 +7,8 @@
 ($import "version.yu")
 ($TITLE,,Unit testing.)
 
-($import "stdlib.yu")
-($import "h.yu")
+($import stdlib)
+($import h)
 ($import "config.yu")
 
 ($implement-named)
@@ -242,6 +242,7 @@ static void __print_result( bool result )
 	printf( __CRLF__ __CRLF__"  %d fault(s) in %d test(s)", __failed, __executed );
 	printf( " for %.1f sec", ( float )( ut_stop - ut_start ) / 10 );
 	printf( ________ );
+	fflush( stdout );
 }
 
 void ut_print_statistics( void )

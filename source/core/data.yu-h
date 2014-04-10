@@ -7,8 +7,8 @@
 ($import "version.yu")
 ($TITLE,,Application state vector.)
 
-($import "stdlib.yu")
-($import "h.yu")
+($import stdlib)
+($import h)
 ($import "config.yu")
 
 ($h-begin-named)
@@ -149,12 +149,14 @@ enum {
  *  \brief Get data changes flag of variable.
  *  \param thread Watching thread.
  *  \param item Variable.
+ *  \return Change flag.
  */
 ($h-extern) int data_get_changed( const thread_t thread, const var_t item );
 
 /**
  *  \brief At least one variable from watching list of thread has been changed.
  *  \param thread Watching thread.
+ *  \return Change flag.
  */
 ($h-extern) int data_get_changed_any( const thread_t thread );
 

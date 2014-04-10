@@ -7,8 +7,8 @@
 ($import "version.yu")
 ($TITLE,,Data voting.)
 
-($import "stdlib.yu")
-($import "h.yu")
+($import stdlib)
+($import h)
 ($import "config.yu")
 
 ($h-begin-named)

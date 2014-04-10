@@ -7,8 +7,8 @@
 ($import "version.yu")
 ($TITLE,,Debug interface.)
 
-($import "stdlib.yu")
-($import "h.yu")
+($import stdlib)
+($import h)
 ($import "config.yu")
 
 ($h-begin-named)
@@ -86,7 +86,7 @@
 
 // WIN32 /////////////////////////////////////////
 #if defined( __WIN32__ )
-#define __CRLF__    "\x0D\x0A"
+#define __CRLF__    "\x0A"
 #define CHAR_ENTER  CHAR_CR
 
 // MSDOS /////////////////////////////////////////
@@ -101,6 +101,18 @@
 
 //////////////////////////////////////////////////
 #endif
+
+/**
+ *  \brief Print message.
+ *  \param PRE Message type.
+ *  \param FORMAT Message format.
+ *  \param ... Message arguments.
+ *  \hideinitializer
+ */
+($define,,__echo( PRE, FORMAT, ... ),,($do ]
+	printf( __CRLF__ "*** " PRE " *** %s() %s (%d)" __CRLF__ "    " FORMAT,
+	__FUNCTION__, __FILE__, __LINE__, ## __VA_ARGS__ );
+[ ))
 
 /** \} */
 

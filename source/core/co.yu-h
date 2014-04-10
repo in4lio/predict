@@ -7,9 +7,9 @@
 ($import "version.yu")
 ($TITLE,,Coroutines and unit tests declarations.)
 
-($import "stdlib.yu")
-($import "h.yu")
-($import "coroutine.yu")
+($import stdlib)
+($import h)
+($import coroutine)
 ($import "config.yu")
 
 ($h-begin-named)
