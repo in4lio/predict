@@ -4,7 +4,7 @@
     |  _|_| |___ ___|_|___  |
     |_|                   |_)
 
-($import "version.yu")
+($import "core.yu")
 ($TITLE,,Debug interface.)
 
 ($import stdlib)
@@ -102,6 +102,8 @@
 //////////////////////////////////////////////////
 #endif
 
+/** \} */
+
 /**
  *  \brief Print message.
  *  \param PRE Message type.
@@ -114,7 +116,15 @@
 	__FUNCTION__, __FILE__, __LINE__, ## __VA_ARGS__ );
 [ ))
 
-/** \} */
+/**
+ *  \brief Console width.
+ */
+($h-extern-init,,int console_col_count,,80)
+
+/**
+ *  \brief Console height.
+ */
+($h-extern-init,,int console_row_count,,25)
 
 ($extern-c-end)
 

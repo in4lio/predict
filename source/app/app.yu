@@ -1,0 +1,32 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($set PROGRAM ]
+predict
+[ )
+($set VERSION ]
+0.2a3
+[ )
+($set AUTHORS ]
+Vitaly Kravtsov (in4lio@gmail.com)
+[ )
+($set LICENSE ]
+The MIT License
+[ )
+($set COMPILER ]
+gcc
+[ )
+
+($macro TITLE (brief)($__TITLE__)/**
+ *  \file  ($unq ($__OUTPUT_FILE__)) (($unq ($__FILE__)))
+ *  \brief  ($brief)
+ *  \author  ($AUTHORS)
+ *  \copyright  ($LICENSE)
+ */
+)
+
+($set EOL,,
+)

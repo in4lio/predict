@@ -4,7 +4,7 @@
     |  _|_| |___ ___|_|___  |
     |_|                   |_)
 
-($import "version.yu")
+($import "core.yu")
 ($TITLE,,Unit testing.)
 
 ($import stdlib)
@@ -22,7 +22,7 @@
  *  \{
  */
 
-#define ________ __CRLF__"................................................................................"
+#define ________ "................................................................................"
 #define __PASSED__              "P A S S E D"
 #define __FAILED__              "F A I L E D"
 
@@ -237,11 +237,12 @@ void __print_header( const char *s, int len, char ch )
 
 static void __print_result( bool result )
 {
-	printf( ________ __CRLF__ );
-	printf( __CRLF__"%47s", ( result ) ? __PASSED__ : __FAILED__ );
+	printf( __CRLF__ );
+	printf( "%.*s", console_col_count, ________ );
+	printf( __CRLF__ __CRLF__"%*s", ( console_col_count + strlen( __PASSED__ )) / 2, ( result ) ? __PASSED__ : __FAILED__ );
 	printf( __CRLF__ __CRLF__"  %d fault(s) in %d test(s)", __failed, __executed );
-	printf( " for %.1f sec", ( float )( ut_stop - ut_start ) / 10 );
-	printf( ________ );
+	printf( " for %.1f sec"__CRLF__, ( float )( ut_stop - ut_start ) / 10 );
+	printf( "%.*s", console_col_count, ________ );
 	fflush( stdout );
 }
 
@@ -261,7 +262,7 @@ void ut_fault( const char *error, const char *path, const char *func, uint32_t l
 	}
 	++__failed;
 	__lock();
-	if ( ut_unit == NULL ) __print_header( __get_name( path ), 80, '.' );
+	if ( ut_unit == NULL ) __print_header( __get_name( path ), console_col_count, '.' );
 	printf( __CRLF__"%-23s %-7d %s", func, line, error );
 	__unlock();
 }
@@ -290,7 +291,7 @@ void ut_1_exec( void ( *test )( void ))
 void ut_1_unit_begin( const char *path )
 {
 	ut_unit = __get_name( path );
-	__print_header( ut_unit, 80, '.' );
+	__print_header( ut_unit, console_col_count, '.' );
 	__failed_before = __failed;
 	__executed_before = __executed;
 }
@@ -329,7 +330,7 @@ bool ut_stage_1( void ( *test )( void ))
 
 void ut_2_unit_begin( const char *path )
 {
-	__print_header( __get_name( path ), 80, '.' );
+	__print_header( __get_name( path ), console_col_count, '.' );
 }
 
 void ut_stage_2_start( int count )

@@ -4,27 +4,24 @@
     |  _|_| |___ ___|_|___  |
     |_|                   |_)
 
-($set PROGRAM ]
+($set FRAMEWORK ]
 predict
 [ )
-($set VERSION ]
-0.2a2
+($set FRAMEWORK_VERSION ]
+0.2a3
 [ )
-($set AUTHORS ]
+($set FRAMEWORK_AUTHORS ]
 Vitaly Kravtsov (in4lio@gmail.com)
 [ )
-($set LICENSE ]
+($set FRAMEWORK_LICENSE ]
 The MIT License
-[ )
-($set COMPILER ]
-gcc
 [ )
 
 ($macro TITLE (brief)($__TITLE__)/**
  *  \file  ($unq ($__OUTPUT_FILE__)) (($unq ($__FILE__)))
  *  \brief  ($brief)
- *  \author  ($AUTHORS)
- *  \copyright  ($LICENSE)
+ *  \author  ($FRAMEWORK_AUTHORS)
+ *  \copyright  ($FRAMEWORK_LICENSE)
  */
 )
 

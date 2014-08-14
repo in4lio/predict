@@ -19,6 +19,7 @@ ifeq ($(OS),Windows_NT)
 # UNIX: __UNIX__
 PLATFORM = __MINGW__
 else
+YUPP_HOME = ~/yupp
 PLATFORM = __UNIX__
 endif
 
@@ -54,7 +55,7 @@ MINSTACK = 1024k
 endif
 
 # -- import directories
-D_YU = source/app source/app/ut source/app/debug
+D_YU = source/app source/app/ut source/app/debug source/core
 
 # -- source directories
 D_C = source source/app source/app/debug source/app/ut source/core source/core/debug source/core/hardware source/core/ut

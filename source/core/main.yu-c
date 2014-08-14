@@ -4,7 +4,7 @@
     |  _|_| |___ ___|_|___  |
     |_|                   |_)
 
-($import "version.yu")
+($import "core.yu")
 ($TITLE,,predict - an embedded application framework.)
 
 ($import stdlib)

@@ -4,7 +4,7 @@
     |  _|_| |___ ___|_|___  |
     |_|                   |_)
 
-($import "version.yu")
+($import "core.yu")
 ($TITLE,,Debug console.)
 
 ($import stdlib)
@@ -175,6 +175,8 @@ int console_init( void )
 
 	return ( CO_READY ); /* CO_SKIP */
 }
+
+($import "app.yu")
 
 void console_uninit( void )
 {

@@ -4,7 +4,7 @@
     |  _|_| |___ ___|_|___  |
     |_|                   |_)
 
-($import "version.yu")
+($import "core.yu")
 ($TITLE,,Debug interface.)
 
 ($import stdlib)
@@ -49,12 +49,14 @@ static const char * const TITLE = __CRLF__
 	"|_|                   |_|  " __CRLF__;
 #endif
 
+($import "app.yu")
+
 /**
  *  \brief Program version format.
  *  \hideinitializer
  */
 const char * const VERSION_STRING =
-	__CRLF__ ($q ($PROGRAM)) " " ($q ($VERSION))
+	__CRLF__ ($q ($PROGRAM)) " " ($q ($VERSION)) " (" ($q ($FRAMEWORK_VERSION)) ")"
 	__CRLF__ "Compiled with " ($q ($COMPILER)) " " __VERSION__;
 
 /**
@@ -67,6 +69,8 @@ static bool is_msg;
 #define FINE_BACKSPACE  "\x08\x20\x08"  /**< Sequence for delete last input char. \hideinitializer */
 #define CLEAR_CMD       "                    \r" CONSOLE_PROMPT /**< Clear command line. \hideinitializer */
 
+static const char const USED_CHAR_LIST[] = "0123456789_abcdefghijklmnopqrstuvwxyz";
+
 // WIN32 /////////////////////////////////////////
 #if defined( __WIN32__ )
 #include <conio.h>
@@ -74,6 +78,8 @@ static bool is_msg;
 #define CHAR_BACKSPACE  '\x08'
 #define CHAR_UP         '\x48'
 #define CHAR_DOWN       '\x50'
+#define CHAR_RIGHT      '\x4D'
+#define CHAR_LEFT       '\x4B'
 
 static void getch_init( void )
 {
@@ -96,7 +102,11 @@ static __inline int getch_1( void )
 
 static __inline bool getch_esc( int chr )
 {
-	return (( chr == '\x00' ) || ( chr == '\xE0' ));
+	return (( chr == 0 ) || ( chr == 0xE0 ));
+}
+
+static __inline void detect_console_resolution( void )
+{
 }
 
 // MSDOS /////////////////////////////////////////
@@ -106,6 +116,8 @@ static __inline bool getch_esc( int chr )
 #define CHAR_BACKSPACE  '\x08'
 #define CHAR_UP         '\x48'
 #define CHAR_DOWN       '\x50'
+#define CHAR_RIGHT      '\x4D'
+#define CHAR_LEFT       '\x4B'
 
 static void getch_init( void )
 {
@@ -122,7 +134,11 @@ static __inline int getch_1( void )
 
 static __inline bool getch_esc( int chr )
 {
-	return ( chr == '\x00' );
+	return ( chr == 0 );
+}
+
+static __inline void detect_console_resolution( void )
+{
 }
 
 // UNIX //////////////////////////////////////////
@@ -132,6 +148,8 @@ static __inline bool getch_esc( int chr )
 #define CHAR_BACKSPACE  '\x7F'
 #define CHAR_UP         '\x41'
 #define CHAR_DOWN       '\x42'
+#define CHAR_RIGHT      '\x43'
+#define CHAR_LEFT       '\x44'
 
 static struct termios getch_o_attr;
 
@@ -167,9 +185,18 @@ static __inline int getch_1( void )
 
 static __inline bool getch_esc( int chr )
 {
-	return (( chr == '\x1B' ) && ( getch() == '\x5B' ));
+	return (( chr == 0x1B ) && ( getch() == 0x5B ));
 }
 
+#include <sys/ioctl.h>
+
+static __inline void detect_console_resolution( void )
+{
+	struct winsize w;
+	ioctl( STDOUT_FILENO, TIOCGWINSZ, &w );
+	console_row_count = w.ws_row;
+	console_col_count = w.ws_col;
+}
 //////////////////////////////////////////////////
 #endif
 
@@ -187,6 +214,7 @@ int receive_char_init( void )
 
 	char_echo = 1;
 	getch_init();
+	detect_console_resolution();
 
 	return ( CO_READY ); /* CO_SKIP */
 }
@@ -206,10 +234,10 @@ void receive_char_uninit( void )
 
 		if ( getch_esc( chr )) {
 			chr = getch();
-			/* Choose console command in list */
+
 			if ( console_command_waited()  /* Console is waiting for command, no cyclic command, */
 			&& ( rx_pos == 0 )) {          /* no one input character */
-
+				/* Choose console command from list */
 				printf( CLEAR_CMD );
 				switch ( chr ) {
 
@@ -228,10 +256,46 @@ void receive_char_uninit( void )
 				default:
 					console_index = 0;
 				}
+			} else {
+				/* Input message using only UP, DOWN and RIGHT arrows */
+				switch ( chr ) {
+
+				case CHAR_UP:    /* increase last entered char */
+				case CHAR_DOWN:  /* decrease */
+					if ( rx_pos == 0 ) break;
+
+					char *p = strchr( USED_CHAR_LIST, rx_buf[ rx_pos - 1 ]);
+					if ( p ) {
+						if ( chr == CHAR_UP ) {
+							chr = ( p[ 1 ]) ? p[ 1 ] : USED_CHAR_LIST[ 0 ];
+						} else {
+							chr = ( p == USED_CHAR_LIST ) ? USED_CHAR_LIST[ sizeof( USED_CHAR_LIST ) - 2 ] : *( p - 1 );
+						}
+					} else {
+						chr = '0';
+					}
+					rx_buf[ rx_pos - 1 ] = chr;
+					if ( char_echo ) {
+						printf( "\x08%c", chr );
+						fflush( stdout );
+					}
+					break;
+
+				case CHAR_RIGHT: /* enter 0 */
+					if ( rx_pos == RX_SIZE - 1 ) break;
+
+					chr = '0';
+					rx_buf[ rx_pos++ ] = chr;
+					if ( char_echo ) {
+						printf( "%c", chr );
+						fflush( stdout );
+					}
+					break;
+				}
 			}
 		} else {
 			if ( console_index && ( chr != CHAR_ENTER )) {
-				/* Reset choice */
+				/* Reset command choice */
 				console_index = 0;
 				printf( CLEAR_CMD );
 			}
@@ -273,7 +337,7 @@ void receive_char_uninit( void )
 		}
 	}
 [ \enter ]
-	static char chr;
+	static int chr;
 [ )
 
 void char_clear_input( void )

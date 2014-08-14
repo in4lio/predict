@@ -4,7 +4,7 @@
     |  _|_| |___ ___|_|___  |
     |_|                   |_)
 
-($import "version.yu")
+($import "app.yu")
 ($TITLE,,Application.)
 
 ($import stdlib)
