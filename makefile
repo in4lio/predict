@@ -54,7 +54,7 @@ BUFSIZE = 16k
 MINSTACK = 1024k
 endif
 
-# -- import directories
+# -- yupp import directories
 D_YU = source/app source/app/ut source/app/debug source/core
 
 # -- source directories
@@ -80,6 +80,7 @@ D_MAP = object
 D_LIST = object
 
 # -- source code suffix
+E_YU = .yu
 E_YUH = .yu-h
 E_YUC = .yu-c
 E_YUCXX = .yu-cpp
@@ -107,7 +108,7 @@ E_LIST = .listing
 LIBS = -lm
 LFLAGS =
 
-ifeq ($(MAP), 1)
+ifeq ($(MAP),1)
 LFLAGS := $(LFLAGS) -Wl,-Map,$(D_MAP)/$(BIN)$(E_MAP)
 endif
 
@@ -123,6 +124,7 @@ ASMFLAGS = -Wall
 #   files lists
 # ---------------------------------
 
+S_YU = $(wildcard $(addsuffix /*$(E_YU), $(D_YU)))
 S_YUH = $(wildcard $(addsuffix /*$(E_YUH), $(D_H)))
 S_YUC = $(wildcard $(addsuffix /*$(E_YUC), $(D_C)))
 S_YUCXX = $(wildcard $(addsuffix /*$(E_YUCXX), $(D_CXX)))
@@ -181,7 +183,7 @@ endif
 
 # -- removal list
 R = $(D_BIN)/$(BIN)$(E_BIN) $(O) $(G_H) $(G_C) $(G_CXX)
-ifeq ($(MAP), 1)
+ifeq ($(MAP),1)
 R := $(R) $(D_MAP)/$(BIN)$(E_MAP)
 endif
 
@@ -219,6 +221,8 @@ $(D_BIN)/$(BIN)$(E_BIN) : $(O)
 	$(call final,$@)
 	@echo "*** $(D_BIN)/$(BIN)$(E_BIN) ***"
 
+$(G_C) $(G_CXX) $(G_H) : $(S_YU)
+
 $(G_C) : %$(E_C) : %$(E_YUC)
 	$(call wrap,$(PP),$(PPFLAGS) $<)
 
@@ -228,7 +232,7 @@ $(G_CXX) : %$(E_CXX) : %$(E_YUCXX)
 $(G_H) : %$(E_H) : %$(E_YUH)
 	$(call wrap,$(PP),$(PPFLAGS) $<)
 
-$(S_CXX) $(S_C) : $(G_H)
+$(S_C) $(S_CXX) : $(G_H)
 
 $(O_C) : $(D_OBJ)/%$(E_OBJ) : %$(E_C)
 	$(call wrap,$(CC),$(CFLAGS) -c $< -o $@)
