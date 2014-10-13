@@ -7,7 +7,7 @@
  *  \file  define.h
  *  \brief  Common definitions.
  *  \author  Vitaly Kravtsov (in4lio@gmail.com)
- *  \copyright  The MIT License
+ *  \copyright  See the LICENSE file.
  */
 
 #ifndef DEFINE_H
@@ -40,7 +40,7 @@ typedef unsigned long long qword;
  *  \param x Object.
  *  \hideinitializer
  */
-#define _AS_( type, x )    (( type *) &( x ))
+#define _AS_( type, x )    (( type* ) &( x ))
 
 #define _AS_PLONG( x )     _AS_( int, x )
 #define _AS_LONG( x )      ( *_AS_PLONG( x ))

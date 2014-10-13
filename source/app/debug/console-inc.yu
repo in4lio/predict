@@ -117,7 +117,7 @@ static uint16_t __cyclic_delay;
 		val_ptr = ini_data_prot_filter;
 	}
 	if (( *msg == '\0' ) || ( strchr( msg, '*' ) != 0 )) {
-		*( char *)val_ptr = '\0';
+		*( char *) val_ptr = '\0';
 	} else {
 		strcpy( val_ptr, msg );
 	}

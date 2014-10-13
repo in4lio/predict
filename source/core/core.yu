@@ -14,7 +14,7 @@ predict
 Vitaly Kravtsov (in4lio@gmail.com)
 [ )
 ($set FRAMEWORK_LICENSE ]
-The MIT License
+See the LICENSE file.
 [ )
 
 ($macro TITLE (brief)($__TITLE__)/**

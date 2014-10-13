@@ -7,7 +7,7 @@
  *  \file  ut-ut.c
  *  \brief  Unit test of unit testing.
  *  \author  Vitaly Kravtsov (in4lio@gmail.com)
- *  \copyright  The MIT License
+ *  \copyright  See the LICENSE file.
  */
 
 #include "include.h"

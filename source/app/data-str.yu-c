@@ -29,6 +29,6 @@ char *string_word_h( char *s, word val )
 
 char *string_dword_h( char *s, dword val )
 {
-	sprintf( s, "0x%08lX", val );
+	sprintf( s, "0x%08X", val );
 	return ( s );
 }

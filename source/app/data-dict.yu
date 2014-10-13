@@ -48,7 +48,7 @@
 	(`
 	(  byte       "%u"         __strtoul   )
 	(  word       "%u"         __strtoul   )
-	(  dword      "%lu"        __strtoll   )
+	(  dword      "%u"        __strtoll    )
 	(  float      "%.2f"       __strtof    )
 	(  int        "%d"         __strtol    )
 	)

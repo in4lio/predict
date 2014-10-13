@@ -7,7 +7,7 @@
  *  \file  include.h
  *  \brief  All header files.
  *  \author  Vitaly Kravtsov (in4lio@gmail.com)
- *  \copyright  The MIT License
+ *  \copyright  See the LICENSE file.
  */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * *

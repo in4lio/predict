@@ -7,7 +7,7 @@
  *  \file  clock.c
  *  \brief  Real-time clock.
  *  \author  Vitaly Kravtsov (in4lio@gmail.com)
- *  \copyright  The MIT License
+ *  \copyright  See the LICENSE file.
  */
 
 #define CLOCK_IMPLEMENT

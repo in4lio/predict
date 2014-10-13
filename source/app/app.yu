@@ -10,11 +10,17 @@ predict
 ($set VERSION ]
 0.2a3
 [ )
+($set DESCRIPTION ]
+
+[ )
 ($set AUTHORS ]
 Vitaly Kravtsov (in4lio@gmail.com)
 [ )
 ($set LICENSE ]
-The MIT License
+See the LICENSE file.
+[ )
+($set URL ]
+
 [ )
 ($set COMPILER ]
 gcc
