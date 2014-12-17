@@ -12,6 +12,7 @@
 
 #define CLOCK_IMPLEMENT
 #include "include.h"
+#include <unistd.h>
 
 /**
  *  \addtogroup clock

@@ -71,132 +71,26 @@ static bool is_msg;
 
 static const char const USED_CHAR_LIST[] = "0123456789_abcdefghijklmnopqrstuvwxyz";
 
-// WIN32 /////////////////////////////////////////
-#if defined( __WIN32__ )
-#include <conio.h>
-
-#define CHAR_BACKSPACE  '\x08'
-#define CHAR_UP         '\x48'
-#define CHAR_DOWN       '\x50'
-#define CHAR_RIGHT      '\x4D'
-#define CHAR_LEFT       '\x4B'
-
-static void getch_init( void )
-{
-}
-
-static void getch_uninit( void )
-{
-}
-
-static __inline int getch_1( void )
-{
-	static struct timeval t = { 0, 0 };
-
-	if ( clock_time_before( t )) return EOF;
-	t = clock_t_set( 100 );
-
-	/* Unfortunately, this version of kbhit() has long delay. */
-	return ( kbhit() ? _getch() : EOF );
-}
-
-static __inline bool getch_esc( int chr )
-{
-	return (( chr == 0 ) || ( chr == 0xE0 ));
-}
-
-static __inline void detect_console_resolution( void )
-{
-}
-
-// MSDOS /////////////////////////////////////////
-#elif defined( __MSDOS__ )
-#include <conio.h>
-
-#define CHAR_BACKSPACE  '\x08'
-#define CHAR_UP         '\x48'
-#define CHAR_DOWN       '\x50'
-#define CHAR_RIGHT      '\x4D'
-#define CHAR_LEFT       '\x4B'
-
-static void getch_init( void )
-{
-}
-
-static void getch_uninit( void )
-{
-}
-
-static __inline int getch_1( void )
-{
-	return ( kbhit() ? getch() : EOF );
-}
-
-static __inline bool getch_esc( int chr )
-{
-	return ( chr == 0 );
-}
-
-static __inline void detect_console_resolution( void )
-{
-}
-
 // UNIX //////////////////////////////////////////
-#else
-#include <termios.h>
-
-#define CHAR_BACKSPACE  '\x7F'
-#define CHAR_UP         '\x41'
-#define CHAR_DOWN       '\x42'
-#define CHAR_RIGHT      '\x43'
-#define CHAR_LEFT       '\x44'
-
-static struct termios getch_o_attr;
-
-static void getch_init( void )
-{
-	struct termios n_attr;
-
-	/* Set terminal to raw mode */
-	tcgetattr( fileno( stdin ), &getch_o_attr );
-	memcpy( &n_attr, &getch_o_attr, sizeof( struct termios ));
-	n_attr.c_lflag &= ~( ECHO | ICANON );
-	n_attr.c_cc[ VTIME ] = 0;
-	n_attr.c_cc[ VMIN  ] = 0;
-	tcsetattr( fileno( stdin ), TCSANOW, &n_attr );
-}
-
-static void getch_uninit( void )
-{
-	/* Restore original terminal attributes */
-	tcsetattr( fileno( stdin ), TCSANOW, &getch_o_attr );
-}
-
-static int getch( void )
-{
-	/* Read character from STDIN stream without blocking. Returns EOF (-1) if no character is available. */
-	return fgetc( stdin );
-}
-
-static __inline int getch_1( void )
-{
-	return getch();
-}
-
-static __inline bool getch_esc( int chr )
-{
-	return (( chr == 0x1B ) && ( getch() == 0x5B ));
-}
+#if defined( __linux__ )
 
 #include <sys/ioctl.h>
 
-static __inline void detect_console_resolution( void )
+static __inline void console_resol( void )
 {
 	struct winsize w;
 	ioctl( STDOUT_FILENO, TIOCGWINSZ, &w );
 	console_row_count = w.ws_row;
 	console_col_count = w.ws_col;
 }
+
+// WIN32 /////////////////////////////////////////
+// MSDOS /////////////////////////////////////////
+#else
+static __inline void console_resol( void )
+{
+}
+
 //////////////////////////////////////////////////
 #endif
 
@@ -214,7 +108,7 @@ int receive_char_init( void )
 
 	char_echo = 1;
 	getch_init();
-	detect_console_resolution();
+	console_resol();
 
 	return ( CO_READY ); /* CO_SKIP */
 }

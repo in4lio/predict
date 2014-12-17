@@ -20,15 +20,9 @@
 #include <stdint.h>
 
 // WIN32 /////////////////////////////////////////
-#if defined( __WIN32__ )
-#include "timer.h"
-
 // MSDOS /////////////////////////////////////////
-#elif defined( __MSDOS__ )
-#include "timer.h"
-
-// UNIX //////////////////////////////////////////
-#else
+#if defined( __WIN32__ ) || defined( __MSDOS__ )
+#include <timer.h>
 
 //////////////////////////////////////////////////
 #endif
@@ -39,7 +33,6 @@
 #include <limits.h>
 #include <math.h>
 #include <errno.h>
-#include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
 
@@ -83,6 +76,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include "ut.h"
+#include "getch.h"
 #include "char.h"
 #include "console.h"
 

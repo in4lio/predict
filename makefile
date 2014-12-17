@@ -11,33 +11,45 @@ BIN = predict
 # -- creating MAP file
 MAP = 0
 
-ifeq ($(OS),Windows_NT)
 # -- platform (core)
-# ARM Cortex-M3: __MDKARM__
+ifeq ($(OS),Windows_NT)
+# ARM Cortex-M1: __CM1__
 # DOS: __DJGPP__
 # WIN32: __MINGW__
 # UNIX: __UNIX__
 PLATFORM = __MINGW__
 else
-YUPP_HOME = ~/yupp
+# UNIX
 PLATFORM = __UNIX__
 endif
+
+TOP = .
 
 # -- compilers
 ifeq ($(PLATFORM),__DJGPP__)
 CC = $(DJGPP_HOME)/bin/gcc.exe
 CXX = $(DJGPP_HOME)/bin/gxx.exe
+LINK = $(CC)
+else
+ifeq ($(PLATFORM),__CM1__)
+CC = armcc
+CXX = armcc
+LINK = armlink
 else
 CC = gcc
 CXX = g++
+LINK = $(CC)
 endif
+endif
+
+# -- yupp preprocessor
+YUPP_HOME = $(TOP)/yupp
 
 # -- perform preprocessing
 SKIP_PP = 0
 # -- skip preprocessing
 # SKIP_PP = 1
 
-# -- yupp preprocessor
 ifeq ($(SKIP_PP),0)
 PP = python -u $(YUPP_HOME)/yup.py
 else
@@ -48,13 +60,15 @@ endif
 ifeq ($(PLATFORM),__DJGPP__)
 D_PLATFORM = djgpp
 else
-
 ifeq ($(PLATFORM),__MINGW__)
 D_PLATFORM = mingw
 else
+ifeq ($(PLATFORM),__CM1__)
+D_PLATFORM = cm1
+else
 D_PLATFORM =
 endif
-
+endif
 endif
 
 # -- yupp import directories
@@ -63,7 +77,7 @@ D_YU = source/app source/app/ut source/app/debug source/core
 # -- source directories
 D_C = source source/app source/app/debug source/app/ut source/core source/core/debug source/core/hardware source/core/ut
 
-D_C := $(if $(D_PLATFORM), source/$(D_PLATFORM) $(D_C), $(D_C))
+D_C := source/platform/$(D_PLATFORM) $(D_C)
 
 D_CXX = $(D_C)
 D_ASM = source
@@ -77,7 +91,11 @@ D_BIN := $(if $(D_PLATFORM), $(D_BIN)/$(D_PLATFORM), $(D_BIN))
 
 # -- object directory
 D_OBJ = object
+ifeq ($(PLATFORM),__CM1__)
+D_OBJ := $(D_BIN)
+else
 D_OBJ := $(if $(D_PLATFORM), $(D_OBJ)/$(D_PLATFORM), $(D_OBJ))
+endif
 
 # -- LIST and MAP directories
 D_MAP = object
@@ -165,7 +183,7 @@ O = $(O_CXX) $(O_C) $(O_ASM)
 #   commands
 # ---------------------------------
 
-# -- compiler wrapper
+# -- wrap compiler arguments
 ifeq ($(OS),Windows_NT)
 # -- too long command line workaround
 define wrap
@@ -176,6 +194,36 @@ endef
 else
 define wrap
 	$1 $2
+endef
+endif
+
+# -- call compiler
+ifeq ($(PLATFORM),__CM1__)
+# -- use Keil arguments from .__i file
+define cc
+	$(CC) --via $(basename $2).__i
+endef
+define cxx
+	$(CXX) --via $(basename $2).__i
+endef
+define asm
+	$(ASM) --via $(basename $2)._ia
+endef
+define link
+	$(LINK) --via $(basename $2).lnp
+endef
+else
+define cc
+	$(call wrap,$(CC),$(CFLAGS) -c $1 -o $2)
+endef
+define cxx
+	$(call wrap,$(CXX),$(CXXFLAGS) -c $1 -o $2)
+endef
+define asm
+	$(call wrap,$(CC),$(ASMFLAGS) -c $1 -o $2)
+endef
+define link
+	$(call wrap,$(LINK),$1 -o $2 $(LIBS) $(LFLAGS))
 endef
 endif
 
@@ -228,7 +276,7 @@ vpath %$(E_YUC) $(D_C)
 all: $(F_BIN)
 
 $(F_BIN): $(O)
-	$(call wrap,$(CC),$^ -o $@ $(LIBS) $(LFLAGS))
+	$(call link,$^,$@)
 	$(call final,$@)
 	@echo "*** $(F_BIN) ***"
 
@@ -246,13 +294,18 @@ $(G_H): %$(E_H): %$(E_YUH)
 $(S_C) $(S_CXX): $(G_H)
 
 $(O_C): $(D_OBJ)/%$(E_OBJ): %$(E_C)
-	$(call wrap,$(CC),$(CFLAGS) -c $< -o $@)
+	$(call cc,$<,$@)
 
 $(O_CXX): $(D_OBJ)/%$(E_OBJ): %$(E_CXX)
-	$(call wrap,$(CXX),$(CXXFLAGS) -c $< -o $@)
+	$(call cxx,$<,$@)
 
 $(O_ASM): $(D_OBJ)/%$(E_OBJ): %$(E_ASM)
-	$(call wrap,$(CC),$(ASMFLAGS) -c $< -o $@)
+	$(call asm,$<,$@)
+
+# -- perform preprocessing only
+.PHONY: pp
+
+pp: $(G_C) $(G_CXX) $(G_H)
 
 # -- remove temporary files
 .PHONY: clean

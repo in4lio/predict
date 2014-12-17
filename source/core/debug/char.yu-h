@@ -72,39 +72,6 @@
 #endif /* LINK_CONSOLE */
 
 /**
- *  \defgroup char_char Characters definitions
- *  \ingroup char
- *  \{
- */
-
-#define CHAR_TAB    '\x09'
-#define CHAR_LF     '\x0A'
-#define CHAR_CR     '\x0D'
-#define CHAR_ESC    '\x1B'
-#define CHAR_SPACE  '\x20'
-#define LAST_CHAR   '\x7E'  /**< Last character to be displayed. */
-
-// WIN32 /////////////////////////////////////////
-#if defined( __WIN32__ )
-#define __CRLF__    "\x0A"
-#define CHAR_ENTER  CHAR_CR
-
-// MSDOS /////////////////////////////////////////
-#elif defined( __MSDOS__ )
-#define __CRLF__    "\x0D\x0A"
-#define CHAR_ENTER  CHAR_CR
-
-// UNIX //////////////////////////////////////////
-#else
-#define __CRLF__    "\x0A"
-#define CHAR_ENTER  CHAR_LF
-
-//////////////////////////////////////////////////
-#endif
-
-/** \} */
-
-/**
  *  \brief Print message.
  *  \param PRE Message type.
  *  \param FORMAT Message format.

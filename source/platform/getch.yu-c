@@ -1,0 +1,63 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "core.yu")
+($TITLE,,Read input.)
+
+($import stdlib)
+($import h)
+($import "config.yu")
+
+($implement-named)
+
+#include "include.h"
+#include <termios.h>
+
+($skip-if-not LINK_CONSOLE)
+
+/**
+ *  \addtogroup char
+ *  \{
+ */
+
+static struct termios getch_o_attr;
+
+void getch_init( void )
+{
+	struct termios n_attr;
+
+	/* Set terminal to raw mode */
+	tcgetattr( fileno( stdin ), &getch_o_attr );
+	memcpy( &n_attr, &getch_o_attr, sizeof( struct termios ));
+	n_attr.c_lflag &= ~( ECHO | ICANON );
+	n_attr.c_cc[ VTIME ] = 0;
+	n_attr.c_cc[ VMIN  ] = 0;
+	tcsetattr( fileno( stdin ), TCSANOW, &n_attr );
+}
+
+void getch_uninit( void )
+{
+	/* Restore original terminal attributes */
+	tcsetattr( fileno( stdin ), TCSANOW, &getch_o_attr );
+}
+
+int getch( void )
+{
+	/* Read character from STDIN stream without blocking. Returns EOF (-1) if no character is available. */
+	return fgetc( stdin );
+}
+
+__inline int getch_1( void )
+{
+	return getch();
+}
+
+__inline bool getch_esc( int chr )
+{
+	return (( chr == 0x1B ) && ( getch() == 0x5B ));
+}
+
+/** \} */

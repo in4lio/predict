@@ -1,0 +1,49 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "core.yu")
+($TITLE,,Read input.)
+
+($import stdlib)
+($import h)
+($import "config.yu")
+
+($implement-named)
+
+#include "include.h"
+
+($skip-if-not LINK_CONSOLE)
+
+/**
+ *  \addtogroup char
+ *  \{
+ */
+
+static struct timeval getch_t = { 0, 0 };
+
+void getch_init( void )
+{
+}
+
+void getch_uninit( void )
+{
+}
+
+__inline int getch_1( void )
+{
+	if ( clock_time_before( getch_t )) return EOF;
+	getch_t = clock_t_set( 100 );
+
+	/* Unfortunately, this version of kbhit() has long delay. */
+	return ( kbhit() ? _getch() : EOF );
+}
+
+__inline bool getch_esc( int chr )
+{
+	return (( chr == 0 ) || ( chr == 0xE0 ));
+}
+
+/** \} */
