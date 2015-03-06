@@ -83,7 +83,6 @@
 	if (( ini_log_level >= LOG_LEVEL_($upper ($pre)) ) && ($pre)_repeat[ ($pre)_($name) ]) {
 		if ( log_lock_callback ) log_lock_callback();
 		log_printf( ($q ($upper ($pre))), ($pre)_format[ ($pre)_($name) ], ## __VA_ARGS__ );
-		fflush( log_file );
 		if ( ($pre)_repeat[ ($pre)_($name) ] < LOG_EVER ) {
 			if ( --($pre)_repeat[ ($pre)_($name) ] == LOG_NEVER ) {
 				fprintf( log_file, " (this message is reported last time)" );

@@ -14,7 +14,7 @@ MAP = 0
 # -- platform (core)
 ifeq ($(OS),Windows_NT)
 # ARM Cortex-M1: __CM1__
-# DOS: __DJGPP__
+# MSDOS: __DJGPP__
 # WIN32: __MINGW__
 # UNIX: __UNIX__
 PLATFORM = __MINGW__
@@ -72,13 +72,11 @@ endif
 endif
 
 # -- yupp import directories
-D_YU = source/app source/app/ut source/app/debug source/core
+D_YU = source/app source/app/ut source/app/debug source/app/device source/core source/core/debug source/core/ut
+D_YU := $(D_YU) source/platform/$(D_PLATFORM)
 
 # -- source directories
-D_C = source source/app source/app/debug source/app/ut source/core source/core/debug source/core/hardware source/core/ut
-
-D_C := source/platform/$(D_PLATFORM) $(D_C)
-
+D_C = $(D_YU)
 D_CXX = $(D_C)
 D_ASM = source
 
@@ -116,10 +114,14 @@ E_ASM = .asm
 E_OBJ = .o
 
 # -- binary suffix
+ifeq ($(PLATFORM),__CM1__)
+E_BIN = .axf
+else
 ifeq ($(OS),Windows_NT)
 E_BIN = .exe
 else
 E_BIN =
+endif
 endif
 
 # -- binary full name
@@ -143,10 +145,10 @@ LFLAGS := $(LFLAGS) -Wl,-Map,$(D_MAP)/$(BIN)$(E_MAP)
 endif
 
 # -- preprocessor flags
-PPFLAGS = --pp-no-skip-c-comment -q $(addprefix -d, $(D_YU))
+PPFLAGS = -q --pp-browse -Wno-unbound $(addprefix -d, $(D_YU))
 
 # -- compiler flags
-CFLAGS = $(addprefix -I, $(D_H)) -O2 -W -Wall -Wno-comment -std=gnu99
+CFLAGS = $(addprefix -I, $(D_H)) -O2 -std=gnu99 -W -Wall -Wno-comment
 CXXFLAGS = $(addprefix -I, $(D_H)) -O2 -ffast-math -funroll-loops -fno-exceptions -fomit-frame-pointer -g -W -Wall -Wno-comment
 ASMFLAGS = -Wall
 
@@ -154,6 +156,10 @@ ASMFLAGS = -Wall
 ifeq ($(PLATFORM),__DJGPP__)
 BUFSIZE = 16k
 MINSTACK = 1024k
+endif
+
+ifeq ($(PLATFORM),__CM1__)
+
 endif
 
 # ---------------------------------
@@ -201,16 +207,24 @@ endif
 ifeq ($(PLATFORM),__CM1__)
 # -- use Keil arguments from .__i file
 define cc
-	$(CC) --via $(basename $2).__i
+	cd project && \
+	$(CC) --via ../$(basename $2).__i && \
+	cd ..
 endef
 define cxx
-	$(CXX) --via $(basename $2).__i
+	cd project && \
+	$(CXX) --via ../$(basename $2).__i
+	cd ..
 endef
 define asm
-	$(ASM) --via $(basename $2)._ia
+	cd project && \
+	$(ASM) --via ../$(basename $2)._ia
+	cd ..
 endef
 define link
-	$(LINK) --via $(basename $2).lnp
+	cd project && \
+	$(LINK) --via ../$(basename $2).lnp
+	cd ..
 endef
 else
 define cc
@@ -238,7 +252,8 @@ endef
 endif
 
 # -- removal list
-R = $(F_BIN) $(O)
+R_BIN = $(F_BIN) $(O)
+R = $(R_BIN)
 
 ifeq ($(SKIP_PP),0)
 R := $(R) $(G_H) $(G_C) $(G_CXX)
@@ -254,6 +269,8 @@ CLEAN = rm -rf $(R)
 else
 CLEAN = rm -rf $(R)
 endif
+
+CLEAN_BIN = rm -rf $(R_BIN)
 
 # -- install
 define install
@@ -303,15 +320,21 @@ $(O_ASM): $(D_OBJ)/%$(E_OBJ): %$(E_ASM)
 	$(call asm,$<,$@)
 
 # -- perform preprocessing only
-.PHONY: pp
+.PHONY: yupp
 
-pp: $(G_C) $(G_CXX) $(G_H)
+yupp: $(G_C) $(G_CXX) $(G_H)
 
 # -- remove temporary files
 .PHONY: clean
 
 clean:
 	$(CLEAN)
+
+# -- remove binary files
+.PHONY: clean-binary
+
+clean-binary:
+	$(CLEAN_BIN)
 
 # -- install project
 .PHONY: install

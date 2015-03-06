@@ -5,7 +5,7 @@
     |_|                   |_)
 
 ($import "core.yu")
-($TITLE,,Read input.)
+($TITLE,,Read from debug interface.)
 
 ($import stdlib)
 ($import h)

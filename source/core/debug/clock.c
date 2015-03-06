@@ -12,7 +12,6 @@
 
 #define CLOCK_IMPLEMENT
 #include "include.h"
-#include <unistd.h>
 
 /**
  *  \addtogroup clock
@@ -114,11 +113,6 @@ int __clock_t_rest( struct timeval *t )
 	timersub( t, &now, &rest );
 
 	return ( rest.tv_sec * 1000 ) + ( rest.tv_usec / 1000 );
-}
-
-void __clock_t_sleep( struct timeval *t )
-{
-	usleep( __clock_t_rest( t ) / 1000 );
 }
 
 /** \} */

@@ -67,7 +67,7 @@
 ($define,,__echo_warn( FORMAT, ... ),,($do ]
 	__echo( "WARN", );
 	printf( FORMAT, ## __VA_ARGS__ );
-	fflush( stdout );
+	flush();
 [ ))
 
 /**
@@ -80,7 +80,7 @@
 ($define,,__echo_error( FORMAT, err, ... ),,($do ]
 	__echo( "ERROR #%X", COMMA err );
 	printf( FORMAT, ## __VA_ARGS__ );
-	fflush( stdout );
+	flush();
 [ ))
 
 ($import "console-dict.yu")

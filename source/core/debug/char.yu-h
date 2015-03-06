@@ -48,6 +48,11 @@
 ($h-extern) void char_clear_input( void );
 
 /**
+ *  \brief Flush output.
+ */
+($h-extern) void flush( void );
+
+/**
  *  \brief Print data in hex format.
  *  \param data Data pointer.
  *  \param len Data length.

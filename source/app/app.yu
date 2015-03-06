@@ -8,7 +8,7 @@
 predict
 [ )
 ($set VERSION ]
-0.2a3
+0.2a4
 [ )
 ($set DESCRIPTION ]
 

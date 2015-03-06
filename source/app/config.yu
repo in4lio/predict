@@ -19,8 +19,8 @@
  *                                               *
  * * * * * * * * * * * * * * * * * * * * * * * * * )
 
-($def LOGGING )
-($def LINK_CONSOLE )
+($def LOGGING)
+($def LINK_CONSOLE)
 
 ($!
  * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -29,11 +29,11 @@
  *                                               *
  * * * * * * * * * * * * * * * * * * * * * * * * * )
 
-($def LINK_UT )
+($def LINK_UT)
 
-($def LINK_UT_UT   )
-($def LINK_UT_CORO )
-($def LINK_UT_DATA )
+($def-if LINK_UT LINK_UT_UT)
+($def-if LINK_UT LINK_UT_CORO)
+($def-if LINK_UT LINK_UT_DATA)
 
 ($!
  * * * * * * * * * * * * * * * * * * * * * * * * *

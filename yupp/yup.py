@@ -11,12 +11,12 @@ http://github.com/in4lio/yupp/
 
 yup.py -- yupp in python
 """
-COPYRIGHT   = 'Copyright (c) 2011, 13, 14'
+COPYRIGHT   = 'Copyright (c) 2011, 13, 14, 15'
 HOLDER      = 'Vitaly Kravtsov'
 EMAIL       = 'in4lio@gmail.com'
 DESCRIPTION = 'yet another C preprocessor'
 APP         = 'yup.py (yupp)'
-VERSION     = '0.7b7'
+VERSION     = '0.8b2'
 """
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -63,7 +63,7 @@ https://trello.com/b/531Gf0Iu
 PP_SKIP_C_COMMENT_HELP = """
 don't modify C comments
 """
-PP_SKIP_C_COMMENT = True
+PP_SKIP_C_COMMENT = False
 
 #   -----------------------------------
 #   PP_TRIM_APP_INDENT
@@ -81,6 +81,22 @@ PP_REDUCE_EMPTINESS_HELP = """
 reduce the number of successive empty lines up to one
 """
 PP_REDUCE_EMPTINESS = True
+
+#   -----------------------------------
+#   PP_BROWSE
+#   -----------------------------------
+PP_BROWSE_HELP = """
+save browse information
+"""
+PP_BROWSE = False
+
+#   -----------------------------------
+#   WARN_UNBOUND_APPLICATION
+#   -----------------------------------
+WARN_UNBOUND_APPLICATION_HELP = """
+warning in case of application of an unbound atom
+"""
+WARN_UNBOUND_APPLICATION = True
 
 
 #   * * * * * * * * * * * * * * * * * *
@@ -227,22 +243,71 @@ def _ast_pretty( st ):
     return result
 
 #   ---------------------------------------------------------------------------
-def trim_tailing_whitespace( text, _reduce_emptiness = False ):
+def reduce_emptiness( text ):
     """
-    Trim tailing white space from each line and
-    reduce number of successive empty lines up to one (depends on argument).
+    Reduce number of successive empty lines up to one
+    and trim tailing white space (depends on options).
     """
 #   ---------------
-    if _reduce_emptiness:
-        def _filter( ln ):
-            empty = _filter.empty
-            _filter.empty = not ln.strip()
-            return not empty or not _filter.empty
+    if not PP_REDUCE_EMPTINESS:
+        return text
 
-        _filter.empty = False
-    else:
-        def _filter( _ ):
-            return True
+    if isinstance( text, RESULT ):
+        lnlist = text.splitlines( True )
+
+#       -- find empty lines
+        empty = set()
+        for i, ln in enumerate( lnlist ):
+            ( rest, indent ) = ps_space( ln )
+            if rest == EOL:
+                empty.add( i )
+
+#       -- only reduce number of empty lines
+        result = ''
+        prev_empty = False
+        for i, ln in enumerate( lnlist ):
+            if i in empty:
+                if not prev_empty:
+                    result += ln
+                    prev_empty = True
+            else:
+                result += ln
+                prev_empty = False
+
+#       -- calculate offsets
+        offset = []
+        total = 0
+        _pos = pos = 0
+        prev_empty = False
+        for i, ln in enumerate( lnlist ):
+            if i in empty:
+                if prev_empty:
+#                   -- reduce number of empty lines
+                    total += len( ln )
+                    if pos == _pos:
+                        offset[ -1 ] = ( pos, total )
+                    else:
+                        offset.append(( pos, total ))
+                        _pos = pos
+                else:
+                    pos += len( ln )
+                    prev_empty = True
+            else:
+                pos += len( ln )
+                prev_empty = False
+
+#       -- merge with previous offsets
+        if text.offset:
+            offset = _merge_offset( text.offset, offset )
+
+        return RESULT( result, text.browse, offset )
+
+    def _filter( ln ):
+        empty = _filter.empty
+        _filter.empty = not ln.strip()
+        return not empty or not _filter.empty
+
+    _filter.empty = False
 
     return '\n'.join([ x.rstrip() for x in text.splitlines() if _filter( x )]) + '\n'
 
@@ -272,7 +337,7 @@ def _loc( input_file, pos, pointer = True ):
         if call:
 #           -- call location
             result += _loc( call.input_file, call.pos, False )
-#       -- macro or eval result location
+#       -- macro or eval import location
         result += _loc( decl.input_file, decl.pos, False )
         fmt = LOC_MACRO
     else:
@@ -294,16 +359,12 @@ def _loc( input_file, pos, pointer = True ):
     return result
 
 #   ---------------------------------------------------------------------------
-def _plain( st ):
-    return '' if st is None else str( st )
-
-#   ---------------------------------------------------------------------------
 class SOURCE( str ):
     """
     Source code.
     """
 #   -----------------------------------
-    def __new__( cls, val, input_file = '', pos = 0 ):
+    def __new__( cls, val, input_file = None, pos = 0 ):
         obj = str.__new__( cls, val )
         if isinstance( val, SOURCE ):
             obj.input_file = val.input_file
@@ -340,17 +401,13 @@ class BASE_STR( SOURCE ):
 
 #   -----------------------------------
     def __eq__( self, other ):
-        return isinstance( other, self.__class__ ) and str.__eq__( self, other )
+        return isinstance( other, str ) and str.__eq__( self, other )
 
 #   ---------------------------------------------------------------------------
 class ATOM( BASE_STR ):
     """
     AST: ATOM( identifier ) <-- id
     """
-#   ---------------
-    def __eq__( self, other ):
-        return isinstance( other, str ) and str.__eq__( self, other )
-
 #   -----------------------------------
     def is_valid_c_id( self ):
         return self.find( '-' ) == -1
@@ -390,13 +447,10 @@ class PLAIN( BASE_STR ):
         return obj
 
 #   -----------------------------------
-    def __str__( self ):
-        st = BASE_STR.__str__( self )
+    def get_trimmed( self ):
+        st = str( self )
 
-        if not PP_TRIM_APP_INDENT:
-            return st
-
-        if self.trim:
+        if PP_TRIM_APP_INDENT and self.trim:
 #           -- delete spacing after SET or MACRO
             return st.lstrip()
 
@@ -410,8 +464,8 @@ class PLAIN( BASE_STR ):
                 ln.append( '' )
             return PLAIN( indent.join( ln )
             , ( indent + self.indent ) if isinstance( self.indent, str ) else self.indent, self.trim )
-        else:
-            return self
+
+        return self
 
 #   -----------------------------------
 #   Based on list AST notes
@@ -425,10 +479,6 @@ class BASE_LIST( list ):
 #   -----------------------------------
     def __repr__( self ):
         return '%s(%s)' % ( self.__class__.__name__, list.__repr__( self ))
-
-#   -----------------------------------
-    def __str__( self ):
-        return ''.join( map( _plain, self ))                                                                           #pylint: disable=W0141
 
 #   -----------------------------------
     def loc( self ):
@@ -566,7 +616,7 @@ class INFIX( BASE_OBJECT_LOCATED, CAPTION ):
     AST: INFIX( exp ) <-- '{' ... '}'
     """
 #   -----------------------------------
-    def __init__( self, ast, input_file = None, pos = None ):
+    def __init__( self, ast, input_file = None, pos = 0 ):
         BASE_OBJECT_LOCATED.__init__( self, input_file, pos )
         CAPTION.__init__( self, ast )
 
@@ -625,7 +675,7 @@ class APPLY( BASE_OBJECT_LOCATED ):
     AST: APPLY( form, [ form ], [( ATOM, form )]) <-- '($' ... ')'
     """
 #   -----------------------------------
-    def __init__( self, fn, args, named, input_file = None, pos = None ):                                              #pylint: disable=R0913
+    def __init__( self, fn, args, named, input_file = None, pos = 0 ):                                                 #pylint: disable=R0913
         BASE_OBJECT_LOCATED.__init__( self, input_file, pos )
         self.fn = fn
         self.args = args
@@ -1812,7 +1862,7 @@ def ps_infix( sou, depth = 0 ):
         | '(${}' text ')' & ($eq depth_pth 0);
     """
 #   ---------------
-#   -- infix has been released as a python expression
+#   -- infix was released as a python expression
 #   ---- {
     if sou[ :1 ] == '{':
         text = ps_text( sou[ 1: ], depth + 1 )
@@ -2150,6 +2200,42 @@ class T( BASE_LIST ):
         self.indent = indent
 
 #   ---------------------------------------------------------------------------
+def _bisect( a, x, lo = 0 ):
+    """
+    Modified 'bisect_right' from the python standard library.
+    """
+    hi = len( a )
+    while lo < hi:
+        mid = ( lo + hi ) // 2
+        if x < a[ mid ][ 0 ]:
+            hi = mid
+        else:
+            lo = mid + 1
+    return lo
+
+#   ---------------------------------------------------------------------------
+def _merge_offset( p_offset, offset ):
+    result = []
+    _delta = 0
+    _inx = 0
+    for pos, delta in offset:
+        inx = _bisect( p_offset, pos + delta )
+        p_delta = p_offset[ inx - 1 ][ 1 ] if inx else 0
+        for i in range( _inx, inx ):
+            p, d = p_offset[ i ]
+            if p - _delta < pos:
+                result.append(( p - _delta, d + _delta ))
+            _inx += 1
+        result.append(( pos, p_delta + delta ))
+        _delta = delta
+
+    for i in range( _inx, len( p_offset )):
+        p, d = p_offset[ i ]
+        result.append(( p - _delta, d + _delta ))
+
+    return result
+
+#   ---------------------------------------------------------------------------
 class TRIM( BASE_OBJECT, CAPTION ):
     """
     AST: TRIM( form, indent )
@@ -2167,8 +2253,76 @@ class TRIM( BASE_OBJECT, CAPTION ):
         return self.indent.join( dedent( plain ).splitlines( True ))
 
 #   -----------------------------------
-    def __str__( self ):
-        return self.trim( _plain( self.ast ))
+    def trim_with_browse( self, plain ):
+        if not plain or not PP_TRIM_APP_INDENT:
+            return plain
+
+        lnlist = plain.splitlines( True )
+
+#       -- find shared indent, mark empty lines
+        cutting = ''
+        empty = set()
+        for i, ln in enumerate( lnlist ):
+            ( rest, indent ) = ps_space( ln )
+            if rest == EOL:
+#               -- skip empty line
+                empty.add( i )
+                continue
+
+            if cutting is None:
+#               -- no common indent
+                continue
+
+            if indent is None:
+#               -- no indent
+                cutting = None
+                continue
+
+            if not cutting:
+#               -- first not empty line
+                cutting = indent
+            elif indent.startswith( cutting ):
+#               -- line more deeply indented
+                pass
+            elif cutting.startswith( indent ):
+#               -- line less deeply indented
+                cutting = indent
+            else:
+#               -- no common indent
+                cutting = None
+
+#       -- remove shared indent, add specified indent
+        c = len( cutting ) if cutting is not None else 0
+        result = ''
+        for i, ln in enumerate( lnlist ):
+            result += ln if i in empty else (( self.indent if i else '' ) + ln[ c: ])
+
+#       -- calculate offsets
+        offset = []
+        d = c - len( self.indent )
+        total = 0
+        pos = 0
+        for i, ln in enumerate( lnlist ):
+            if i not in empty:
+                delta = d if i else c  # no additional indent for first line
+                if delta > 0:
+#                   -- removed indent
+                    total += delta
+                    offset.append(( pos, total ))
+                    pos -= delta
+                elif delta < 0:
+#                   -- added indent
+                    for _ in xrange( -delta ):
+                        total -= 1
+                        offset.append(( pos, total ))
+                        pos += 1
+            pos += len( ln )
+
+#       -- merge with previous offsets
+        if plain.offset:
+            offset = _merge_offset( plain.offset, offset )
+
+        return RESULT( result, plain.browse, offset )
 
 #   -----------------------------------
 #   Environment
@@ -2316,9 +2470,8 @@ class LAZY( BASE_OBJECT, CAPTION ):
     """
     AST: LAZY( form ) <-- '($lazy' ... ')'
     """
-#   -----------------------------------
-    def __str__( self ):
-        return _plain( self.ast )
+#   ---------------
+    pass
 
 #   ---------------------------------------------------------------------------
 class SKIP( BASE_MARK ):
@@ -2386,7 +2539,8 @@ builtin.update({
     'len': len,
     'list': lambda *l : LIST( l ),
     'print': lambda *l : sys.stdout.write( ' '.join(( _unq( x ) if isinstance( x, STR ) else str( x )) for x in l )),
-    'q': lambda val : '"%s"' % str( val ),
+    'q': lambda val : STR( '"%s"' % str( val )),
+    'qs': lambda val : STR( "'%s'" % str( val )),
     'range': lambda *l : LIST( range( *l )),
     'reversed': lambda l : LIST( reversed( l )),
     're-split': lambda regex, val : LIST( filter( None, re.split( regex, val ))),                                      #pylint: disable=W0141
@@ -2414,7 +2568,7 @@ def _plain_back( st ):
 #   ---------------------------------------------------------------------------
 def _is_term( node ):                                                                                                  #pylint: disable=R0911
     """
-    Check node is term.
+    Check AST is term.
     """
 #   ---------------
     if node is None:
@@ -2443,6 +2597,156 @@ def _is_term( node ):                                                           
     return False
 
 #   ---------------------------------------------------------------------------
+def _plain( node ):                                                                                                    #pylint: disable=R0911
+    """
+    Represent term AST as plain text.
+    """
+#   ---------------
+    if node is None:
+        return ''
+
+#   ---- TRIM
+    if isinstance( node, TRIM ):
+        return node.trim( _plain( node.ast ))
+
+#   ---- list
+    if isinstance( node, list ):
+        return ''.join( map( _plain, node ))                                                                           #pylint: disable=W0141
+
+#   ---- LAZY
+    if isinstance( node, LAZY ):
+        return _plain( node.ast )
+
+#   ---- PLAIN
+    if isinstance( node, PLAIN ):
+        return node.get_trimmed()
+
+#   ---- str based | int | float | long
+    return str( node )
+
+#   ---------------------------------------------------------------------------
+class RESULT( str ):
+    """
+    Result text.
+    """
+#   -----------------------------------
+    files = {}
+
+#   -----------------------------------
+    def __new__( cls, val, browse = None, offset = None ):
+        obj = str.__new__( cls, val )
+        obj.browse = browse if browse else []
+        obj.offset = offset if offset else []
+        return obj
+
+#   -----------------------------------
+    def __repr__( self ):
+        return '%s(%s, %s)' % ( self.__class__.__name__, str.__repr__( self ), repr( self.browse ))
+
+#   -----------------------------------
+    @classmethod
+    def _loc( cls, input_file, pos ):
+        decl = yushell.source[ input_file ][ 0 ]
+        if input_file.isdigit():
+            result = []
+#           -- location is into macro or eval import
+            call = yushell.inclusion[ int( input_file )]
+            if call:
+#               -- call location
+                result.extend( cls._loc( call.input_file, call.pos ))
+#           -- macro or eval import location, negative position means - not to do relative shift
+            result.extend( cls._loc( decl.input_file, -decl.pos ))
+            return result
+
+        fn = str( decl if decl else input_file )
+        if fn not in cls.files:
+            cls.files[ fn ] = len( cls.files )
+        return [( 0, cls.files[ fn ], pos )]
+
+#   -----------------------------------
+    def _add_text( self, other ):
+        if other:
+            browse = self.browse
+            offset = self.offset
+            l = len( self )
+            base = offset[ -1 ][ 1 ] if offset else 0
+            for p, val in other.offset:
+                offset.append(( p + l, val + base ))
+
+            l += base
+            for p, sou, sou_p in other.browse:
+                browse.append(( p + l, sou, sou_p ))
+
+            return RESULT( str( self ) + str( other ), browse, offset )
+
+        return self
+
+#   ---------------------------------------------------------------------------
+def _plain_with_browse( node ):                                                                                        #pylint: disable=R0911
+    """
+    Represent term AST as plain text and create reference list.
+    """
+#   ---------------
+
+    if node is None:
+        return RESULT( '' )
+
+#   ---- RESULT
+    if isinstance( node, RESULT ):
+        return node
+
+#   ---- TRIM
+    if isinstance( node, TRIM ):
+        return node.trim_with_browse( _plain_with_browse( node.ast ))
+
+#   ---- list
+    if isinstance( node, list ):
+        return reduce( RESULT._add_text, map( _plain_with_browse, node )) if node else RESULT( '' )
+
+#   ---- LAZY
+    if isinstance( node, LAZY ):
+        return _plain_with_browse( node.ast )
+
+#   ---- SOURCE
+    if isinstance( node, SOURCE ):
+        return RESULT( str( node ), RESULT._loc( node.input_file, node.pos ) if node and node.input_file else [])
+
+#   ---- str based | int | float | long
+    return RESULT( str( node ))
+
+#   ---------------------------------------------------------------------------
+def _ast_readable( node ):
+    """
+    Represent AST as readable text.
+    """
+#   ---- SET_CLOSURE
+    if isinstance( node, SET_CLOSURE ):
+#       -- node.env will be included into children
+        return _ast_readable( node.form )
+
+#   ---- TRIM
+    if isinstance( node, TRIM ):
+        return node.trim( _ast_readable( node.ast ))
+
+#   ---- list
+    if isinstance( node, list ):
+        return ''.join( map( _ast_readable, node ))                                                                    #pylint: disable=W0141
+
+#   ---- LAZY
+    if isinstance( node, LAZY ):
+        return _ast_readable( node.ast )
+
+#   ---- PLAIN
+    if isinstance( node, PLAIN ):
+        return node.get_trimmed()
+
+#   ---- str based | int | float | long
+    if isinstance( node, str ) or isinstance( node, int ) or isinstance( node, long ) or isinstance( node, float ):
+        return str( node )
+
+    return _ast_pretty( repr( node ))
+
+#   ---------------------------------------------------------------------------
 def _list_to_bound( node ):
     """
     Check and convert list of atoms to list of parameters.
@@ -2463,7 +2767,7 @@ def _list_to_bound( node ):
 #   ---------------------------------------------------------------------------
 def _list_eval_1( args, env, depth = 0 ):
     """
-    Evaluate first argument into the list.
+    Evaluate first argument of list.
     """
 #   ---------------
                                                                                                                        #pylint: disable=E1103
@@ -2522,9 +2826,8 @@ def yueval( node, env = ENV(), depth = 0 ):                                     
         return 'yueval'
 
 #   ---------------
-#   This is an experimental release of the eval-apply cycle, it's slightly theoretically incorrect and unstable,
+#   TODO: This is an experimental release of the eval-apply cycle, it's slightly theoretically incorrect and unstable,
 #   you may run into problems using a recursion or to face with a wrong scope of a name binding.
-#   TODO: fix what is described above
 #   TODO: region
                                                                                                                        #pylint: disable=E1103
     try:
@@ -2574,6 +2877,7 @@ def yueval( node, env = ENV(), depth = 0 ):                                     
 
 #   ---- T -- ENV
                     if isinstance( x, ENV ):
+#                       -- !? SET scope is limited with current TEXT block...
                         if nx < len( node ):
                             if isinstance( node.indent, str ) and isinstance( node[ nx ], PLAIN ):
 #                               -- delete spacing
@@ -2613,7 +2917,7 @@ def yueval( node, env = ENV(), depth = 0 ):                                     
                     node.indent = x_indent
 
                 if _is_term( t ):
-                    return _plain( t )
+                    return _plain_with_browse( t ) if PP_BROWSE else _plain( t )
 
 #               -- unreducible
                 return t
@@ -2724,7 +3028,7 @@ def yueval( node, env = ENV(), depth = 0 ):                                     
                         var, val = node.named.pop( 0 )
                         if var in node.fn.env:
                             if not isinstance( node.fn.env[ var ], BOUND ):
-                                log.warn( 'parameter "%s" is already assigned with value' + var.loc(), str( var ))
+                                log.warn( 'parameter "%s" is already assigned with value' % ( str( var )) + var.loc())
                             val = yueval( val, env, depth + 1 )
                         else:
                             raise TypeError( '%s: function has no parameter "%s"' % ( _callee(), str( var ))
@@ -2734,7 +3038,7 @@ def yueval( node, env = ENV(), depth = 0 ):                                     
                     elif node.args:
                         var = node.fn.env.unassigned()
                         if var is NOT_FOUND:
-                            log.warn( 'unused argument(s) %s' + node.loc(), repr( node.args ))
+                            log.warn( 'unused argument(s) %s' % ( repr( node.args )) + node.loc())
                             return yueval( node.fn, env, depth + 1 )
 
                         if var == __va_args__:
@@ -2776,6 +3080,15 @@ def yueval( node, env = ENV(), depth = 0 ):                                     
                     node.fn = node.fn.ast
                     # fall through -- yueval( node )
 
+#   ---- APPLY -- ATOM
+                elif isinstance( node.fn, ATOM ):
+                    if node.named or node.args:
+                        raise TypeError( '%s: no arguments of unbound atom expected' % ( _callee())
+                        + node.fn.loc())
+                    if WARN_UNBOUND_APPLICATION:
+                        log.warn( 'application of unbound atom "%s"' % ( node.fn ) + node.fn.loc())
+                    return node.fn
+
 #   ---- APPLY -- str
                 elif isinstance( node.fn, str ):
 #                   -- have no arguments
@@ -2814,7 +3127,8 @@ def yueval( node, env = ENV(), depth = 0 ):                                     
                         for arg in node.args:
                             fn = copy.deepcopy( arg )
                             x = yueval( APPLY( fn, [ x ], []), env, depth + 1 )
-                        lst.append( x )
+                        if x is not None:
+                            lst.append( x )
                     return lst
 
 #   ---- APPLY -- SKIP
@@ -2927,7 +3241,7 @@ def yueval( node, env = ENV(), depth = 0 ):                                     
                             if len( val ) > i:
                                 env_l[ var ] = val[ i ]
                             else:
-                                log.warn( 'there is nothing to assign to "%s"' + var.loc(), str( var ))
+                                log.warn( 'there is nothing to assign to "%s"' % ( str( var )) + node.loc())
                                 env_l[ var ] = None
                     else:
                         for var in node.lval:
@@ -3001,7 +3315,8 @@ def yueval( node, env = ENV(), depth = 0 ):                                     
             elif isinstance( node, COND_CLOSURE ):
                 node.cond = yueval( node.cond, env, depth + 1 )
                 if not _is_term( node.cond ):
-#                   -- !? potential problem of infinite recursion...
+#                   -- FIXME !? potential problem of infinite recursion...
+#                   -- also it makes impossible to perform operations with side effect such as raising an exception
                     node.leg_1 = yueval( node.leg_1, env, depth + 1 )
                     node.leg_0 = yueval( node.leg_0, env, depth + 1 )
 #                   -- unreducible
@@ -3129,34 +3444,6 @@ def yueval( node, env = ENV(), depth = 0 ):                                     
         else:
             raise e_type, e, tb
 
-#   ---------------------------------------------------------------------------
-def _ast_readable( node ):
-    """
-    Represent AST as readable text.
-    """
-#   ---- SET_CLOSURE
-    if isinstance( node, SET_CLOSURE ):
-#       -- node.env will be included into children
-        return _ast_readable( node.form )
-
-#   ---- TRIM
-    elif isinstance( node, TRIM ):
-        return node.trim( _ast_readable( node.ast ))
-
-#   ---- PLAIN
-    elif isinstance( node, PLAIN ):
-        return str( node )
-
-#   ---- list
-    elif isinstance( node, list ):
-        return ''.join( _ast_readable( x ) for x in node )
-
-#   ---- str
-    elif isinstance( node, str ):
-        return node
-
-    return _ast_pretty( repr( node ))
-
 #   ---- cut here ----
 
 #   * * * * * * * * * * * * * * * * * *
@@ -3165,6 +3452,7 @@ def _ast_readable( node ):
 #   *                                 *
 #   * * * * * * * * * * * * * * * * * *
 
+import json
 from argparse import ArgumentParser
 
 TITLE = r""" __    __    _____ _____
@@ -3205,7 +3493,7 @@ TYPE_FILE = False
 LOG_LEVEL_SCALE = 10
 
 SYSTEM_EXIT_HELP = 'Also, arguments can be passed through the response file e.g. yup.py @FILE .' \
-' The preprocessor exit status is a negative number of unsuccessfully processed files' \
+' The preprocessor exit status is a number of unsuccessfully processed files multiplied by 4' \
 ' or an error of command line arguments (2) or a program execution error (1)' \
 ' or zero in case of successful execution.'
 
@@ -3256,8 +3544,18 @@ def shell_argparse():
     , help = PP_REDUCE_EMPTINESS_HELP )
     argp.add_argument( '--pp-no-reduce-emptiness', action = 'store_false', dest = 'pp_reduce_emptiness' )
 
+    argp.add_argument( '--pp-browse', action = 'store_true', dest = 'pp_browse'
+    , help = PP_BROWSE_HELP )
+    argp.add_argument( '--pp-no-browse', action = 'store_false', dest = 'pp_browse' )
+#   -- warnings
+    argp.add_argument( '-Wunbound', '--warn-unbound-application', action = 'store_true'
+    , dest = 'warn_unbound_application', help = WARN_UNBOUND_APPLICATION_HELP )
+    argp.add_argument( '-Wno-unbound', '--warn-no-unbound-application', action = 'store_false'
+    , dest = 'warn_unbound_application' )
+
     argp.set_defaults( pp_skip_c_comment = PP_SKIP_C_COMMENT, pp_trim_app_indent = PP_TRIM_APP_INDENT
-    , pp_reduce_emptiness = PP_REDUCE_EMPTINESS )
+    , pp_reduce_emptiness = PP_REDUCE_EMPTINESS, pp_browse = PP_BROWSE
+    , warn_unbound_application = WARN_UNBOUND_APPLICATION )
 
     if ( len( sys.argv ) == 2 ) and sys.argv[ 1 ].startswith( '@' ):
 #       -- get arguments from response file
@@ -3334,6 +3632,7 @@ def _pp_file( fn ):
         fn_o = _output_fn( fn )
 #       -- preprocessing
         yushell( text, fn, fn_o )
+        RESULT.files = {}
         result, plain = _pp()
         print
         if result:
@@ -3346,6 +3645,15 @@ def _pp_file( fn ):
 #           -- output file writing
             shell_savetofile( fn_o, plain )
             os.chmod( fn_o, stat.S_IREAD )
+            if isinstance( plain, RESULT ):
+#               -- browse writing
+                with open( fn_o + '.json', 'w' ) as f:
+                    json.dump({
+                      'files': sorted( RESULT.files, key=RESULT.files.get )
+                    , 'browse': plain.browse
+                    , 'offset': plain.offset
+                    }, f )
+
             if not QUIET:
                 print OK
         else:
@@ -3358,7 +3666,7 @@ def _pp_file( fn ):
                     print PP_O, PP_FILE % fn_o
 #               -- output file writing
                 shell_savetofile( fn_o, plain )
-                log.warn( 'result has been saved as AST file' )
+                log.warn( 'result was saved as AST file' )
 
     except IOError as e:
 #       -- e.g. file operation failure
@@ -3441,10 +3749,10 @@ def _pp():                                                                      
 
         result = isinstance( plain, str )
         if result:
-            plain = trim_tailing_whitespace( plain, PP_REDUCE_EMPTINESS )
+            plain = reduce_emptiness( plain )
         else:
             plain = _ast_readable( plain )
-            log.warn( 'unable to translate input in a plain text' )
+            log.error( 'unable to translate input text into plain text' )
         if trace.TRACE:
             trace.info( plain )
             trace.info( TR_DEEPEST, trace.deepest )
@@ -3487,6 +3795,7 @@ if __name__ == '__main__':
     PP_SKIP_C_COMMENT = shell.pp_skip_c_comment
     PP_TRIM_APP_INDENT = shell.pp_trim_app_indent
     PP_REDUCE_EMPTINESS = shell.pp_reduce_emptiness
+    WARN_UNBOUND_APPLICATION = shell.warn_unbound_application
     DIRECTORY = shell.directory
     OUTPUT_DIRECTORY = shell.output_directory
 
@@ -3502,13 +3811,14 @@ if __name__ == '__main__':
         _pp_text( shell.text, shell.text_source )
 
     if shell.files:
+        PP_BROWSE = shell.pp_browse
         f_failed = 0
 #       -- input files preprocessing
         for path in shell.files:
             if not _pp_file( path ):
-                f_failed -= 1
+                f_failed += 1
 #       -- sys.exit() redefined in Web Console
-        sys.exit( f_failed )
+        sys.exit( f_failed << 2 )
 
     else:
 #       -- Read-Eval-Print Loop
