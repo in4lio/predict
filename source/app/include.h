@@ -33,6 +33,7 @@
 #include <limits.h>
 #include <math.h>
 #include <errno.h>
+#include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
 

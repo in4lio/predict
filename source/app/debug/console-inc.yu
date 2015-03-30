@@ -193,7 +193,7 @@ static uint16_t __cyclic_delay;
 	val_int = data_atovar( msg );
 	if ( val_int < var_COUNT ) {
 		printf( __CRLF__"  %s = %s", msg, data_get_string( __str, val_int ));
-		printf( __CRLF__"  value : " );
+		printf( __CRLF__"  value: " );
 		wait_par( par_d_set_1 );
 	} else {
 		error = "name";

@@ -72,7 +72,7 @@ endif
 endif
 
 # -- yupp import directories
-D_YU = source/app source/app/ut source/app/debug source/app/device source/core source/core/debug source/core/ut
+D_YU = source/app source/app/ut source/app/debug source/core source/core/debug source/core/ut
 D_YU := $(D_YU) source/platform/$(D_PLATFORM)
 
 # -- source directories

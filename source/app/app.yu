@@ -11,7 +11,7 @@ predict
 0.2a4
 [ )
 ($set DESCRIPTION ]
-
+predict - portable C framework
 [ )
 ($set AUTHORS ]
 Vitaly Kravtsov (in4lio@gmail.com)
