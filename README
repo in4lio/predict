@@ -6,5 +6,15 @@
 
     predict is a portable C framework for embedded applications development.
     yupp C preprocessor (https://github.com/in4lio/yupp/) is required.
+
+    The framework contains:
+    -   application state-space (data)
+    -   coroutines (co)
+    -   unit testing (ut)
+    -   debug console (console)
+    -   logging (log)
+    -   configuration (ini)
+    -   application template
+
     Tested on Windows (x86), GNU/Linux (x86, ARM9E), DOS (x86),
     pure ARM Cortex-M3 (OS isn't required), CM1.

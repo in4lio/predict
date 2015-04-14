@@ -5,7 +5,7 @@
     |_|                   |_)
 
 ($import "core.yu")
-($TITLE,,Unit test of application state vector.)
+($TITLE,,Unit test of application state-space.)
 
 ($import stdlib)
 ($import coroutine)
@@ -16,7 +16,7 @@
 ($skip-if-not LINK_UT_DATA)
 
 /**
- *  \defgroup ut_data Unit test of application state vector
+ *  \defgroup ut_data Unit test of application state-space
  *  \ingroup ut
  *  \{
  */

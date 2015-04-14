@@ -12,7 +12,7 @@
  *  Interval of cyclic command execution.
  *
  *  \section c_data data
- *  Application state vector.
+ *  Application state-space representation.
  *  \code
  *  data s -s
  *  s     - filter: substring (s) is contained in variable name
@@ -20,7 +20,7 @@
  *  \endcode
  *
  *  \section c_d_flt d_flt
- *  Filter of protocol of state vector change.
+ *  Filter of state changing protocol.
  *  \code
  *  d_flt s -s * -
  *  s     - substring (s) is contained in variable name
@@ -30,19 +30,19 @@
  *  \endcode
  *
  *  \section c_d_get d_get
- *  Get value of state vector variable.
+ *  Get value of state variable.
  *
  *  \section c_d_list d_list
- *  List of state vector variables, see \ref c_data "data".
+ *  List of state variables, see \ref c_data "data".
  *  \code
  *  d_list s -s
  *  \endcode
  *
  *  \section c_d_prot d_prot
- *  Displaying of protocol of state vector change.
+ *  Display state changing protocol.
  *
  *  \section c_d_set d_set
- *  Set value of state vector variable.
+ *  Set value of state variable.
  *
  *  \section c_help help
  *  List of console commands.

@@ -36,7 +36,7 @@ static char __d_filter[ RX_SIZE ];
 static uint16_t __cyclic_delay;
 
 /**
- *  \brief Application state vector.
+ *  \brief Application state-space representation.
  */
 ($handle_cmd,,data)
 {
@@ -96,7 +96,7 @@ static uint16_t __cyclic_delay;
 }
 
 /**
- *  \brief Filter of protocol of state vector change.
+ *  \brief Filter of state changing protocol.
  */
 ($handle_cmd,,d_flt)
 {
@@ -128,7 +128,7 @@ static uint16_t __cyclic_delay;
 }
 
 /**
- *  \brief Get value of state vector variable.
+ *  \brief Get value of state variable.
  */
 ($handle_cmd,,d_get)
 {
@@ -147,7 +147,7 @@ static uint16_t __cyclic_delay;
 }
 
 /**
- *  \brief List of state vector variables.
+ *  \brief List of state variables.
  */
 ($handle_cmd,,d_list)
 {
@@ -156,7 +156,7 @@ static uint16_t __cyclic_delay;
 }
 
 /**
- *  \brief Displaying of protocol of state vector change.
+ *  \brief Display protocol of state changing.
  */
 ($handle_cmd,,d_prot)
 {
@@ -180,7 +180,7 @@ static uint16_t __cyclic_delay;
 }
 
 /**
- *  \brief Set value of state vector variable.
+ *  \brief Set value of state variable.
  */
 ($handle_cmd,,d_set)
 {

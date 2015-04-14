@@ -6,7 +6,7 @@
 
 ($macro DOC__DATA_VAR ()
 /**
- *  \page data List of state vector variables
+ *  \page data List of state variables
  *
  *  \section d_error Variable error
  *  Pool of error bits. See errors dictionary \ref error-dict.yu .

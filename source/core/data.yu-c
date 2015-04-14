@@ -5,7 +5,7 @@
     |_|                   |_)
 
 ($import "core.yu")
-($TITLE,,Application state vector.)
+($TITLE,,Application state-space representation.)
 
 ($import stdlib)
 ($import h)
@@ -25,7 +25,7 @@ typedef int __length_t;
 typedef int __changed_t;
 
 /**
- *  \brief Descriptor of state vector variable.
+ *  \brief Descriptor of state variable.
  */
 struct DATA_DESCRY {
 	/**  Variable name */
@@ -49,9 +49,9 @@ static __inline void __set_changed( const var_t item, const __changed_t value );
 ($import "data-dict.yu")
 
 /**
- *  \brief Structure of state vector.
+ *  \brief Structure of state-space.
  */
-struct DATA_VECTOR {
+struct DATA_SPACE {
 	($each-DATA_VAR \i.]
 		($i VAR_TYPE) ($i DATA_VAR)($if {($i VAR_LEN) > 1} [[ ($i VAR_LEN) ]]);
 
@@ -64,34 +64,34 @@ struct DATA_VECTOR {
 };
 
 /**
- *  \brief State vector.
+ *  \brief State-space.
  */
-static struct DATA_VECTOR data_vector;
+static struct DATA_SPACE data_space;
 
 /**
- *  \brief Descriptor of state vector.
+ *  \brief Descriptor of state-space.
  */
 static const struct DATA_DESCRY data_descry[] = {
 	($each-DATA_VAR \i.]
 		($set VAR ($i DATA_VAR))
 		($unfold ($i VAR_LEN) ]
-			{ ($q ($VAR)), type_($upper ($i VAR_TYPE)), ($i VAR_LEN), &data_vector.($VAR), ( void *) ($i VAR_STRING) },
+			{ ($q ($VAR)), type_($upper ($i VAR_TYPE)), ($i VAR_LEN), &data_space.($VAR), ( void *) ($i VAR_STRING) },
 
 		[ \ii.]
-			{ ($q,,($VAR)_($ii)), type_($upper ($i VAR_TYPE)), ($sub ($i VAR_LEN) ($ii)), data_vector.($VAR) + ($ii), ( void *) ($i VAR_STRING) },
+			{ ($q,,($VAR)_($ii)), type_($upper ($i VAR_TYPE)), ($sub ($i VAR_LEN) ($ii)), data_space.($VAR) + ($ii), ( void *) ($i VAR_STRING) },
 
 		[ )
 	[ )
 	($each-DATA_VOTED \i.]
 		($set VAR ($i DATA_VOTED))
-		{ ($q,,($VAR))  , type_($upper ($i VOTED_TYPE)), 4, data_vector.($VAR)    , ( void *) ($i VOTED_STRING) },
-		{ ($q,,($VAR)_1), type_($upper ($i VOTED_TYPE)), 3, data_vector.($VAR) + 1, ( void *) ($i VOTED_STRING) },
-		{ ($q,,($VAR)_2), type_($upper ($i VOTED_TYPE)), 2, data_vector.($VAR) + 2, ( void *) ($i VOTED_STRING) },
-		{ ($q,,($VAR)_3), type_($upper ($i VOTED_TYPE)), 1, data_vector.($VAR) + 3, ( void *) ($i VOTED_STRING) },
-		{ ($q,,($VAR)__VALID)  , type_BYTE, 4, data_vector.($VAR)__VALID    , string_byte },
-		{ ($q,,($VAR)__VALID_1), type_BYTE, 3, data_vector.($VAR)__VALID + 1, string_byte },
-		{ ($q,,($VAR)__VALID_2), type_BYTE, 2, data_vector.($VAR)__VALID + 2, string_byte },
-		{ ($q,,($VAR)__VALID_3), type_BYTE, 1, data_vector.($VAR)__VALID + 3, string_byte },
+		{ ($q,,($VAR))  , type_($upper ($i VOTED_TYPE)), 4, data_space.($VAR)    , ( void *) ($i VOTED_STRING) },
+		{ ($q,,($VAR)_1), type_($upper ($i VOTED_TYPE)), 3, data_space.($VAR) + 1, ( void *) ($i VOTED_STRING) },
+		{ ($q,,($VAR)_2), type_($upper ($i VOTED_TYPE)), 2, data_space.($VAR) + 2, ( void *) ($i VOTED_STRING) },
+		{ ($q,,($VAR)_3), type_($upper ($i VOTED_TYPE)), 1, data_space.($VAR) + 3, ( void *) ($i VOTED_STRING) },
+		{ ($q,,($VAR)__VALID)  , type_BYTE, 4, data_space.($VAR)__VALID    , string_byte },
+		{ ($q,,($VAR)__VALID_1), type_BYTE, 3, data_space.($VAR)__VALID + 1, string_byte },
+		{ ($q,,($VAR)__VALID_2), type_BYTE, 2, data_space.($VAR)__VALID + 2, string_byte },
+		{ ($q,,($VAR)__VALID_3), type_BYTE, 1, data_space.($VAR)__VALID + 3, string_byte },
 
 	[ )
 	{ "none", type_COUNT, 0, NULL, string_byte }
