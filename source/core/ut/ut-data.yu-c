@@ -22,7 +22,7 @@
  */
 
 /* Count of testing cycles */
-#define CYCLE_COUNT  ( USHRT_MAX + 1 )
+#define CYCLE_COUNT  (( int ) USHRT_MAX + 1 )
 
 static char __str[ 100 ];
 

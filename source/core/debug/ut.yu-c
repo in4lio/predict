@@ -22,7 +22,8 @@
  *  \{
  */
 
-#define ________ "................................................................................"
+#define ________ "................................................................................" \
+                 "................................................................................"
 #define __PASSED__              "P A S S E D"
 #define __FAILED__              "F A I L E D"
 
@@ -238,11 +239,11 @@ void __print_header( const char *s, int len, char ch )
 static void __print_result( bool result )
 {
 	printf( __CRLF__ );
-	printf( "%.*s", console_col_count, ________ );
-	printf( __CRLF__ __CRLF__"%*s", ( console_col_count + strlen( __PASSED__ )) / 2, ( result ) ? __PASSED__ : __FAILED__ );
+	printf( "%.*s", ( int ) console_col_count, ________ );
+	printf( __CRLF__ __CRLF__"%*s", ( int )( console_col_count + strlen( __PASSED__ )) / 2, ( result ) ? __PASSED__ : __FAILED__ );
 	printf( __CRLF__ __CRLF__"  %d fault(s) in %d test(s)", __failed, __executed );
 	printf( " for %.1f sec"__CRLF__, ( float )( ut_stop - ut_start ) / 10 );
-	printf( "%.*s", console_col_count, ________ );
+	printf( "%.*s", ( int ) console_col_count, ________ );
 	flush();
 }
 

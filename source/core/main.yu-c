@@ -95,6 +95,8 @@ int main( int argc, char *argv[])
 	/* Coroutines call loop */
 	while ( app_alive ) {
 		if ( coro_schedule() == 0 ) break;
+		/* usleep( 2 );
+		 */
 	}
 	coro_uninit();
 	app_uninit();

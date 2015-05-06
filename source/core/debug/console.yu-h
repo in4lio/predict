@@ -42,47 +42,6 @@
  */
 #define CONSOLE_PROMPT_LIST  "#"
 
-/**
- *  \brief Print message about function call.
- *  \param FORMAT Message format.
- *  \param ... Message arguments.
- *  \hideinitializer
- */
-#define __echo_call( FORMAT, ... ) __echo( "CALL", FORMAT, ## __VA_ARGS__ )
-
-/**
- *  \brief Print debug message.
- *  \param FORMAT Message format.
- *  \param ... Message arguments.
- *  \hideinitializer
- */
-#define __echo_debug( FORMAT, ... ) __echo( "INFO", FORMAT, ## __VA_ARGS__ )
-
-/**
- *  \brief Print warning.
- *  \param FORMAT Message format.
- *  \param ... Message arguments.
- *  \hideinitializer
- */
-($define,,__echo_warn( FORMAT, ... ),,($do ]
-	__echo( "WARN", );
-	printf( FORMAT, ## __VA_ARGS__ );
-	flush();
-[ ))
-
-/**
- *  \brief Print error.
- *  \param FORMAT Message format.
- *  \param err Error number.
- *  \param ... Message arguments.
- *  \hideinitializer
- */
-($define,,__echo_error( FORMAT, err, ... ),,($do ]
-	__echo( "ERROR #%X", COMMA err );
-	printf( FORMAT, ## __VA_ARGS__ );
-	flush();
-[ ))
-
 ($import "console-dict.yu")
 
 ($DOC__CONSOLE)
@@ -116,14 +75,6 @@
 ($h-extern) bool console_command_waited( void );
 
 /** \} */
-
-#else /* LINK_CONSOLE */
-
-#define __echo( PRE, FORMAT, ... ) NULL
-#define __echo_call( FORMAT, ... ) NULL
-#define __echo_debug( FORMAT, ... ) NULL
-#define __echo_warn( FORMAT, ... ) NULL
-#define __echo_error( FORMAT, err, ... ) NULL
 
 #endif /* LINK_CONSOLE */
 
