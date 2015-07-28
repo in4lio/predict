@@ -9,7 +9,7 @@
 
 ($import stdlib)
 ($import h)
-($import coroutine)
+($import corolib)
 ($import "config.yu")
 
 ($implement-named)
@@ -29,7 +29,17 @@
 
 void flush( void )
 {
+// CM1 //////////////////////////////////////////
+#if defined( __ARMCC_VERSION )
+
+// UNIX //////////////////////////////////////////
+// WIN32 /////////////////////////////////////////
+// MSDOS /////////////////////////////////////////
+#else
 	fflush( stdout );
+
+//////////////////////////////////////////////////
+#endif
 }
 
 ($skip-if-not LINK_CONSOLE)
@@ -74,7 +84,7 @@ static bool is_msg;
 #define FINE_BACKSPACE  "\x08\x20\x08"  /**< Sequence for delete last input char. \hideinitializer */
 #define CLEAR_CMD       "                    \r" CONSOLE_PROMPT /**< Clear command line. \hideinitializer */
 
-static const char const USED_CHAR_LIST[] = "0123456789_abcdefghijklmnopqrstuvwxyz";
+static const char USED_CHAR_LIST[] = "0123456789_abcdefghijklmnopqrstuvwxyz";
 
 // UNIX //////////////////////////////////////////
 #if defined( __linux__ )
@@ -91,7 +101,7 @@ static __inline void console_resol( void )
 
 // WIN32 /////////////////////////////////////////
 // MSDOS /////////////////////////////////////////
-// CM1 ///////////////////////////////////////////
+// CORTEX_M //////////////////////////////////////
 #else
 static __inline void console_resol( void )
 {
@@ -239,7 +249,7 @@ void receive_char_uninit( void )
 		}
 	}
 [ \enter ]
-	static int chr;
+	($coro-local) int chr;
 [ )
 
 void char_clear_input( void )

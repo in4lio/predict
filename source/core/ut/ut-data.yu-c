@@ -8,7 +8,7 @@
 ($TITLE,,Unit test of application state-space.)
 
 ($import stdlib)
-($import coroutine)
+($import corolib)
 ($import "config.yu")
 
 #include "include.h"
@@ -74,16 +74,19 @@ int _ut_data_1_init( void )
 
 	/* Main operations */
 	for ( i = 0; i < CYCLE_COUNT; i++ ) {
-/* 1 */	data_set_byte( var__ut_byte, i );
+		/* 1 */
+		data_set_byte( var__ut_byte, i );
 
 		($coro-wait,, data_get_changed( peek__ut_data_1, var__ut_word ));
-/* 3 */	data_reset( peek__ut_data_1, var__ut_word );
+		/* 3 */
+		data_reset( peek__ut_data_1, var__ut_word );
 		assert_int_eq(( word ) i, data_get_word( var__ut_word ), );
 
 		data_set_dword( var__ut_array_1, ( dword ) i << 8 );
 
 		($coro-wait,, data_get_changed( peek__ut_data_1, var__ut_array_3 ));
-/* 5 */	data_reset( peek__ut_data_1, var__ut_array_3 );
+		/* 5 */
+		data_reset( peek__ut_data_1, var__ut_array_3 );
 		assert_int_eq( data_get_dword( var__ut_array_1 ), data_get_dword( var__ut_array_3 ), );
 
 		data_set_dword( var__ut_array_0, data_get_dword( var__ut_array_2 ));
@@ -137,7 +140,7 @@ int _ut_data_1_init( void )
 
 	assert_str_eq( "word", data_get_type( var__ut_word ), );
 [ \enter ]
-	static int i;
+	($coro-local) int i;
 [ )
 
 int _ut_data_2_init( void )
@@ -156,13 +159,15 @@ int _ut_data_2_init( void )
 	for ( i = 0; i < CYCLE_COUNT; i++ ) {
 
 		($coro-wait,, data_get_changed( peek__ut_data_2, var__ut_byte ));
-/* 2 */	data_reset( peek__ut_data_2, var__ut_byte );
+		/* 2 */
+		data_reset( peek__ut_data_2, var__ut_byte );
 		assert_int_eq(( byte ) i, data_get_byte( var__ut_byte ), );
 
 		data_set_word( var__ut_word, i );
 
 		($coro-wait,, data_get_changed( peek__ut_data_2, var__ut_array_1 ));
-/* 4 */	data_reset( peek__ut_data_2, var__ut_array_1 );
+		/* 4 */
+		data_reset( peek__ut_data_2, var__ut_array_1 );
 
 		data_set_dword( var__ut_array_3, ( dword ) i << 8 );
 		assert_int_eq( data_get_dword( var__ut_array_3 ), data_get_dword( var__ut_array_1 ), );
@@ -171,7 +176,8 @@ int _ut_data_2_init( void )
 		data_set_dword( var__ut_array_0, 0 );
 
 		($coro-wait,, data_get_changed( peek__ut_data_2, var__ut_float ));
-/* 6 */	data_set_float( var__ut_float, data_get_float( var__ut_float ) + 0.25 );
+		/* 6 */
+		data_set_float( var__ut_float, data_get_float( var__ut_float ) + 0.25 );
 		data_reset( peek__ut_data_2, var__ut_float );
 	}
 	assert_float_eq(( float )( CYCLE_COUNT >> 1 ), data_get_float( var__ut_float ), 0.0, );
@@ -233,7 +239,7 @@ int _ut_data_2_init( void )
 	voted_set_byte( var__ut_vote, 3, 2, &vote_byte );
 	data_reset( peek__ut_data_2, var__ut_vote );
 [ \enter ]
-	static int i;
+	($coro-local) int i;
 [ )
 
 int ut_data_init( void )
@@ -255,10 +261,10 @@ void ut_data_uninit( void )
 	($coro-context-init _ut_data_2);
 	_ut_data_2_init();
 
-	($coro-wait-coro,,($coro-call _ut_data_1 ) | ($coro-call _ut_data_2 ));
+	($coro-wait-coro,, ($coro-call _ut_data_1) | ($coro-call _ut_data_2));
 [ \enter ]
-	static ($coro-context _ut_data_1);
-	static ($coro-context _ut_data_2);
+	($coro-local) ($coro-context _ut_data_1);
+	($coro-local) ($coro-context _ut_data_2);
 [ )
 
 /** \} */

@@ -8,7 +8,7 @@
 ($TITLE,,Unit test of coroutines.)
 
 ($import stdlib)
-($import coroutine)
+($import corolib)
 ($import "config.yu")
 
 #include "include.h"
@@ -74,7 +74,7 @@ int test_1_init( void )
 		($semaphore-release b_empty);
 	}
 [ \enter ]
-	static int i;
+	($coro-local) int i;
 [ )
 
 int test_2_init( void )
@@ -91,7 +91,7 @@ int test_2_init( void )
 		($semaphore-release b_full);
 	}
 [ \enter ]
-	static int i;
+	($coro-local) int i;
 [ )
 
 int test_3_init( void )
@@ -117,7 +117,7 @@ int test_3_init( void )
 		($coro-yield);
 		assert_int_eq( 4, i, );
 
-		($coro-wait,, ++i < 10 );
+		($coro-wait,, ++i < 10);
 		for ( ; i < 20; i++ ) {
 			($coro-yield);
 		}
@@ -132,17 +132,17 @@ int test_3_init( void )
 
 	case -1:
 		i = 1;
-		inside_test_3--;
+		--inside_test_3;
 		($coro-quit test_3);
 	}
 	assert_fail( "unreachable instruction" );
-	inside_test_3--;
+	--inside_test_3;
 [ \enter ]
-	static int i = 1;
+	($coro-local) int i = 1;
 
-	inside_test_3++;
+	++inside_test_3;
 [ \exit ]
-	inside_test_3--;
+	--inside_test_3;
 [ )
 
 int test_4_init( void )
@@ -181,7 +181,7 @@ void ut_coro_uninit( void )
 	($coro-context-init test_2);
 	test_2_init();
 
-	($coro-wait-coro,,($coro-call test_1 ) | ($coro-call test_2 ));
+	($coro-wait-coro,, ($coro-call test_1) | ($coro-call test_2));
 	assert_int_eq( answer_last, answer, );
 
 	($coro-context-init test_3);
@@ -190,12 +190,12 @@ void ut_coro_uninit( void )
 	($coro-context-init test_4);
 	test_4_init();
 
-	($coro-wait-coro,,($coro-call test_3 ) | ($coro-call test_4 ));
+	($coro-wait-coro,, ($coro-call test_3) | ($coro-call test_4));
 [ \enter ]
-	static ($coro-context test_1);
-	static ($coro-context test_2);
-	static ($coro-context test_3);
-	static ($coro-context test_4);
+	($coro-local) ($coro-context test_1);
+	($coro-local) ($coro-context test_2);
+	($coro-local) ($coro-context test_3);
+	($coro-local) ($coro-context test_4);
 [ )
 
 /** \} */

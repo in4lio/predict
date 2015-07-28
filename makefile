@@ -81,7 +81,7 @@ D_CXX = $(D_C)
 D_ASM = source
 
 # -- include directories
-D_H = $(D_C)
+D_H = $(D_C) $(YUPP_HOME)/lib
 
 # -- binary directory
 D_BIN = bin

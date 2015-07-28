@@ -9,7 +9,7 @@
 
 ($import stdlib)
 ($import h)
-($import coroutine)
+($import corolib)
 ($import "config.yu")
 
 ($implement-named)
@@ -273,7 +273,7 @@ void console_cyclic_uninit( void )
 		($coro-yield);
 	}
 [ \enter ]
-	static struct timeval t_cycle = { 0, 0 };
+	($coro-local) struct timeval t_cycle = { 0, 0 };
 [ )
 
 void console_prompt( void )

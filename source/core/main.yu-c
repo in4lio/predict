@@ -9,7 +9,7 @@
 
 ($import stdlib)
 ($import h)
-($import coroutine)
+($import corolib)
 ($import "config.yu")
 
 ($implement co)
@@ -52,7 +52,7 @@ static void coro_uninit( void )
 static int coro_schedule( void )
 {
 	($each-CORO \i.]
-		if ($coro-alive [($i CORO)_alive]) ($i CORO)_alive = ($coro-call ($i CORO));
+		if ( ($coro-alive [($i CORO)_alive]) ) ($i CORO)_alive = ($coro-call ($i CORO));
 
 	[ )
 	return ( ($predict-alive-coro-completed)
