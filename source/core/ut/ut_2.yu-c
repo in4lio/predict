@@ -34,6 +34,7 @@
 	extern int ($T)_init( void );
 	/** Uninitialize ($T) coroutine. */
 	extern void ($T)_uninit( void );
+
 [ )
 
 int ut_2_init( void )

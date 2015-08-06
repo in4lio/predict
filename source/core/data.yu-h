@@ -209,6 +209,7 @@ enum {
 ($h-extern) char *data_vartoa( const var_t item );
 
 ($each-DATA_TYPE \i.]
+
 	($set T ($i DATA_TYPE))
 	/**
 	 *  \brief ($T)-to-string converting.

@@ -71,13 +71,7 @@
 	fflush( log_file );
 [ ))
 
-/**
- *  \brief Write message for dictionary into log-file.
- *  \param pre Message type.
- *  \param name Identifier.
- *  \param ... Message arguments.
- *  \hideinitializer
- */
+($! Write message for dictionary into log-file. )
 ($macro log_message (pre name)($do ]
 	if ( log_file == NULL ) break;
 	if (( ini_log_level >= LOG_LEVEL_($upper ($pre)) ) && ($pre)_repeat[ ($pre)_($name) ]) {
@@ -192,7 +186,6 @@ enum {
 #else /* LOGGING */
 
 #define log_printf( pre, format, ... ) NULL
-#define log_message( pre, name, ... ) NULL
 #define LOG_ERROR( name, ... ) NULL
 #define LOG_WARN( name, ... ) NULL
 #define LOG_INFO( name, ... ) NULL

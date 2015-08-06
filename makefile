@@ -13,7 +13,7 @@ MAP = 0
 
 # -- platform (core)
 ifeq ($(OS),Windows_NT)
-# ARM Cortex-M1: __CM1__
+# ARM Cortex-M: __CORTEX_M__
 # MSDOS: __DJGPP__
 # WIN32: __MINGW__
 # UNIX: __UNIX__
@@ -31,7 +31,7 @@ CC = $(DJGPP_HOME)/bin/gcc.exe
 CXX = $(DJGPP_HOME)/bin/gxx.exe
 LINK = $(CC)
 else
-ifeq ($(PLATFORM),__CM1__)
+ifeq ($(PLATFORM),__CORTEX_M__)
 CC = armcc
 CXX = armcc
 LINK = armlink
@@ -63,8 +63,8 @@ else
 ifeq ($(PLATFORM),__MINGW__)
 D_PLATFORM = mingw
 else
-ifeq ($(PLATFORM),__CM1__)
-D_PLATFORM = cm1
+ifeq ($(PLATFORM),__CORTEX_M__)
+D_PLATFORM = cm3
 else
 D_PLATFORM =
 endif
@@ -89,7 +89,7 @@ D_BIN := $(if $(D_PLATFORM), $(D_BIN)/$(D_PLATFORM), $(D_BIN))
 
 # -- object directory
 D_OBJ = object
-ifeq ($(PLATFORM),__CM1__)
+ifeq ($(PLATFORM),__CORTEX_M__)
 D_OBJ := $(D_BIN)
 else
 D_OBJ := $(if $(D_PLATFORM), $(D_OBJ)/$(D_PLATFORM), $(D_OBJ))
@@ -114,7 +114,7 @@ E_ASM = .asm
 E_OBJ = .o
 
 # -- binary suffix
-ifeq ($(PLATFORM),__CM1__)
+ifeq ($(PLATFORM),__CORTEX_M__)
 E_BIN = .axf
 else
 ifeq ($(OS),Windows_NT)
@@ -156,10 +156,6 @@ ASMFLAGS = -Wall
 ifeq ($(PLATFORM),__DJGPP__)
 BUFSIZE = 16k
 MINSTACK = 1024k
-endif
-
-ifeq ($(PLATFORM),__CM1__)
-
 endif
 
 # ---------------------------------
@@ -204,23 +200,26 @@ endef
 endif
 
 # -- call compiler
-ifeq ($(PLATFORM),__CM1__)
+ifeq ($(PLATFORM),__CORTEX_M__)
 # -- use Keil arguments from .__i file
 define cc
 	cd project && \
 	$(CC) --via ../$(basename $2).__i && \
 	cd ..
 endef
+
 define cxx
 	cd project && \
 	$(CXX) --via ../$(basename $2).__i
 	cd ..
 endef
+
 define asm
 	cd project && \
 	$(ASM) --via ../$(basename $2)._ia
 	cd ..
 endef
+
 define link
 	cd project && \
 	$(LINK) --via ../$(basename $2).lnp
@@ -230,12 +229,15 @@ else
 define cc
 	$(call wrap,$(CC),$(CFLAGS) -c $1 -o $2)
 endef
+
 define cxx
 	$(call wrap,$(CXX),$(CXXFLAGS) -c $1 -o $2)
 endef
+
 define asm
 	$(call wrap,$(CC),$(ASMFLAGS) -c $1 -o $2)
 endef
+
 define link
 	$(call wrap,$(LINK),$1 -o $2 $(LIBS) $(LFLAGS))
 endef
