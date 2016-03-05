@@ -66,7 +66,7 @@ else
 ifeq ($(PLATFORM),__CORTEX_M__)
 D_PLATFORM = cm3
 else
-D_PLATFORM =
+D_PLATFORM = .
 endif
 endif
 endif
