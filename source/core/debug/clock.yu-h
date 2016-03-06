@@ -15,7 +15,7 @@
 
 ($extern-c-begin)
 
-($! based on Andrey Panin (pazke@donpac.ru) timeout.c)
+($! based on Andrey Panin (pazke@donpac.ru) timeout.c )
 
 /**
  *  \defgroup hardware Hardware

@@ -17,7 +17,7 @@
 
 #ifdef LINK_UT
 
-($! based on Keith Nicholas http://code.google.com/p/seatest/)
+($! based on Keith Nicholas http://code.google.com/p/seatest/ )
 
 /**
  *  \defgroup ut Unit testing

@@ -56,6 +56,9 @@ else
 PP = @echo makefile: warning: preprocessing step is skipped,
 endif
 
+# -- command to create 'object' and 'bin' directories and subdirectories
+MKDIR = mkdir -p
+
 # -- output subdirectory
 ifeq ($(PLATFORM),__DJGPP__)
 D_PLATFORM = djgpp
@@ -292,7 +295,7 @@ vpath %$(E_YUC) $(D_C)
 # -- build project
 .PHONY: all
 
-all: $(F_BIN)
+all: bindirs $(F_BIN)
 
 $(F_BIN): $(O)
 	$(call link,$^,$@)
@@ -320,6 +323,15 @@ $(O_CXX): $(D_OBJ)/%$(E_OBJ): %$(E_CXX)
 
 $(O_ASM): $(D_OBJ)/%$(E_OBJ): %$(E_ASM)
 	$(call asm,$<,$@)
+
+# -- create 'object' and 'bin' directories
+bindirs: $(D_OBJ) $(D_BIN)
+
+$(D_OBJ):
+	${MKDIR} ${D_OBJ}
+
+$(D_BIN):
+	${MKDIR} ${D_BIN}
 
 # -- perform preprocessing only
 .PHONY: yupp
