@@ -16,5 +16,8 @@
     -   configuration (ini)
     -   application template
 
-    Tested on Windows (x86), GNU/Linux (x86, ARM9E), DOS (x86),
-    pure ARM Cortex-M3 (OS isn't required), CM1.
+    Supported platforms:
+    -   Windows (x86)
+    -   GNU/Linux (x86, ARM9E)
+    -   DOS (x86)
+    -   W/O OS (ARM Cortex-M3, CM0, CM1)
