@@ -20,4 +20,4 @@
     -   Windows (x86)
     -   GNU/Linux (x86, ARM9E)
     -   DOS (x86)
-    -   W/O OS (ARM Cortex-M3, CM0, CM1)
+    -   bare hardware (ARM Cortex-M3, CM0, CM1)
