@@ -8,7 +8,7 @@
 predict
 [ )
 ($set VERSION ]
-0.2a6
+0.2a7
 [ )
 ($set DESCRIPTION ]
 predict - portable C framework
@@ -26,7 +26,7 @@ See the LICENSE file.
 gcc
 [ )
 
-($macro TITLE (brief)($__TITLE__)/**
+($macro TITLE (brief)($__TITLE__ 0)/**
  *  \file  ($unq ($__OUTPUT_FILE__)) (($unq ($__FILE__)))
  *  \brief  ($brief)
  *  \author  ($AUTHORS)
