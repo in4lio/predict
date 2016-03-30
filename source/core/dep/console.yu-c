@@ -191,6 +191,7 @@ void console_uninit( void )
 	__CRLF__"*** ( " ($q ($PROGRAM)) " ) Hello! ***"
 	__CRLF__ CONSOLE_PROMPT
 	);
+	flush();
 
 	for ( ; ; ) {
 		switch ( stt ) {
@@ -217,6 +218,7 @@ void console_uninit( void )
 		if ( stt == stt_CMD_WAIT ) {
 			if ( char_echo ) {
 				printf( __CRLF__ CONSOLE_PROMPT );
+				flush();
 			} else {
 				printf( __CRLF__ );
 			}
@@ -283,6 +285,7 @@ void console_prompt( void )
 			char_clear_input();
 			console_index = 0;
 			printf( __CRLF__ CONSOLE_PROMPT );
+			flush();
 		} else {
 			printf( __CRLF__ );
 		}

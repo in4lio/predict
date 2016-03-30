@@ -86,6 +86,7 @@ static uint16_t __cyclic_delay;
 	}
 	ini_cyclic_delay = __cyclic_delay;
 	printf( __CRLF__ CONSOLE_PROMPT );
+	flush();
 
 	return cyclic_stt_STOP;
 }

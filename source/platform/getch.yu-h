@@ -26,7 +26,7 @@
 ($h-extern) void getch_uninit( void );
 ($h-extern) int getch( void );
 ($h-extern) int getch_1( void );
-($h-extern) bool getch_esc( int chr );
+($h-extern) int getch_escseq( int chr );
 
 /** \} */
 

@@ -13,7 +13,6 @@ MAP = 0
 
 # -- platform (core)
 ifeq ($(OS),Windows_NT)
-# ARM Cortex-M: __CORTEX_M__
 # MSDOS: __DJGPP__
 # WIN32: __MINGW__
 # UNIX: __UNIX__
@@ -31,15 +30,9 @@ CC = $(DJGPP_HOME)/bin/gcc.exe
 CXX = $(DJGPP_HOME)/bin/gxx.exe
 LINK = $(CC)
 else
-ifeq ($(PLATFORM),__CORTEX_M__)
-CC = armcc
-CXX = armcc
-LINK = armlink
-else
 CC = gcc
 CXX = g++
 LINK = $(CC)
-endif
 endif
 
 # -- yupp preprocessor
@@ -66,16 +59,12 @@ else
 ifeq ($(PLATFORM),__MINGW__)
 D_PLATFORM = mingw
 else
-ifeq ($(PLATFORM),__CORTEX_M__)
-D_PLATFORM = cm3
-else
 D_PLATFORM = .
-endif
 endif
 endif
 
 # -- yupp import directories
-D_YU = source/app source/app/ut source/app/debug source/core source/core/debug source/core/ut
+D_YU = source/app source/app/ut source/app/dep source/core source/core/ut source/core/dep
 D_YU := $(D_YU) source/platform/$(D_PLATFORM)
 
 # -- source directories
@@ -92,11 +81,7 @@ D_BIN := $(if $(D_PLATFORM), $(D_BIN)/$(D_PLATFORM), $(D_BIN))
 
 # -- object directory
 D_OBJ = object
-ifeq ($(PLATFORM),__CORTEX_M__)
-D_OBJ := $(D_BIN)
-else
 D_OBJ := $(if $(D_PLATFORM), $(D_OBJ)/$(D_PLATFORM), $(D_OBJ))
-endif
 
 # -- LIST and MAP directories
 D_MAP = object
@@ -117,14 +102,10 @@ E_ASM = .asm
 E_OBJ = .o
 
 # -- binary suffix
-ifeq ($(PLATFORM),__CORTEX_M__)
-E_BIN = .axf
-else
 ifeq ($(OS),Windows_NT)
 E_BIN = .exe
 else
 E_BIN =
-endif
 endif
 
 # -- binary full name
@@ -202,50 +183,6 @@ define wrap
 endef
 endif
 
-# -- call compiler
-ifeq ($(PLATFORM),__CORTEX_M__)
-# -- use Keil arguments from .__i file
-define cc
-	cd project && \
-	$(CC) --via ../$(basename $2).__i && \
-	cd ..
-endef
-
-define cxx
-	cd project && \
-	$(CXX) --via ../$(basename $2).__i
-	cd ..
-endef
-
-define asm
-	cd project && \
-	$(ASM) --via ../$(basename $2)._ia
-	cd ..
-endef
-
-define link
-	cd project && \
-	$(LINK) --via ../$(basename $2).lnp
-	cd ..
-endef
-else
-define cc
-	$(call wrap,$(CC),$(CFLAGS) -c $1 -o $2)
-endef
-
-define cxx
-	$(call wrap,$(CXX),$(CXXFLAGS) -c $1 -o $2)
-endef
-
-define asm
-	$(call wrap,$(CC),$(ASMFLAGS) -c $1 -o $2)
-endef
-
-define link
-	$(call wrap,$(LINK),$1 -o $2 $(LIBS) $(LFLAGS))
-endef
-endif
-
 # -- optional final tools
 ifeq ($(PLATFORM),__DJGPP__)
 define final
@@ -298,7 +235,7 @@ vpath %$(E_YUC) $(D_C)
 all: bindirs $(F_BIN)
 
 $(F_BIN): $(O)
-	$(call link,$^,$@)
+	$(call wrap,$(LINK),$(LFLAGS) $(LIBS) $^ -o $@)
 	$(call final,$@)
 	@echo "*** $(F_BIN) ***"
 
@@ -316,13 +253,13 @@ $(G_H): %$(E_H): %$(E_YUH)
 $(S_C) $(S_CXX): $(G_H)
 
 $(O_C): $(D_OBJ)/%$(E_OBJ): %$(E_C)
-	$(call cc,$<,$@)
+	$(call wrap,$(CC),$(CFLAGS) -c $< -o $@)
 
 $(O_CXX): $(D_OBJ)/%$(E_OBJ): %$(E_CXX)
-	$(call cxx,$<,$@)
+	$(call wrap,$(CXX),$(CXXFLAGS) -c $< -o $@)
 
 $(O_ASM): $(D_OBJ)/%$(E_OBJ): %$(E_ASM)
-	$(call asm,$<,$@)
+	$(call wrap,$(CC),$(ASMFLAGS) -c $< -o $@)
 
 # -- create 'object' and 'bin' directories
 bindirs: $(D_OBJ) $(D_BIN)

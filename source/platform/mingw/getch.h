@@ -50,7 +50,7 @@ extern "C" {
 GETCH_EXT void getch_init( void );
 GETCH_EXT void getch_uninit( void );
 GETCH_EXT int getch_1( void );
-GETCH_EXT bool getch_esc( int chr );
+GETCH_EXT int getch_escseq( int chr );
 
 /** \} */
 
@@ -68,13 +68,11 @@ GETCH_EXT bool getch_esc( int chr );
 #define CHAR_ESC        '\x1B'
 #define CHAR_SPACE      '\x20'
 #define LAST_CHAR       '\x7E'  /**< Last character to be displayed. */
-
 #define CHAR_BACKSPACE  '\x08'
 #define CHAR_UP         '\x48'
 #define CHAR_DOWN       '\x50'
 #define CHAR_RIGHT      '\x4D'
 #define CHAR_LEFT       '\x4B'
-
 #define CHAR_ENTER      CHAR_CR
 #define __CRLF__        "\x0A"
 

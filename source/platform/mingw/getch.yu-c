@@ -41,9 +41,19 @@ __inline int getch_1( void )
 	return ( kbhit() ? _getch() : EOF );
 }
 
-__inline bool getch_esc( int chr )
+int getch_escseq( int chr )
 {
-	return (( chr == 0 ) || ( chr == 0xE0 ));
+	static int seq = 0;
+
+	if (( chr == 0 ) || ( chr == 0xE0 )) {
+		seq = 1;
+		return ( ESCSEQ_INSIDE );
+	}
+	if ( seq == 1 ) {
+		seq = 0;
+		return ( ESCSEQ_OK );
+	}
+	return ( ESCSEQ_1 );
 }
 
 /** \} */

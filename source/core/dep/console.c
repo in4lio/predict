@@ -264,6 +264,7 @@ static __inline int cyclic_exec_data( void )
 	}
 	ini_cyclic_delay = __cyclic_delay;
 	printf( __CRLF__ CONSOLE_PROMPT );
+	flush();
 
 	return cyclic_stt_STOP;
 }
@@ -524,6 +525,7 @@ int coro_console( co_t *co_p )
 	__CRLF__"*** ( " "predict" " ) Hello! ***"
 	__CRLF__ CONSOLE_PROMPT
 	);
+	flush();
 
 	for ( ; ; ) {
 		switch ( stt ) {
@@ -568,6 +570,7 @@ int coro_console( co_t *co_p )
 		if ( stt == stt_CMD_WAIT ) {
 			if ( char_echo ) {
 				printf( __CRLF__ CONSOLE_PROMPT );
+				flush();
 			} else {
 				printf( __CRLF__ );
 			}
@@ -655,6 +658,7 @@ void console_prompt( void )
 			char_clear_input();
 			console_index = 0;
 			printf( __CRLF__ CONSOLE_PROMPT );
+			flush();
 		} else {
 			printf( __CRLF__ );
 		}
