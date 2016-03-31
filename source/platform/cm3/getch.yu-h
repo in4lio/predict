@@ -1,0 +1,59 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "core.yu")
+($TITLE,,Read from debug interface.)
+
+($import stdlib)
+($import h)
+($import "config.yu")
+
+($h-begin-named)
+
+($extern-c-begin)
+
+#ifdef LINK_CONSOLE
+
+/**
+ *  \addtogroup char
+ *  \{
+ */
+
+($h-extern) void getch_init( void );
+($h-extern) void getch_uninit( void );
+($h-extern) int getch( void );
+($h-extern) int getch_1( void );
+($h-extern) int getch_escseq( int chr );
+
+/** \} */
+
+#endif /* LINK_CONSOLE */
+
+/**
+ *  \defgroup char_char Characters definitions
+ *  \ingroup char
+ *  \{
+ */
+
+#define CHAR_TAB        '\x09'
+#define CHAR_LF         '\x0A'
+#define CHAR_CR         '\x0D'
+#define CHAR_ESC        '\x1B'
+#define CHAR_SPACE      '\x20'
+#define LAST_CHAR       '\x7E'  /**< Last character to be displayed. */
+#define CHAR_BACKSPACE  '\x7F'
+#define CHAR_UP         '\x41'
+#define CHAR_DOWN       '\x42'
+#define CHAR_RIGHT      '\x43'
+#define CHAR_LEFT       '\x44'
+#define CHAR_ENTER      CHAR_CR
+#define __CRLF__        "\x0D\x0A"
+
+/** \} */
+
+($extern-c-end)
+
+($h-end)
