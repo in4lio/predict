@@ -17,10 +17,26 @@
  *  \addtogroup clock
  */
 
+#define U_PER_CSEC  ( 1000 * 10 )
+#define C_PER_SEC   ( 100 )
+
 static struct timeval __clock_time_started;
 
 void clock_init( void )
 {
+// CORTEX_M //////////////////////////////////////
+#if defined( __ARM_ARCH )
+
+	rtc_init();
+
+// UNIX //////////////////////////////////////////
+// WIN32 /////////////////////////////////////////
+// MSDOS /////////////////////////////////////////
+#else
+
+//////////////////////////////////////////////////
+#endif
+
 	gettimeofday( &__clock_time_started, NULL );
 }
 
@@ -38,23 +54,13 @@ uint32_t clock_time_running( void )
 	gettimeofday( &now, NULL );
 	timersub( &now, &__clock_time_started, &dt );
 
-	return ( dt.tv_sec * 100 + ( unsigned int ) rint(( double ) dt.tv_usec / 1000 / 10 ));
+	return ( dt.tv_sec * C_PER_SEC + ( dt.tv_usec + U_PER_CSEC / 2 ) / U_PER_CSEC );
 }
 
-const char *clock_stamp_short( char *str )
-{
-	time_t t;
-
-	time( &t );
-	strftime( str, 16, "%H:%M:%S", localtime( &t ));
-
-	return ( str );
-}
-
-const char *clock_stamp( const struct timeval *tval, char *str )
+const char *clock_stamp( const struct timeval *tval, char *s )
 {
 	struct timeval t;
-	char *p = str;
+	char *p = s;
 	unsigned int csec;
 	time_t sec;
 
@@ -64,15 +70,38 @@ const char *clock_stamp( const struct timeval *tval, char *str )
 		t = *tval;
 	}
 	sec = t.tv_sec;
-	csec = ( unsigned int ) rint(( double ) t.tv_usec / 1000 / 10 );
-	if ( csec == 100 ) {
+	csec = ( t.tv_usec + U_PER_CSEC / 2 ) / U_PER_CSEC;
+	if ( csec == C_PER_SEC ) {
 		++sec;
 		csec = 0;
 	}
 	p += strftime( p, 16, "%H:%M:%S", localtime( &sec ));
-	sprintf( p, ".%02i", csec );
+	sprintf( p, ".%02u", csec );
 
-	return ( str );
+	return ( s );
+}
+
+const char *clock_stamp_short( char *s )
+{
+	time_t t;
+
+	time( &t );
+	strftime( s, 16, "%H:%M:%S", localtime( &t ));
+
+	return ( s );
+}
+
+time_t clock_stamp_datetime( char* sd, char* st )
+{
+	time_t t;
+	struct tm *_t;
+
+	time( &t );
+	_t = localtime( &t );
+	strftime( sd, 16, "%d.%m.%Y", _t );
+	strftime( st, 16, "%H:%M:%S", _t );
+
+	return ( t );
 }
 
 struct timeval clock_t_set( const int mc )

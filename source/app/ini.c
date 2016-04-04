@@ -25,6 +25,15 @@
 
 bool ini_set_file( char *fn )
 {
+// CORTEX_M //////////////////////////////////////
+#if defined( __ARM_ARCH )
+
+	return ( false );
+
+// UNIX //////////////////////////////////////////
+// WIN32 /////////////////////////////////////////
+// MSDOS /////////////////////////////////////////
+#else
 	FILE *f;
 
 	f = fopen( fn, "r" );
@@ -36,6 +45,9 @@ bool ini_set_file( char *fn )
 	ini_path = fn;
 	printf( __CRLF__"Configure file: %s", ini_path );
 	return ( true );
+
+//////////////////////////////////////////////////
+#endif
 }
 
 void ini_load( void )

@@ -54,19 +54,27 @@ extern "C" {
 CLOCK_EXT void clock_init( void );
 
 /**
- *  \brief time-to-string converting.
+ *  \brief Time to string converting.
  *  \param tval time pointer (current time is used in case of NULL).
- *  \param str String buffer.
+ *  \param s String buffer.
  *  \return String.
  */
-CLOCK_EXT const char *clock_stamp( const struct timeval *tval, char *str );
+CLOCK_EXT const char *clock_stamp( const struct timeval *tval, char *s );
 
 /**
- *  \brief time-to-string converting without centiseconds.
- *  \param str String buffer.
+ *  \brief Current time to string converting without centiseconds.
+ *  \param s String buffer.
  *  \return String.
  */
-CLOCK_EXT const char *clock_stamp_short( char *str );
+CLOCK_EXT const char *clock_stamp_short( char *s );
+
+/**
+ *  \brief Current datetime to string converting without centiseconds.
+ *  \param sd String buffer for date.
+ *  \param st String buffer for time.
+ *  \return Current datetime.
+ */
+CLOCK_EXT time_t clock_stamp_datetime( char* sd, char* st );
 
 /**
  *  \brief Current time setup.

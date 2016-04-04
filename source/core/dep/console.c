@@ -265,7 +265,6 @@ static __inline int cyclic_exec_data( void )
 	ini_cyclic_delay = __cyclic_delay;
 	printf( __CRLF__ CONSOLE_PROMPT );
 	flush();
-
 	return cyclic_stt_STOP;
 }
 
@@ -460,7 +459,6 @@ static __inline int cyclic_exec_time( void )
 		return cyclic_stt_STOP;
 	}
 	printf( "\r%s    \r", clock_stamp_short( __str ));
-
 	return cyclic_stt_EXEC;
 }
 

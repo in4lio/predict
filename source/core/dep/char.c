@@ -34,17 +34,7 @@
 
 void flush( void )
 {
-// CORTEX_M //////////////////////////////////////
-#if defined( __ARMCC_VERSION )
-
-// UNIX //////////////////////////////////////////
-// WIN32 /////////////////////////////////////////
-// MSDOS /////////////////////////////////////////
-#else
 	fflush( stdout );
-
-//////////////////////////////////////////////////
-#endif
 }
 
 /**
@@ -72,7 +62,7 @@ static const char * const TITLE = __CRLF__
  *  \hideinitializer
  */
 const char * const VERSION_STRING =
-	__CRLF__ "predict" " " "0.2a8" " (" "0.2a7" ")"
+	__CRLF__ "predict" " " "0.2a9" " (" "0.2a9" ")"
 	__CRLF__ "Compiled with " "gcc" " " __VERSION__;
 
 /**

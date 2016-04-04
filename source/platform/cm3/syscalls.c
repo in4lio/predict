@@ -10,6 +10,7 @@ void *__dso_handle __attribute__ ((weak));
 #include <sys/time.h>
 #include <sys/times.h>
 #include "SEGGER_RTT.h"
+#include "rtc.h"
 
 // This is the standard default implementation for the routine to
 // process args. It returns a single empty arg.
@@ -91,12 +92,10 @@ _getpid(void)
   return -1;
 }
 
-int __attribute__((weak))
-_gettimeofday(struct timeval* ptimeval __attribute__((unused)),
-    void* ptimezone __attribute__((unused)))
+int _gettimeofday(struct timeval* ptimeval, void* ptimezone)
 {
-  errno = ENOSYS;
-  return -1;
+  rtc_gettimeofday(ptimeval, ptimezone);
+  return 0;
 }
 
 int __attribute__((weak))
