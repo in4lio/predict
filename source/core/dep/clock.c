@@ -13,6 +13,19 @@
 #define CLOCK_IMPLEMENT
 #include "include.h"
 
+// CORTEX_M //////////////////////////////////////
+#if defined( __ARM_ARCH )
+
+#include "rtc.h"
+
+// UNIX //////////////////////////////////////////
+// WIN32 /////////////////////////////////////////
+// MSDOS /////////////////////////////////////////
+#else
+
+//////////////////////////////////////////////////
+#endif
+
 /**
  *  \addtogroup clock
  */
@@ -27,7 +40,7 @@ void clock_init( void )
 // CORTEX_M //////////////////////////////////////
 #if defined( __ARM_ARCH )
 
-	rtc_init();
+	rtc_init_clock();
 
 // UNIX //////////////////////////////////////////
 // WIN32 /////////////////////////////////////////
@@ -40,11 +53,10 @@ void clock_init( void )
 	gettimeofday( &__clock_time_started, NULL );
 }
 
-void clock_set_time( uint32_t h, uint32_t m, uint32_t s, uint32_t cs )
+void clock_set_time( uint32_t h __attribute__(( unused )), uint32_t m  __attribute__(( unused ))
+                   , uint32_t s __attribute__(( unused )), uint32_t cs __attribute__(( unused )))
 {
-	uint32_t __attribute__(( unused )) t = ( h * ( 100 * 60 * 60 ) + m * ( 100 * 60 ) + s * 100 + cs );
-
-	printf( __CRLF__"clock_set_time() is not implemented" );
+	// struct timeval now = { .tv_sec = ( h * ( 100 * 60 * 60 ) + m * ( 100 * 60 ) + s, .tv_usec = cs * U_PER_CSEC };
 }
 
 uint32_t clock_time_running( void )
@@ -104,20 +116,20 @@ time_t clock_stamp_datetime( char* sd, char* st )
 	return ( t );
 }
 
-struct timeval clock_t_set( const int mc )
+struct timeval clock_t_set( const int ms )
 {
 	struct timeval t;
 
 	gettimeofday( &t, NULL );
-	__clock_t_add( &t, mc );
+	__clock_t_add( &t, ms );
 
-	return t;
+	return ( t );
 }
 
-void __clock_t_add( struct timeval *t, const int mc )
+void __clock_t_add( struct timeval *t, const int ms )
 {
-	t->tv_sec += mc / 1000;
-	t->tv_usec += ( mc % 1000 ) * 1000;
+	t->tv_sec += ms / 1000;
+	t->tv_usec += ( ms % 1000 ) * 1000;
 
 	if ( t->tv_usec > 1000000 ) {
 		t->tv_sec += t->tv_usec / 1000000;

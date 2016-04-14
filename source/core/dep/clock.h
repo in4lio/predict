@@ -87,28 +87,28 @@ CLOCK_EXT time_t clock_stamp_datetime( char* sd, char* st );
 CLOCK_EXT void clock_set_time( uint32_t h, uint32_t m, uint32_t s, uint32_t cs );
 
 /**
- *  \brief Get time of program running.
+ *  \brief Get time of program running (max 497 days).
  *  \return Time in centiseconds.
  */
 CLOCK_EXT uint32_t clock_time_running( void );
 
 /**
  *  \brief Calculate time when timer interval has expired (timeout).
- *  \param mc Interval in milliseconds.
+ *  \param ms Interval in milliseconds.
  *  \return Timeout.
  */
-CLOCK_EXT struct timeval clock_t_set( const int mc );
+CLOCK_EXT struct timeval clock_t_set( const int ms );
 
-CLOCK_EXT void __clock_t_add( struct timeval *t, const int mc );
+CLOCK_EXT void __clock_t_add( struct timeval *t, const int ms );
 CLOCK_EXT int __clock_time_after( struct timeval *t );
 CLOCK_EXT int __clock_t_rest( struct timeval *t );
 
 /**
  *  \brief Prolong timeout.
  *  \param t Timeout.
- *  \param mc Additional interval in milliseconds.
+ *  \param ms Additional interval in milliseconds.
  */
-#define clock_t_add( t, mc ) __clock_t_add(&( t ), ( mc ))
+#define clock_t_add( t, ms ) __clock_t_add(&( t ), ( ms ))
 
 /**
  *  \brief Check timeout.

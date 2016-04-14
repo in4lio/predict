@@ -13,8 +13,8 @@
 #define RTC_IMPLEMENT
 #include "include.h"
 
-#include "MDR32F9Qx_config.h"
 #include "MDR32Fx.h"
+#include "MDR32F9Qx_config.h"
 #include "MDR32F9Qx_rst_clk.h"
 #include "MDR32F9Qx_bkp.h"
 
@@ -25,7 +25,7 @@
 
 #define PRESCALER  32000
 
-void rtc_init( void )
+void rtc_init_clock( void )
 {
 	/* Enable HSI clock for BKP control */
 	RST_CLK_PCLKcmd( RST_CLK_PCLK_BKP, ENABLE );
@@ -33,7 +33,7 @@ void rtc_init( void )
 	BKP_RTC_Reset( ENABLE );
 	BKP_RTC_Reset( DISABLE );
 	/* Configure LSI as RTC clock source */
-	RST_CLK_LSIadjust( 12 );
+	RST_CLK_LSIadjust( 14 );
 	BKP_RTCclkSource( BKP_RTC_LSIclk );
 	while ( RST_CLK_LSIstatus() != SUCCESS );
 	/* Set RTC prescaler value */
@@ -47,11 +47,12 @@ void rtc_init( void )
 	BKP_RTC_Enable( ENABLE );
 }
 
-int rtc_gettimeofday( struct timeval* ptimeval, void* ptimezone __attribute__(( unused )))
+int rtc_gettimeofday( struct timeval *ptimeval, void *ptimezone __attribute__(( unused )))
 {
 	ptimeval->tv_sec = BKP_RTC_GetCounter();
 	ptimeval->tv_usec = 0;
-	return 0;
+
+	return ( 0 );
 }
 
 /** \} */

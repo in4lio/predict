@@ -46,9 +46,9 @@ extern "C" {
  *  \{
  */
 
-#define ESCSEQ_INSIDE  0  /** Inside of escape sequence. \hideinitializer */
-#define ESCSEQ_1       1  /** Single character. \hideinitializer */
-#define ESCSEQ_OK      2  /** Last character of escape sequence. \hideinitializer */
+#define ESCSEQ_INSIDE  0  /**< Inside of escape sequence. \hideinitializer */
+#define ESCSEQ_1       1  /**< Single character. \hideinitializer */
+#define ESCSEQ_OK      2  /**< Last character of escape sequence. \hideinitializer */
 
 #define RX_SIZE  80  /**< Size of input buffer. \hideinitializer */
 
@@ -101,7 +101,7 @@ CHAR_EXT void print_version( void );
 /**
  *  \brief Flush output.
  */
-CHAR_EXT void flush( void );
+extern void flush( void );
 
 /**
  *  \brief Print message.

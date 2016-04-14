@@ -18,11 +18,13 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stddef.h>
 
 // WIN32 /////////////////////////////////////////
 // MSDOS /////////////////////////////////////////
 #if defined( __WIN32__ ) || defined( __MSDOS__ )
 #include <timer.h>
+#include <unistd.h>
 
 //////////////////////////////////////////////////
 #endif
@@ -31,9 +33,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
-#include <math.h>
-#include <errno.h>
-#include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
 

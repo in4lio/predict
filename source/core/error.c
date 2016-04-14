@@ -22,6 +22,7 @@
 const char * const error_format[] = {
 	"TEST_COUNT = %d (must be %d)",
 	"ut_stage_%d is failed",
+	"heap is overflowed",
 	"fopen(%s): %s",
 	"opendir(%s): can't open directory",
 	"%s is empty",

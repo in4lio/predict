@@ -48,9 +48,9 @@ bool vote_($T)( ($T) *result
 
 ($macro vote_bit_t (T)
 bool vote_bit_($T)( dword *result
-, bool __attribute__(( unused )) _1, ($T) value_1
-, bool __attribute__(( unused )) _2, ($T) value_2
-, bool __attribute__(( unused )) _3, ($T) value_3 )
+, bool _1 __attribute__(( unused )), ($T) value_1
+, bool _2 __attribute__(( unused )), ($T) value_2
+, bool _3 __attribute__(( unused )), ($T) value_3 )
 {
 	/* Should be two of three... */
 	*result = ( value_1 & value_2 ) | (( value_1 | value_2 ) & value_3 );

@@ -43,6 +43,7 @@ uint8_t error_repeat[] = {
 	LOG_EVER,
 	LOG_EVER,
 	LOG_EVER,
+	LOG_EVER,
 
 };
 

@@ -42,7 +42,7 @@ struct DATA_DESCRY {
 
 typedef const struct DATA_DESCRY *data_descry_t;
 
-static char __str[ 100 ];
+static char __str[ 100 ] __attribute__(( unused ));
 
 static __inline void __set_changed( const var_t item, const __changed_t value );
 

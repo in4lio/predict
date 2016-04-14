@@ -50,9 +50,9 @@ bool vote_byte( byte *result
 }
 
 bool vote_bit_dword( dword *result
-, bool __attribute__(( unused )) _1, dword value_1
-, bool __attribute__(( unused )) _2, dword value_2
-, bool __attribute__(( unused )) _3, dword value_3 )
+, bool _1 __attribute__(( unused )), dword value_1
+, bool _2 __attribute__(( unused )), dword value_2
+, bool _3 __attribute__(( unused )), dword value_3 )
 {
 	/* Should be two of three... */
 	*result = ( value_1 & value_2 ) | (( value_1 | value_2 ) & value_3 );

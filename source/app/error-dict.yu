@@ -9,6 +9,7 @@
 	(`
 	(  _TEST_COUNT      0          "TEST_COUNT = %d (must be %d)"           LOG_EVER )
 	(  ut               1          "ut_stage_%d is failed"                  LOG_EVER )
+	(  heap             1          "heap is overflowed"                     LOG_EVER )
 	(  file_open        4          "fopen(%s): %s"                          LOG_EVER )
 	(  dir_open         4          "opendir(%s): can't open directory"      LOG_EVER )
 	(  file_is_empty    4          "%s is empty"                            LOG_EVER )

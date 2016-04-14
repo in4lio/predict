@@ -113,7 +113,7 @@ bool ut_assert_uint_32_equal( uint32_t expected, uint32_t actual, const char *pa
 	bool test = ( expected == actual );
 	if ( !test ) {
 		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %d but %d", expected, actual );
+		sprintf( s, "expected %u but %u", expected, actual );
 		ut_fault( s, path, func, line );
 	}
 	return ( !test );

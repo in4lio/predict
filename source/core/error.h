@@ -104,6 +104,7 @@ extern "C" {
 enum {
 	error__TEST_COUNT,
 	error_ut,
+	error_heap,
 	error_file_open,
 	error_dir_open,
 	error_file_is_empty,
@@ -114,6 +115,7 @@ enum {
 enum {
 	err_bit__TEST_COUNT = 0,
 	err_bit_ut = 1,
+	err_bit_heap = 1,
 	err_bit_file_open = 4,
 	err_bit_dir_open = 4,
 	err_bit_file_is_empty = 4,

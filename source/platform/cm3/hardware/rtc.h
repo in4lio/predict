@@ -32,8 +32,8 @@ extern "C" {
  *  \{
  */
 
-RTC_EXT void rtc_init( void );
-RTC_EXT int rtc_gettimeofday( struct timeval* ptimeval, void* ptimezone );
+RTC_EXT void rtc_init_clock( void );
+RTC_EXT int rtc_gettimeofday( struct timeval *ptimeval, void *ptimezone );
 
 /** \} */
 

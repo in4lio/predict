@@ -32,11 +32,6 @@
 </TT></CENTER>
  */
 
-void flush( void )
-{
-	fflush( stdout );
-}
-
 /**
  *  \addtogroup char
  *  \{
@@ -62,7 +57,7 @@ static const char * const TITLE = __CRLF__
  *  \hideinitializer
  */
 const char * const VERSION_STRING =
-	__CRLF__ "predict" " " "0.2a9" " (" "0.2a9" ")"
+	__CRLF__ "predict" " " "0.3a1" " (" "0.2a9" ")"
 	__CRLF__ "Compiled with " "gcc" " " __VERSION__;
 
 /**

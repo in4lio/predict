@@ -27,11 +27,6 @@
 </TT></CENTER>
  */
 
-void flush( void )
-{
-	fflush( stdout );
-}
-
 ($skip-if-not LINK_CONSOLE)
 
 /**

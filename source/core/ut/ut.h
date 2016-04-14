@@ -72,9 +72,9 @@ UT_EXT bool ut_assert_string_doesnt_contain( const char *expected, const char *a
  *  \hideinitializer
  */
 #define assert_fail( msg, ... ) do { \
-	char s[ UT_STR_LIMIT ]; \
-	sprintf( s, msg, ## __VA_ARGS__ ); \
-	ut_fault( s, __FILE__, __FUNCTION__, __LINE__ ); \
+	char _ut_s[ UT_STR_LIMIT ]; \
+	sprintf( _ut_s, msg, ## __VA_ARGS__ ); \
+	ut_fault( _ut_s, __FILE__, __FUNCTION__, __LINE__ ); \
 } while ( 0 )
 
 #undef assert
@@ -110,12 +110,12 @@ UT_EXT bool ut_assert_string_doesnt_contain( const char *expected, const char *a
 } while ( 0 )
 
 #define assert_array_eq( expected, actual, count, op ) do { \
-	int i; \
-	for ( i = 0; i < count; i++ ) { \
+	int _ut_i; \
+	for ( _ut_i = 0; _ut_i < count; _ut_i++ ) { \
 		char s[ UT_STR_LIMIT ]; \
-		bool test = ( expected[ i ] == actual[ i ]); \
+		bool test = ( expected[ _ut_i ] == actual[ _ut_i ]); \
 		if ( !test ) { \
-			sprintf( s, "expected %d to be %d at pos %d", actual[ i ], expected[ i ], i ); \
+			sprintf( s, "expected %d to be %d at pos %d", actual[ _ut_i ], expected[ _ut_i ], _ut_i ); \
 			ut_fault( s, __FILE__, __FUNCTION__, __LINE__ ); \
 			op; \
 		} \
@@ -270,7 +270,7 @@ UT_EXT bool ut_stage_2( int ( *test )( void ));
 UT_EXT void ut_print_statistics( void );
 
 /**
- *  \brief Get current time (callback).
+*  \brief Get timer value in centiseconds (callback).
  */
 UT_EXT uint32_t ( *ut_get_time_callback )( void );
 
