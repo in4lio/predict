@@ -29,6 +29,7 @@ extern "C" {
 
 /**
  *  \defgroup rtc Real-time clock
+ *  \ingroup hardware
  *  \{
  */
 
