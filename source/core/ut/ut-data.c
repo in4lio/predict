@@ -51,6 +51,27 @@ static const int _ut_data_array_watch[] = {
 	var_COUNT
 };
 
+static void test_error( void )
+{
+	/* Test of error messages */
+	ut_quiet_begin();
+
+	data_set_byte( var_COUNT, 0 );                   /* Wrong variable */
+	data_set_dword( var__ut_word, 0 );               /* Wrong type */
+	data_get_word( var_COUNT );                      /* Wrong variable */
+	data_get_float( var__ut_byte );                  /* Wrong type */
+	data_get_changed( peek_COUNT, var__ut_array_2 ); /* Wrong thread */
+
+	ut_quiet_end( 5 );                               /* 5 errors */
+}
+
+void ut_data( void )
+{
+	ut_1_begin();
+	ut_1_exec( test_error );
+	ut_1_end();
+}
+
 int _ut_data_1_init( void )
 {
 	return ( CO_READY ); /* CO_SKIP */
@@ -63,17 +84,6 @@ int coro__ut_data_1( co_t *co_p )
 	/* begin */
 	data_clear_watch( peek__ut_data_1 );
 	data_watch( peek__ut_data_1, _ut_data_1_watch );
-
-	/* Test of error messages */
-	ut_quiet_begin();
-
-	data_set_byte( var_COUNT, 0 );                   /* Wrong variable */
-	data_set_dword( var__ut_word, 0 );               /* Wrong type */
-	data_get_word( var_COUNT );                      /* Wrong variable */
-	data_get_float( var__ut_byte );                  /* Wrong type */
-	data_get_changed( peek_COUNT, var__ut_array_2 ); /* Wrong thread */
-
-	ut_quiet_end( 5 );                               /* 5 errors */
 
 	data_set_byte( var__ut_byte, 1 );
 	data_set_dword( var__ut_array_1, 1 );

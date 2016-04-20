@@ -128,6 +128,8 @@ extern void ut_2_restart( void );
 
 /** "ut_ut" unit test of 1st stage. */
 extern void ut_ut( void );
+/** "ut_data" unit test of 1st stage. */
+extern void ut_data( void );
 
 /** \} */
 

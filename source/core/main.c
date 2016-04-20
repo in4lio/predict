@@ -81,6 +81,7 @@ static int coro_schedule( void )
 static void ut_1( void )
 {
 	ut_ut();
+	ut_data();
 
 }
 

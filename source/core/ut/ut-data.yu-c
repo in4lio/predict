@@ -47,15 +47,8 @@ static const int _ut_data_array_watch[] = {
 	var_COUNT
 };
 
-int _ut_data_1_init( void )
+static void test_error( void )
 {
-	return ( CO_READY ); /* CO_SKIP */
-}
-
-($coro-define _ut_data_1 ]
-	data_clear_watch( peek__ut_data_1 );
-	data_watch( peek__ut_data_1, _ut_data_1_watch );
-
 	/* Test of error messages */
 	ut_quiet_begin();
 
@@ -66,6 +59,23 @@ int _ut_data_1_init( void )
 	data_get_changed( peek_COUNT, var__ut_array_2 ); /* Wrong thread */
 
 	ut_quiet_end( 5 );                               /* 5 errors */
+}
+
+void ut_data( void )
+{
+	ut_1_begin();
+	ut_1_exec( test_error );
+	ut_1_end();
+}
+
+int _ut_data_1_init( void )
+{
+	return ( CO_READY ); /* CO_SKIP */
+}
+
+($coro-define _ut_data_1 ]
+	data_clear_watch( peek__ut_data_1 );
+	data_watch( peek__ut_data_1, _ut_data_1_watch );
 
 	data_set_byte( var__ut_byte, 1 );
 	data_set_dword( var__ut_array_1, 1 );
