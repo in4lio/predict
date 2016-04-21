@@ -51,6 +51,7 @@ extern "C" {
  *  \hideinitializer
  */
 #define UT_STR_LIMIT  100
+#define UT_FORMAT_uint32_t  "%u"
 
 UT_EXT bool ut_assert_true( bool test, const char *path, const char *func, uint32_t line );
 UT_EXT bool ut_assert_false( bool test, const char *path, const char *func, uint32_t line );
@@ -73,7 +74,7 @@ UT_EXT bool ut_assert_string_doesnt_contain( const char *expected, const char *a
  */
 #define assert_fail( msg, ... ) do { \
 	char _ut_s[ UT_STR_LIMIT ]; \
-	sprintf( _ut_s, msg, ## __VA_ARGS__ ); \
+	snprintf( _ut_s, UT_STR_LIMIT, msg, ## __VA_ARGS__ ); \
 	ut_fault( _ut_s, __FILE__, __FUNCTION__, __LINE__ ); \
 } while ( 0 )
 
@@ -105,6 +106,27 @@ UT_EXT bool ut_assert_string_doesnt_contain( const char *expected, const char *a
 	if ( ut_assert_uint_equal( expected, actual, __FILE__, __FUNCTION__, __LINE__ )) { op; } \
 } while ( 0 )
 
+#define ut_fault_format( msg, expected, actual, ... ) do { \
+	char _ut_s[ UT_STR_LIMIT ]; \
+	snprintf( _ut_s, UT_STR_LIMIT, msg, expected, actual ); \
+	ut_fault( _ut_s, __VA_ARGS__ ); \
+} while ( 0 )
+
+#define assert_int_cmp( expected, actual, COND, op ) do { \
+	if ( !(( expected ) COND ( actual ))) { \
+		ut_fault_format( "expected %d " #COND " but %d", expected, actual, __FILE__, __FUNCTION__, __LINE__ ); \
+		op; \
+	} \
+} while ( 0 )
+
+#define assert_uint_cmp( expected, actual, COND, op ) do { \
+	if ( !(( expected ) COND ( actual ))) { \
+		ut_fault_format( "expected " UT_FORMAT_uint32_t " " #COND " but " UT_FORMAT_uint32_t, expected, actual \
+		, __FILE__, __FUNCTION__, __LINE__ ); \
+		op; \
+	} \
+} while ( 0 )
+
 #define assert_str_eq( expected, actual, op ) do { \
 	if ( ut_assert_string_equal( expected, actual, __FILE__, __FUNCTION__, __LINE__ )) { op; } \
 } while ( 0 )
@@ -112,11 +134,11 @@ UT_EXT bool ut_assert_string_doesnt_contain( const char *expected, const char *a
 #define assert_array_eq( expected, actual, count, op ) do { \
 	int _ut_i; \
 	for ( _ut_i = 0; _ut_i < count; _ut_i++ ) { \
-		char s[ UT_STR_LIMIT ]; \
+		char _ut_s[ UT_STR_LIMIT ]; \
 		bool test = ( expected[ _ut_i ] == actual[ _ut_i ]); \
 		if ( !test ) { \
-			sprintf( s, "expected %d to be %d at pos %d", actual[ _ut_i ], expected[ _ut_i ], _ut_i ); \
-			ut_fault( s, __FILE__, __FUNCTION__, __LINE__ ); \
+			snprintf( _ut_s, UT_STR_LIMIT, "expected %d to be %d at pos %d", actual[ _ut_i ], expected[ _ut_i ], _ut_i ); \
+			ut_fault( _ut_s, __FILE__, __FUNCTION__, __LINE__ ); \
 			op; \
 		} \
 	} \
@@ -154,6 +176,15 @@ UT_EXT bool ut_assert_string_doesnt_contain( const char *expected, const char *a
 	if ( ut_assert_double_equal( expected, actual, delta, __FILE__, __FUNCTION__, __LINE__ )) { op; } \
 } while ( 0 )
 
+#define assert_float_cmp( expected, actual, COND, op ) do { \
+	if ( !(( expected ) COND ( actual ))) { \
+		ut_fault_format( "expected %f " #COND " but %f", expected, actual, __FILE__, __FUNCTION__, __LINE__ ); \
+		op; \
+	} \
+} while ( 0 )
+
+#define assert_double_cmp  assert_float_cmp
+
 #define assert_str_has( expected, actual, op ) do { \
 	if ( ut_assert_string_contains( expected, actual, __FILE__, __FUNCTION__, __LINE__ )) { op; } \
 } while ( 0 )
@@ -186,10 +217,10 @@ UT_EXT void ut_2_unit_begin( const char *path );
 #define ut_assert_loud() do { \
 	int quiet = ut_get_quiet(); \
 	if ( quiet ) { \
-		char s[ UT_STR_LIMIT ]; \
-		sprintf( s, "QUIET should be disabled ( %d fault(s))", quiet - 1 ); \
+		char _ut_s[ UT_STR_LIMIT ]; \
+		snprintf( _ut_s, UT_STR_LIMIT, "QUIET should be disabled ( %d fault(s))", quiet - 1 ); \
 		ut_loud(); \
-		ut_fault( s, __FILE__, __FUNCTION__, __LINE__ ); \
+		ut_fault( _ut_s, __FILE__, __FUNCTION__, __LINE__ ); \
 	} \
 } while ( 0 )
 
@@ -308,6 +339,8 @@ UT_EXT void ( *ut_unlock_callback )( void );
 #define assert_assigned( value, op ) NULL
 #define assert_int_eq( expected, actual, op ) NULL
 #define assert_uint_eq( expected, actual, op ) NULL
+#define assert_int_cmp( expected, actual, COND, op ) NULL
+#define assert_uint_cmp( expected, actual, COND, op ) NULL
 #define assert_str_eq( expected, actual, op ) NULL
 #define assert_array_eq( expected, actual, count, op ) NULL
 #define assert_bit_1( bit, value, op ) NULL
@@ -315,6 +348,8 @@ UT_EXT void ( *ut_unlock_callback )( void );
 #define assert_bit_mask( value, mask, op ) NULL
 #define assert_float_eq( expected, actual, delta, op ) NULL
 #define assert_double_eq( expected, actual, delta, op ) NULL
+#define assert_float_cmp( expected, actual, COND, op ) NULL
+#define assert_double_cmp( expected, actual, COND, op ) NULL
 #define assert_str_has( expected, actual, op ) NULL
 #define assert_str_hasno( expected, actual, op ) NULL
 #define assert_str_start( expected, actual, op ) NULL

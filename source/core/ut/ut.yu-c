@@ -92,62 +92,37 @@ bool ut_assert_assigned( int data, const char *path, const char *func, uint32_t 
 	return ( data == 0 );
 }
 
-($macro ut_assert_t_equal (name T)
+($macro ut_assert_i_equal (name T F)
 bool ut_assert_($name)_equal( ($T) expected, ($T) actual, const char *path, const char *func, uint32_t line )
 {
 	bool test = ( expected == actual );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %d but %d", expected, actual );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected " ($F) " but " ($F), expected, actual, path, func, line );
 	}
 	return ( !test );
 })
 
-($ut_assert_t_equal,,int,,int)
+($ut_assert_i_equal,,int,,int,,"%d")
 
-($ut_assert_t_equal,,uint,,uint32_t)
+($ut_assert_i_equal,,uint,,uint32_t,,UT_FORMAT_uint32_t)
 
-bool ut_assert_uint_32_equal( uint32_t expected, uint32_t actual, const char *path, const char *func, uint32_t line )
+($macro ut_assert_f_equal (T F)
+bool ut_assert_($T)_equal( ($T) expected, ($T) actual, ($T) delta, const char *path, const char *func, uint32_t line )
 {
-	bool test = ( expected == actual );
-	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %u but %u", expected, actual );
-		ut_fault( s, path, func, line );
-	}
-	return ( !test );
-}
-
-bool ut_assert_float_equal( float expected, float actual, float delta, const char *path, const char *func, uint32_t line )
-{
-	float result = expected - actual;
+	($T) result = expected - actual;
 	bool test;
 
 	if ( result < 0.0 ) result = 0.0 - result;
 	test = ( result <= delta );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %f but %f", expected, actual );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected " ($F) " but " ($F), expected, actual, path, func, line );
 	}
 	return ( !test );
-}
+})
 
-bool ut_assert_double_equal( double expected, double actual, double delta, const char *path, const char *func, uint32_t line )
-{
-	double result = expected - actual;
-	bool test;
+($ut_assert_f_equal,,float,,"%f")
 
-	if ( result < 0.0 ) result = 0.0 - result;
-	test = ( result <= delta );
-	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %f but %f", expected, actual );
-		ut_fault( s, path, func, line );
-	}
-	return ( !test );
-}
+($ut_assert_f_equal,,double,,"%f")
 
 bool ut_assert_string_equal( const char *expected, const char *actual, const char *path, const char *func, uint32_t line )
 {
@@ -164,9 +139,7 @@ bool ut_assert_string_equal( const char *expected, const char *actual, const cha
 		test = ( strcmp( expected, actual ) == 0 );
 	}
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %s but %s", expected, actual );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected %s but %s", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -175,9 +148,7 @@ bool ut_assert_string_ends_with( const char *expected, const char *actual, const
 {
 	bool test = ( strcmp( expected, actual + ( strlen( actual ) - strlen( expected ))) == 0 );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %s to end with %s", actual, expected );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected %s to end with %s", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -186,9 +157,7 @@ bool ut_assert_string_starts_with( const char *expected, const char *actual, con
 {
 	bool test = ( strncmp( expected, actual, strlen( expected )) == 0 );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %s to start with %s", actual, expected );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected %s to start with %s", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -197,9 +166,7 @@ bool ut_assert_string_contains( const char *expected, const char *actual, const 
 {
 	bool test = ( strstr( actual, expected ) != 0 );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %s to be in %s", expected, actual );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected %s to be in %s", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -208,9 +175,7 @@ bool ut_assert_string_doesnt_contain( const char *expected, const char *actual, 
 {
 	bool test = ( strstr( actual, expected ) == 0 );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %s not to have %s in it", actual, expected );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected %s not to have %s in it", expected, actual, path, func, line );
 	}
 	return ( !test );
 }

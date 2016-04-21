@@ -100,9 +100,7 @@ bool ut_assert_int_equal( int expected, int actual, const char *path, const char
 {
 	bool test = ( expected == actual );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %d but %d", expected, actual );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected " "%d" " but " "%d", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -111,20 +109,7 @@ bool ut_assert_uint_equal( uint32_t expected, uint32_t actual, const char *path,
 {
 	bool test = ( expected == actual );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %d but %d", expected, actual );
-		ut_fault( s, path, func, line );
-	}
-	return ( !test );
-}
-
-bool ut_assert_uint_32_equal( uint32_t expected, uint32_t actual, const char *path, const char *func, uint32_t line )
-{
-	bool test = ( expected == actual );
-	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %u but %u", expected, actual );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected " UT_FORMAT_uint32_t " but " UT_FORMAT_uint32_t, expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -137,9 +122,7 @@ bool ut_assert_float_equal( float expected, float actual, float delta, const cha
 	if ( result < 0.0 ) result = 0.0 - result;
 	test = ( result <= delta );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %f but %f", expected, actual );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected " "%f" " but " "%f", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -152,9 +135,7 @@ bool ut_assert_double_equal( double expected, double actual, double delta, const
 	if ( result < 0.0 ) result = 0.0 - result;
 	test = ( result <= delta );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %f but %f", expected, actual );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected " "%f" " but " "%f", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -174,9 +155,7 @@ bool ut_assert_string_equal( const char *expected, const char *actual, const cha
 		test = ( strcmp( expected, actual ) == 0 );
 	}
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %s but %s", expected, actual );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected %s but %s", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -185,9 +164,7 @@ bool ut_assert_string_ends_with( const char *expected, const char *actual, const
 {
 	bool test = ( strcmp( expected, actual + ( strlen( actual ) - strlen( expected ))) == 0 );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %s to end with %s", actual, expected );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected %s to end with %s", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -196,9 +173,7 @@ bool ut_assert_string_starts_with( const char *expected, const char *actual, con
 {
 	bool test = ( strncmp( expected, actual, strlen( expected )) == 0 );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %s to start with %s", actual, expected );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected %s to start with %s", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -207,9 +182,7 @@ bool ut_assert_string_contains( const char *expected, const char *actual, const 
 {
 	bool test = ( strstr( actual, expected ) != 0 );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %s to be in %s", expected, actual );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected %s to be in %s", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
@@ -218,9 +191,7 @@ bool ut_assert_string_doesnt_contain( const char *expected, const char *actual, 
 {
 	bool test = ( strstr( actual, expected ) == 0 );
 	if ( !test ) {
-		char s[ UT_STR_LIMIT ];
-		sprintf( s, "expected %s not to have %s in it", actual, expected );
-		ut_fault( s, path, func, line );
+		ut_fault_format( "expected %s not to have %s in it", expected, actual, path, func, line );
 	}
 	return ( !test );
 }
