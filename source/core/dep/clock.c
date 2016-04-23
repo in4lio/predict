@@ -143,7 +143,7 @@ int __clock_time_after( struct timeval *t )
 
 	gettimeofday( &now, NULL );
 
-	return ( timercmp( &now, t, > ));
+	return ( timercmp( &now, t, >= ));
 }
 
 int __clock_t_rest( struct timeval *t )
