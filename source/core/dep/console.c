@@ -604,8 +604,7 @@ int coro_console_cyclic( co_t *co_p )
 	for ( ; ; ) {
 		switch ( cyclic_stt ) {
 
-		/* Initialize cyclic command */
-		case cyclic_stt_START:
+		case cyclic_stt_START:  /* Initialize cyclic command */
 
 			cyclic_stt = cyclic_start();
 			if ( cyclic_stt != cyclic_stt_EXEC ) break;
@@ -613,8 +612,7 @@ int coro_console_cyclic( co_t *co_p )
 			char_echo = 0;
 			/* fallthrough */
 
-		/* Execute cyclic command */
-		case cyclic_stt_EXEC:
+		case cyclic_stt_EXEC:  /* Execute cyclic command */
 
 			if ( clock_time_before( t_cycle )) break;
 
@@ -624,8 +622,7 @@ int coro_console_cyclic( co_t *co_p )
 			t_cycle = clock_t_set( ini_cyclic_delay * TICK_PER_SEC );
 			break;
 
-		/* Stop cyclic command */
-		case cyclic_stt_STOP:
+		case cyclic_stt_STOP:  /* Stop cyclic command */
 
 			cyclic_stop();
 			cyclic_stt = cyclic_stt_IDLE;

@@ -123,6 +123,8 @@ int _ut_data_1_init( void )
 	data_set_changed( var__ut_float );
 	assert( data_get_changed_any( peek__ut_data_1 ), );
 
+	($coro-yield);
+
 	data_clear_watch( peek__ut_data_1 );
 	assert_not( data_get_changed_any( peek__ut_data_1 ), );
 	data_watch_array( peek__ut_data_1, _ut_data_array_watch );
@@ -138,6 +140,8 @@ int _ut_data_1_init( void )
 	assert( data_get_changed( peek__ut_data_1, var__ut_array_3 ), );
 	data_set_changed( var__ut_byte );
 	assert( data_get_changed( peek__ut_data_1, var__ut_byte ), );
+
+	($coro-yield);
 
 	assert_int_eq( var__ut_array, data_atovar( data_vartoa( var__ut_array_0 )), );
 	assert_str_eq( "_ut_byte", data_vartoa( data_atovar( "_ut_byte" )), );
@@ -211,6 +215,9 @@ int _ut_data_2_init( void )
 	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
 	data_reset( peek__ut_data_2, var__ut_vote );
 	assert_not( voted_valid( var__ut_vote ), );
+
+	($coro-yield);
+
 	/* I: 1  II: 0  III: 1  M: 1  */
 	voted_set_byte( var__ut_vote, 1, 1, &vote_byte );
 	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
@@ -235,6 +242,9 @@ int _ut_data_2_init( void )
 	data_reset( peek__ut_data_2, var__ut_vote );
 	assert( voted_valid( var__ut_vote ), );
 	assert_int_eq( 3, data_get_byte( var__ut_vote ), );
+
+	($coro-yield);
+
 	/* I: 3  II: 3  III: 3  M: 3  */
 	voted_set_byte( var__ut_vote, 2, 3, &vote_byte );
 	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ), );

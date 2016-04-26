@@ -244,8 +244,7 @@ void console_cyclic_uninit( void )
 	for ( ; ; ) {
 		switch ( cyclic_stt ) {
 
-		/* Initialize cyclic command */
-		case cyclic_stt_START:
+		case cyclic_stt_START:  /* Initialize cyclic command */
 
 			cyclic_stt = cyclic_start();
 			if ( cyclic_stt != cyclic_stt_EXEC ) break;
@@ -253,8 +252,7 @@ void console_cyclic_uninit( void )
 			char_echo = 0;
 			/* fallthrough */
 
-		/* Execute cyclic command */
-		case cyclic_stt_EXEC:
+		case cyclic_stt_EXEC:  /* Execute cyclic command */
 
 			if ( clock_time_before( t_cycle )) break;
 
@@ -264,8 +262,7 @@ void console_cyclic_uninit( void )
 			t_cycle = clock_t_set( ini_cyclic_delay * TICK_PER_SEC );
 			break;
 
-		/* Stop cyclic command */
-		case cyclic_stt_STOP:
+		case cyclic_stt_STOP:  /* Stop cyclic command */
 
 			cyclic_stop();
 			cyclic_stt = cyclic_stt_IDLE;

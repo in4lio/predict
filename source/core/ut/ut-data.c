@@ -158,6 +158,15 @@ int coro__ut_data_1( co_t *co_p )
 	data_set_changed( var__ut_float );
 	assert( data_get_changed_any( peek__ut_data_1 ), );
 
+	do {
+		/* yield */
+		*co_p = &&L__3;
+	
+		return CO_YIELD;
+
+		L__3:;
+	} while ( 0 );
+
 	data_clear_watch( peek__ut_data_1 );
 	assert_not( data_get_changed_any( peek__ut_data_1 ), );
 	data_watch_array( peek__ut_data_1, _ut_data_array_watch );
@@ -173,6 +182,15 @@ int coro__ut_data_1( co_t *co_p )
 	assert( data_get_changed( peek__ut_data_1, var__ut_array_3 ), );
 	data_set_changed( var__ut_byte );
 	assert( data_get_changed( peek__ut_data_1, var__ut_byte ), );
+
+	do {
+		/* yield */
+		*co_p = &&L__4;
+	
+		return CO_YIELD;
+
+		L__4:;
+	} while ( 0 );
 
 	assert_int_eq( var__ut_array, data_atovar( data_vartoa( var__ut_array_0 )), );
 	assert_str_eq( "_ut_byte", data_vartoa( data_atovar( "_ut_byte" )), );
@@ -213,9 +231,9 @@ int coro__ut_data_2( co_t *co_p )
 
 		do {
 			/* wait */
-			*co_p = &&L__3;
+			*co_p = &&L__5;
 
-			L__3:
+			L__5:
 			if (!( data_get_changed( peek__ut_data_2, var__ut_byte ))) { /* cond */
 		
 				return CO_WAIT;
@@ -229,9 +247,9 @@ int coro__ut_data_2( co_t *co_p )
 
 		do {
 			/* wait */
-			*co_p = &&L__4;
+			*co_p = &&L__6;
 
-			L__4:
+			L__6:
 			if (!( data_get_changed( peek__ut_data_2, var__ut_array_1 ))) { /* cond */
 		
 				return CO_WAIT;
@@ -248,9 +266,9 @@ int coro__ut_data_2( co_t *co_p )
 
 		do {
 			/* wait */
-			*co_p = &&L__5;
+			*co_p = &&L__7;
 
-			L__5:
+			L__7:
 			if (!( data_get_changed( peek__ut_data_2, var__ut_float ))) { /* cond */
 		
 				return CO_WAIT;
@@ -281,6 +299,16 @@ int coro__ut_data_2( co_t *co_p )
 	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
 	data_reset( peek__ut_data_2, var__ut_vote );
 	assert_not( voted_valid( var__ut_vote ), );
+
+	do {
+		/* yield */
+		*co_p = &&L__8;
+	
+		return CO_YIELD;
+
+		L__8:;
+	} while ( 0 );
+
 	/* I: 1  II: 0  III: 1  M: 1  */
 	voted_set_byte( var__ut_vote, 1, 1, &vote_byte );
 	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
@@ -305,6 +333,16 @@ int coro__ut_data_2( co_t *co_p )
 	data_reset( peek__ut_data_2, var__ut_vote );
 	assert( voted_valid( var__ut_vote ), );
 	assert_int_eq( 3, data_get_byte( var__ut_vote ), );
+
+	do {
+		/* yield */
+		*co_p = &&L__9;
+	
+		return CO_YIELD;
+
+		L__9:;
+	} while ( 0 );
+
 	/* I: 3  II: 3  III: 3  M: 3  */
 	voted_set_byte( var__ut_vote, 2, 3, &vote_byte );
 	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ), );
@@ -344,11 +382,11 @@ int coro_ut_data( co_t *co_p )
 	ut_2_begin();
 	do {
 		/* yield */
-		*co_p = &&L__6;
+		*co_p = &&L__10;
 	
 		return CO_YIELD;
 
-		L__6:;
+		L__10:;
 	} while ( 0 );
 
 	co__ut_data_1 = NULL;
@@ -359,9 +397,9 @@ int coro_ut_data( co_t *co_p )
 
 	do {
 		/* wait */
-		*co_p = &&L__7;
+		*co_p = &&L__11;
 
-		L__7:
+		L__11:
 		if (!(!((  coro__ut_data_1( &co__ut_data_1 ) | coro__ut_data_2( &co__ut_data_2 ) ) < CO_END ))) { /* cond */
 		
 			return CO_WAIT;
