@@ -24,10 +24,12 @@
 #define LOG_EXT
 #define LOG_EXT_INIT( dec, init ) \
 	dec = init
+#define LOG_INL extern inline
 #else
 #define LOG_EXT extern
 #define LOG_EXT_INIT( dec, init ) \
 	extern dec
+#define LOG_INL inline
 #endif
 
 #ifndef COMMA

@@ -24,10 +24,12 @@
 #define CLOCK_EXT
 #define CLOCK_EXT_INIT( dec, init ) \
 	dec = init
+#define CLOCK_INL extern inline
 #else
 #define CLOCK_EXT extern
 #define CLOCK_EXT_INIT( dec, init ) \
 	extern dec
+#define CLOCK_INL inline
 #endif
 
 #ifndef COMMA

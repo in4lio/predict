@@ -24,10 +24,12 @@
 #define INI_EXT
 #define INI_EXT_INIT( dec, init ) \
 	dec = init
+#define INI_INL extern inline
 #else
 #define INI_EXT extern
 #define INI_EXT_INIT( dec, init ) \
 	extern dec
+#define INI_INL inline
 #endif
 
 #ifndef COMMA

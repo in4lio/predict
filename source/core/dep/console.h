@@ -24,10 +24,12 @@
 #define CONSOLE_EXT
 #define CONSOLE_EXT_INIT( dec, init ) \
 	dec = init
+#define CONSOLE_INL extern inline
 #else
 #define CONSOLE_EXT extern
 #define CONSOLE_EXT_INIT( dec, init ) \
 	extern dec
+#define CONSOLE_INL inline
 #endif
 
 #ifndef COMMA

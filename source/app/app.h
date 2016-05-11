@@ -24,10 +24,12 @@
 #define APP_EXT
 #define APP_EXT_INIT( dec, init ) \
 	dec = init
+#define APP_INL extern inline
 #else
 #define APP_EXT extern
 #define APP_EXT_INIT( dec, init ) \
 	extern dec
+#define APP_INL inline
 #endif
 
 #ifndef COMMA

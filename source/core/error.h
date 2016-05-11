@@ -24,10 +24,12 @@
 #define ERROR_EXT
 #define ERROR_EXT_INIT( dec, init ) \
 	dec = init
+#define ERROR_INL extern inline
 #else
 #define ERROR_EXT extern
 #define ERROR_EXT_INIT( dec, init ) \
 	extern dec
+#define ERROR_INL inline
 #endif
 
 #ifndef COMMA

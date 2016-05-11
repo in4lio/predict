@@ -24,10 +24,12 @@
 #define CHAR_EXT
 #define CHAR_EXT_INIT( dec, init ) \
 	dec = init
+#define CHAR_INL extern inline
 #else
 #define CHAR_EXT extern
 #define CHAR_EXT_INIT( dec, init ) \
 	extern dec
+#define CHAR_INL inline
 #endif
 
 #ifndef COMMA

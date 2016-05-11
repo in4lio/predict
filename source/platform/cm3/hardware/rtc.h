@@ -14,13 +14,15 @@
 #define RTC_H
 
 #ifdef  RTC_IMPLEMENT
-#define RTC_EXT
-#define RTC_EXT_INIT( dec, init ) \
+#define _EXT
+#define _EXT_INIT( dec, init ) \
 	dec = init
+#define _INL extern inline
 #else
-#define RTC_EXT extern
-#define RTC_EXT_INIT( dec, init ) \
+#define _EXT extern
+#define _EXT_INIT( dec, init ) \
 	extern dec
+#define _INL inline
 #endif
 
 #ifdef __cplusplus
@@ -33,13 +35,17 @@ extern "C" {
  *  \{
  */
 
-RTC_EXT void rtc_init_clock( void );
-RTC_EXT int rtc_gettimeofday( struct timeval *ptimeval, void *ptimezone );
+_EXT void rtc_init_clock( void );
+_EXT int rtc_gettimeofday( struct timeval *ptimeval, void *ptimezone );
 
 /** \} */
 
 #ifdef __cplusplus
 }
 #endif
+
+#undef _EXT
+#undef _EXT_INIT
+#undef _INL
 
 #endif /* RTC_H */

@@ -24,10 +24,12 @@
 #define CO_EXT
 #define CO_EXT_INIT( dec, init ) \
 	dec = init
+#define CO_INL extern inline
 #else
 #define CO_EXT extern
 #define CO_EXT_INIT( dec, init ) \
 	extern dec
+#define CO_INL inline
 #endif
 
 #ifndef COMMA

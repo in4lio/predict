@@ -24,10 +24,12 @@
 #define GETCH_EXT
 #define GETCH_EXT_INIT( dec, init ) \
 	dec = init
+#define GETCH_INL extern inline
 #else
 #define GETCH_EXT extern
 #define GETCH_EXT_INIT( dec, init ) \
 	extern dec
+#define GETCH_INL inline
 #endif
 
 #ifndef COMMA

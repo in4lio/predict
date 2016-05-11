@@ -24,10 +24,12 @@
 #define UT_EXT
 #define UT_EXT_INIT( dec, init ) \
 	dec = init
+#define UT_INL extern inline
 #else
 #define UT_EXT extern
 #define UT_EXT_INIT( dec, init ) \
 	extern dec
+#define UT_INL inline
 #endif
 
 #ifndef COMMA

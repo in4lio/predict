@@ -24,10 +24,12 @@
 #define DATA_STR_EXT
 #define DATA_STR_EXT_INIT( dec, init ) \
 	dec = init
+#define DATA_STR_INL extern inline
 #else
 #define DATA_STR_EXT extern
 #define DATA_STR_EXT_INIT( dec, init ) \
 	extern dec
+#define DATA_STR_INL inline
 #endif
 
 #ifndef COMMA

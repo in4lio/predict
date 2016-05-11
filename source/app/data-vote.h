@@ -24,10 +24,12 @@
 #define DATA_VOTE_EXT
 #define DATA_VOTE_EXT_INIT( dec, init ) \
 	dec = init
+#define DATA_VOTE_INL extern inline
 #else
 #define DATA_VOTE_EXT extern
 #define DATA_VOTE_EXT_INIT( dec, init ) \
 	extern dec
+#define DATA_VOTE_INL inline
 #endif
 
 #ifndef COMMA

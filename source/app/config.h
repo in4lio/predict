@@ -15,10 +15,12 @@
 #define CONFIG_EXT
 #define CONFIG_EXT_INIT( dec, init ) \
 	dec = init
+#define CONFIG_INL extern inline
 #else
 #define CONFIG_EXT extern
 #define CONFIG_EXT_INIT( dec, init ) \
 	extern dec
+#define CONFIG_INL inline
 #endif
 
 #ifndef COMMA
