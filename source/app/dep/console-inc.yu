@@ -111,15 +111,15 @@ static uint16_t __cyclic_delay;
 ($handle_par,,d_flt,,0)
 {
 	if ( *msg == '-' ) {
-		val_ptr = ini_data_prot_filter_skip;
+		tmp3_ptr = ini_data_prot_filter_skip;
 		++msg;
 	} else {
-		val_ptr = ini_data_prot_filter;
+		tmp3_ptr = ini_data_prot_filter;
 	}
 	if (( *msg == '\0' ) || ( strchr( msg, '*' ) != 0 )) {
-		*( char *) val_ptr = '\0';
+		*( char *) tmp3_ptr = '\0';
 	} else {
-		strcpy( val_ptr, msg );
+		strcpy( tmp3_ptr, msg );
 	}
 	printf( __CRLF__"  p_flt = (%s) -(%s)"
 	, ( *ini_data_prot_filter ) ? ini_data_prot_filter : "*"
@@ -138,9 +138,9 @@ static uint16_t __cyclic_delay;
 
 ($handle_par,,d_get,,0)
 {
-	val_int = data_atovar( msg );
-	if ( val_int < var_COUNT ) {
-		printf( __CRLF__"  %s = %s", msg, data_get_string( __str, val_int ));
+	tmp1_int = data_atovar( msg );
+	if ( tmp1_int < var_COUNT ) {
+		printf( __CRLF__"  %s = %s", msg, data_get_string( __str, tmp1_int ));
 	} else {
 		error = "name";
 	}
@@ -190,10 +190,10 @@ static uint16_t __cyclic_delay;
 
 ($handle_par,,d_set,,0)
 {
-	val_int = data_atovar( msg );
-	if ( val_int < var_COUNT ) {
-		printf( __CRLF__"  %s = %s", msg, data_get_string( __str, val_int ));
-		printf( __CRLF__"  value: " );
+	tmp1_int = data_atovar( msg );
+	if ( tmp1_int < var_COUNT ) {
+		printf( __CRLF__"  %s = %s", msg, data_get_string( __str, tmp1_int ));
+		printf( __CRLF__"  value : " );
 		wait_par( par_d_set_1 );
 	} else {
 		error = "name";
@@ -202,8 +202,8 @@ static uint16_t __cyclic_delay;
 
 ($handle_par,,d_set,,1)
 {
-	data_set_string( val_int, msg );
-	printf( __CRLF__"  %s = %s", data_vartoa( val_int ), data_get_string( __str, val_int ));
+	data_set_string( tmp1_int, msg );
+	printf( __CRLF__"  %s = %s", data_vartoa( tmp1_int ), data_get_string( __str, tmp1_int ));
 }
 
 /**

@@ -132,8 +132,9 @@ static int cyclic_stt;
 static int cyclic_job;
 
 /* Temporary variables */
-static int val_int __attribute__(( unused ));
-static void *val_ptr __attribute__(( unused ));
+static int tmp1_int __attribute__(( unused ));
+static int tmp2_int __attribute__(( unused ));
+static void *tmp3_ptr __attribute__(( unused ));
 static uint32_t __uint __attribute__(( unused ));
 static char __str[ 100 ] __attribute__(( unused ));
 
@@ -289,15 +290,15 @@ static __inline void handle_cmd_d_flt( void )
 static __inline void handle_par_d_flt_0( const char *msg )
 {
 	if ( *msg == '-' ) {
-		val_ptr = ini_data_prot_filter_skip;
+		tmp3_ptr = ini_data_prot_filter_skip;
 		++msg;
 	} else {
-		val_ptr = ini_data_prot_filter;
+		tmp3_ptr = ini_data_prot_filter;
 	}
 	if (( *msg == '\0' ) || ( strchr( msg, '*' ) != 0 )) {
-		*( char *) val_ptr = '\0';
+		*( char *) tmp3_ptr = '\0';
 	} else {
-		strcpy( val_ptr, msg );
+		strcpy( tmp3_ptr, msg );
 	}
 	printf( __CRLF__"  p_flt = (%s) -(%s)"
 	, ( *ini_data_prot_filter ) ? ini_data_prot_filter : "*"
@@ -316,9 +317,9 @@ static __inline void handle_cmd_d_get( void )
 
 static __inline void handle_par_d_get_0( const char *msg )
 {
-	val_int = data_atovar( msg );
-	if ( val_int < var_COUNT ) {
-		printf( __CRLF__"  %s = %s", msg, data_get_string( __str, val_int ));
+	tmp1_int = data_atovar( msg );
+	if ( tmp1_int < var_COUNT ) {
+		printf( __CRLF__"  %s = %s", msg, data_get_string( __str, tmp1_int ));
 	} else {
 		error = "name";
 	}
@@ -368,10 +369,10 @@ static __inline void handle_cmd_d_set( void )
 
 static __inline void handle_par_d_set_0( const char *msg )
 {
-	val_int = data_atovar( msg );
-	if ( val_int < var_COUNT ) {
-		printf( __CRLF__"  %s = %s", msg, data_get_string( __str, val_int ));
-		printf( __CRLF__"  value: " );
+	tmp1_int = data_atovar( msg );
+	if ( tmp1_int < var_COUNT ) {
+		printf( __CRLF__"  %s = %s", msg, data_get_string( __str, tmp1_int ));
+		printf( __CRLF__"  value : " );
 		wait_par( par_d_set_1 );
 	} else {
 		error = "name";
@@ -380,8 +381,8 @@ static __inline void handle_par_d_set_0( const char *msg )
 
 static __inline void handle_par_d_set_1( const char *msg )
 {
-	data_set_string( val_int, msg );
-	printf( __CRLF__"  %s = %s", data_vartoa( val_int ), data_get_string( __str, val_int ));
+	data_set_string( tmp1_int, msg );
+	printf( __CRLF__"  %s = %s", data_vartoa( tmp1_int ), data_get_string( __str, tmp1_int ));
 }
 
 /**

@@ -103,8 +103,9 @@ static int cyclic_stt;
 static int cyclic_job;
 
 /* Temporary variables */
-static int val_int __attribute__(( unused ));
-static void *val_ptr __attribute__(( unused ));
+static int tmp1_int __attribute__(( unused ));
+static int tmp2_int __attribute__(( unused ));
+static void *tmp3_ptr __attribute__(( unused ));
 static uint32_t __uint __attribute__(( unused ));
 static char __str[ 100 ] __attribute__(( unused ));
 
