@@ -71,7 +71,7 @@ extern "C" {
  *  \page console Console commands
  *  <br><i>Common console commands</i><br>
  *
- *  \section c_delay c_delay
+ *  \section c__delay _delay
  *  Interval of cyclic command execution.
  *
  *  \section c_data data

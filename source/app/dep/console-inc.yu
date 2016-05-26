@@ -7,7 +7,7 @@
 /**
  *  \brief Interval of cyclic command execution.
  */
-($handle_cmd,,c_delay)
+($handle_cmd,,_delay)
 {
 	printf(
 	__CRLF__"  cyclic_delay = %d"
@@ -15,13 +15,14 @@
 	               ".." __stringify( cyclic_delay_MAX ) "): "
 	, ini_cyclic_delay
 	);
-	wait_par( par_c_delay );
+	wait_par( par__delay );
 }
 
-($handle_par,,c_delay,,0)
+($handle_par,,_delay,,0)
 {
 	if ( msg_to__uint( cyclic_delay_MIN, cyclic_delay_MAX )) {
 		ini_cyclic_delay = __uint;
+		//TODO: save
 	} else {
 		error = "value";
 	}
@@ -100,7 +101,7 @@ static uint16_t __cyclic_delay;
  */
 ($handle_cmd,,d_flt)
 {
-	printf( __CRLF__"  p_flt = (%s) -(%s)"
+	printf( __CRLF__"  filter = (%s) -(%s)"
 	, ( *ini_data_prot_filter ) ? ini_data_prot_filter : "*"
 	, ( *ini_data_prot_filter_skip ) ? ini_data_prot_filter_skip : ""
 	);
@@ -121,10 +122,11 @@ static uint16_t __cyclic_delay;
 	} else {
 		strcpy( tmp3_ptr, msg );
 	}
-	printf( __CRLF__"  p_flt = (%s) -(%s)"
+	printf( __CRLF__"  filter = (%s) -(%s)"
 	, ( *ini_data_prot_filter ) ? ini_data_prot_filter : "*"
 	, ( *ini_data_prot_filter_skip ) ? ini_data_prot_filter_skip : ""
 	);
+	//TODO: save
 }
 
 /**
@@ -172,8 +174,8 @@ static uint16_t __cyclic_delay;
 {
 	if ( msg_to__uint_0( 1 )) {
 		ini_data_prot = __uint;
-
 		printf( __CRLF__"  data_prot = %d", ini_data_prot );
+		//TODO: save
 	} else {
 		error = "value";
 	}
@@ -193,7 +195,7 @@ static uint16_t __cyclic_delay;
 	tmp1_int = data_atovar( msg );
 	if ( tmp1_int < var_COUNT ) {
 		printf( __CRLF__"  %s = %s", msg, data_get_string( __str, tmp1_int ));
-		printf( __CRLF__"  value : " );
+		printf( __CRLF__"  value: " );
 		wait_par( par_d_set_1 );
 	} else {
 		error = "name";

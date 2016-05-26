@@ -9,7 +9,7 @@
  *  \page console Console commands
  *  <br><i>Common console commands</i><br>
  *
- *  \section c_delay c_delay
+ *  \section c__delay _delay
  *  Interval of cyclic command execution.
  *
  *  \section c_data data
@@ -78,7 +78,7 @@
 ($dict CONSOLE_CMD
 	(` CONSOLE_CMD  CMD_PAR_N  CMD_CYCLIC  )
 	(`
-	(  c_delay      1          0  )
+	(  _delay       1          0  )
 	(  data         0          1  )
 	(  d_flt        1          0  )
 	(  d_get        1          0  )

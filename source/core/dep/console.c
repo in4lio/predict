@@ -28,7 +28,7 @@
 
 const char * const console_command[] = {
 	"",
-	"c_delay",
+	"_delay",
 	"data",
 	"d_flt",
 	"d_get",
@@ -51,7 +51,7 @@ const char * const console_command[] = {
  */
 enum {
 	id_NONE = 0,
-	id_c_delay,
+	id__delay,
 	id_data,
 	id_d_flt,
 	id_d_get,
@@ -75,7 +75,7 @@ enum {
  */
 enum {
 	par_none = 0,
-	par_c_delay, par_c_delay_0 = par_c_delay, 
+	par__delay, par__delay_0 = par__delay, 
 		
 	par_d_flt, par_d_flt_0 = par_d_flt, 
 	par_d_get, par_d_get_0 = par_d_get, 
@@ -186,7 +186,7 @@ static bool __partoull( const char *s, uint64_t *result );
 /**
  *  \brief Interval of cyclic command execution.
  */
-static __inline void handle_cmd_c_delay( void )
+static __inline void handle_cmd__delay( void )
 {
 	printf(
 	__CRLF__"  cyclic_delay = %d"
@@ -194,13 +194,14 @@ static __inline void handle_cmd_c_delay( void )
 	               ".." __stringify( cyclic_delay_MAX ) "): "
 	, ini_cyclic_delay
 	);
-	wait_par( par_c_delay );
+	wait_par( par__delay );
 }
 
-static __inline void handle_par_c_delay_0( const char *msg )
+static __inline void handle_par__delay_0( const char *msg )
 {
 	if ( msg_to__uint( cyclic_delay_MIN, cyclic_delay_MAX )) {
 		ini_cyclic_delay = __uint;
+		//TODO: save
 	} else {
 		error = "value";
 	}
@@ -279,7 +280,7 @@ static __inline void cyclic_stop_data( void )
  */
 static __inline void handle_cmd_d_flt( void )
 {
-	printf( __CRLF__"  p_flt = (%s) -(%s)"
+	printf( __CRLF__"  filter = (%s) -(%s)"
 	, ( *ini_data_prot_filter ) ? ini_data_prot_filter : "*"
 	, ( *ini_data_prot_filter_skip ) ? ini_data_prot_filter_skip : ""
 	);
@@ -300,10 +301,11 @@ static __inline void handle_par_d_flt_0( const char *msg )
 	} else {
 		strcpy( tmp3_ptr, msg );
 	}
-	printf( __CRLF__"  p_flt = (%s) -(%s)"
+	printf( __CRLF__"  filter = (%s) -(%s)"
 	, ( *ini_data_prot_filter ) ? ini_data_prot_filter : "*"
 	, ( *ini_data_prot_filter_skip ) ? ini_data_prot_filter_skip : ""
 	);
+	//TODO: save
 }
 
 /**
@@ -351,8 +353,8 @@ static __inline void handle_par_d_prot_0( const char *msg )
 {
 	if ( msg_to__uint_0( 1 )) {
 		ini_data_prot = __uint;
-
 		printf( __CRLF__"  data_prot = %d", ini_data_prot );
+		//TODO: save
 	} else {
 		error = "value";
 	}
@@ -372,7 +374,7 @@ static __inline void handle_par_d_set_0( const char *msg )
 	tmp1_int = data_atovar( msg );
 	if ( tmp1_int < var_COUNT ) {
 		printf( __CRLF__"  %s = %s", msg, data_get_string( __str, tmp1_int ));
-		printf( __CRLF__"  value : " );
+		printf( __CRLF__"  value: " );
 		wait_par( par_d_set_1 );
 	} else {
 		error = "name";
@@ -676,8 +678,8 @@ static void parse_cmd( const char *msg )
 
 	switch( search_cmd( msg )) {
 
-	case id_c_delay:
-		handle_cmd_c_delay();
+	case id__delay:
+		handle_cmd__delay();
 		break;
 	case id_data:
 		handle_cmd_data();
@@ -742,9 +744,9 @@ static void parse_par( const char *msg )
 
 	switch ( arg_wanted ) {
 
-	case par_c_delay_0:
+	case par__delay_0:
 		error = NULL;
-		handle_par_c_delay_0( msg );
+		handle_par__delay_0( msg );
 		if ( error ) goto l_error;
 		break;
 

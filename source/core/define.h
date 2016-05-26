@@ -42,18 +42,18 @@ typedef unsigned long long qword;
  */
 #define _AS_( type, x )    (( type* ) &( x ))
 
-#define _AS_PLONG( x )     _AS_( int, x )
-#define _AS_LONG( x )      ( *_AS_PLONG( x ))
-#define _AS_DWORD( x )     _AS_LONG( x )
-#define _AS_PSHORT( x )    _AS_( short, x )
-#define _AS_SHORT( x )     ( *_AS_PSHORT( x ))
-#define _AS_PWORD( x )     _AS_PSHORT( x )
-#define _AS_WORD( x )      _AS_SHORT( x )
+#define _AS_PINT( x )      _AS_( int, x )
+#define _AS_INT( x )       ( *_AS_PINT( x ))
+#define _AS_PDWORD( x )    _AS_( dword, x )
+#define _AS_DWORD( x )     ( *_AS_PDWORD( x ))
+#define _AS_PWORD( x )     _AS_( word, x )
+#define _AS_WORD( x )      ( *_AS_PWORD( x ))
 #define _AS_PCHAR( x )     _AS_( char, x )
 #define _AS_CHAR( x )      ( *_AS_PCHAR( x ))
-#define _AS_BYTE( x )      _AS_CHAR( x )
+#define _AS_PBYTE( x )     _AS_( byte, x )
+#define _AS_BYTE( x )      ( *_AS_PBYTE( x ))
 
-#define _AS_VOID( x )      (( void * )( dword )( x ))
+#define _AS_VOID( x )      (( void * )( unsigned int )( x ))
 
 #define HIGH_BYTE( w )     ( *( _AS_( byte, w ) + 1 ))
 #define LOW_BYTE( w )      (( byte )( w ))
@@ -66,7 +66,7 @@ typedef unsigned long long qword;
  *  \param pool Original pool.
  *  \hideinitializer
  */
-#define _BYTE( n, pool )  (( byte )(( pool ) >> ( 8 * ( n ))))
+#define _BYTE( n, pool )   (( byte )(( pool ) >> ( 8 * ( n ))))
 
 /**
  *  \brief Create pool with n-th bit set.
@@ -185,6 +185,14 @@ typedef unsigned long long qword;
  */
 #define array_index( array, element ) \
 	((( dword )( element ) - ( dword )( array )) / sizeof(( array )[ 0 ]))
+
+/**
+ *  \brief Size of structure field.
+ *  \param type Structure.
+ *  \param field Field.
+ *  \hideinitializer
+ */
+#define struct_field_size( type, field ) ( sizeof((( type *) 0 )->field ))
 
 /**
  *  \brief Create field mask.
