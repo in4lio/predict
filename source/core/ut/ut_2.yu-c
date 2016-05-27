@@ -24,10 +24,10 @@
 
 ($each-UT_2 \i.]
 	($set T,,ut_($i UT_2))
+	/** ($T) test coroutine alive flag. */
+	int ($T)_alive;
 	/** ($T) test coroutine local context. */
 	static ($coro-context ($T));
-	/** ($T) test coroutine alive flag. */
-	static int ($T)_alive;
 	/** ($T) test coroutine. */
 	extern ($coro-declare ($T));
 	/** Initialize ($T) test coroutine. */

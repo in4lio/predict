@@ -24,20 +24,20 @@
  *  \{
  */
 
+/** ut_coro test coroutine alive flag. */
+int ut_coro_alive;
 /** ut_coro test coroutine local context. */
 static co_t co_ut_coro;
-/** ut_coro test coroutine alive flag. */
-static int ut_coro_alive;
 /** ut_coro test coroutine. */
 extern int coro_ut_coro( co_t *co_p );
 /** Initialize ut_coro test coroutine. */
 extern int ut_coro_init( void );
 /** Uninitialize ut_coro coroutine. */
 extern void ut_coro_uninit( void );
+/** ut_data test coroutine alive flag. */
+int ut_data_alive;
 /** ut_data test coroutine local context. */
 static co_t co_ut_data;
-/** ut_data test coroutine alive flag. */
-static int ut_data_alive;
 /** ut_data test coroutine. */
 extern int coro_ut_data( co_t *co_p );
 /** Initialize ut_data test coroutine. */

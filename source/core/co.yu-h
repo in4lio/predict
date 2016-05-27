@@ -65,6 +65,12 @@ extern void ut_2_restart( void );
 
 [ )
 
+($each-UT_2 \i.]
+	/** ($q,,ut_($i UT_2)) test coroutine alive flag. */
+	extern int ut_($i UT_2)_alive;
+
+[ )
+
 /** \} */
 
 #endif /* LINK_UT */

@@ -151,11 +151,7 @@ static int cyclic_start( void );
 static int cyclic_exec( void );
 static void cyclic_stop( void );
 static bool __partoul( const char *s, uint32_t *result );
-
-#if __PAR_64
-static bool __partoull( const char *s, uint64_t *result );
-
-#endif
+static bool __partoull( const char *s, uint64_t *result ) __attribute__(( unused ));
 
 #define START_CYCLIC( job ) do { \
 	if ( cyclic_stt == cyclic_stt_IDLE ) { \
@@ -938,7 +934,6 @@ static bool __partoul( const char *s, uint32_t *result )
 	return ( *end == '\0' );
 }
 
-#if __PAR_64
 static bool __partoull( const char *s, uint64_t *result )
 {
 	char *end;
@@ -946,7 +941,5 @@ static bool __partoull( const char *s, uint64_t *result )
 	*result = strtoull( s, &end, 0 );
 	return ( *end == '\0' );
 }
-
-#endif
 
 /** \} */

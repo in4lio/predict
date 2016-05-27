@@ -133,6 +133,11 @@ extern void ut_ut( void );
 /** "ut_data" unit test of 1st stage. */
 extern void ut_data( void );
 
+/** "ut_coro" test coroutine alive flag. */
+extern int ut_coro_alive;
+/** "ut_data" test coroutine alive flag. */
+extern int ut_data_alive;
+
 /** \} */
 
 #endif /* LINK_UT */
