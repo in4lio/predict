@@ -109,8 +109,9 @@ typedef unsigned long long qword;
  *  \param mask Mask.
  *  \hideinitializer
  */
-#define CLEAR_VAR( var, mask ) \
-	var &= ~( mask )
+#define CLEAR_VAR( var, mask ) do { \
+	var &= ~( mask ); \
+} while ( 0 )
 
 /**
  *  \brief Set variable's masked bits.
@@ -118,8 +119,9 @@ typedef unsigned long long qword;
  *  \param mask Mask.
  *  \hideinitializer
  */
-#define SET_VAR( var, mask ) \
-	var |= ( mask )
+#define SET_VAR( var, mask ) do { \
+	var |= ( mask ); \
+} while ( 0 )
 
 /**
  *  \brief Bring variable's masked bits into accord with specified values.
@@ -128,8 +130,9 @@ typedef unsigned long long qword;
  *  \param value Specified values of bits.
  *  \hideinitializer
  */
-#define EQUAL_VAR( var, mask, value ) \
-	var = EQUAL_VALUE( var, mask, value );
+#define EQUAL_VAR( var, mask, value ) do { \
+	var = EQUAL_VALUE( var, mask, value ); \
+} while ( 0 )
 
 /**
  *  \brief Check equality of variable's masked bits to specified values.
