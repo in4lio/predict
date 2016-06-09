@@ -46,6 +46,32 @@ extern "C" {
  */
 
 /**
+ *  \brief Voting of dword values (on exact matching).
+ *  \param result Voted value pointer.
+ *  \param valid_1 Validity flag of 1st channel.
+ *  \param value_1 Value of 1st channel.
+ *  \param valid_2 Validity flag of 2nd channel.
+ *  \param value_2 Value of 2nd channel.
+ *  \param valid_3 Validity flag of 3th channel.
+ *  \param value_3 Value of 3th channel.
+ *  \return Validity flag of majority opinion.
+ */
+DATA_VOTE_EXT bool vote_dword( dword *result, bool valid_1, dword value_1, bool valid_2, dword value_2, bool valid_3, dword value_3 );
+
+/**
+ *  \brief Voting of word values (on exact matching).
+ *  \param result Voted value pointer.
+ *  \param valid_1 Validity flag of 1st channel.
+ *  \param value_1 Value of 1st channel.
+ *  \param valid_2 Validity flag of 2nd channel.
+ *  \param value_2 Value of 2nd channel.
+ *  \param valid_3 Validity flag of 3th channel.
+ *  \param value_3 Value of 3th channel.
+ *  \return Validity flag of majority opinion.
+ */
+DATA_VOTE_EXT bool vote_word( word *result, bool valid_1, word value_1, bool valid_2, word value_2, bool valid_3, word value_3 );
+
+/**
  *  \brief Voting of byte values (on exact matching).
  *  \param result Voted value pointer.
  *  \param valid_1 Validity flag of 1st channel.
@@ -70,6 +96,7 @@ DATA_VOTE_EXT bool vote_byte( byte *result, bool valid_1, byte value_1, bool val
  *  \return true.
  */
 DATA_VOTE_EXT bool vote_bit_dword( dword *result, bool _1, dword value_1, bool _2, dword value_2, bool _3, dword value_3 );
+;
 
 /** \} */
 

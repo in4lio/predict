@@ -28,22 +28,26 @@ bool vote_($T)( ($T) *result
 {
 	if ( valid_1 && valid_2 && ( value_1 == value_2 )) {
 		*result = value_1;
+
 		return ( true );
 	}
-
 	if ( valid_2 && valid_3 && ( value_2 == value_3 )) {
 		*result = value_2;
+
 		return ( true );
 	}
-
 	if ( valid_3 && valid_1 && ( value_3 == value_1 )) {
 		*result = value_3;
+
 		return ( true );
 	}
 
 	return ( false );
-})
+}
+)
 
+($vote_t,,dword)
+($vote_t,,word)
 ($vote_t,,byte)
 
 ($macro vote_bit_t (T)
@@ -56,7 +60,8 @@ bool vote_bit_($T)( dword *result
 	*result = ( value_1 & value_2 ) | (( value_1 | value_2 ) & value_3 );
 
 	return ( true );
-})
+}
+)
 
 ($vote_bit_t,,dword)
 

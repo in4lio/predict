@@ -26,6 +26,54 @@
  *  \{
  */
 
+bool vote_dword( dword *result
+, bool valid_1, dword value_1
+, bool valid_2, dword value_2
+, bool valid_3, dword value_3 )
+{
+	if ( valid_1 && valid_2 && ( value_1 == value_2 )) {
+		*result = value_1;
+
+		return ( true );
+	}
+	if ( valid_2 && valid_3 && ( value_2 == value_3 )) {
+		*result = value_2;
+
+		return ( true );
+	}
+	if ( valid_3 && valid_1 && ( value_3 == value_1 )) {
+		*result = value_3;
+
+		return ( true );
+	}
+
+	return ( false );
+}
+
+bool vote_word( word *result
+, bool valid_1, word value_1
+, bool valid_2, word value_2
+, bool valid_3, word value_3 )
+{
+	if ( valid_1 && valid_2 && ( value_1 == value_2 )) {
+		*result = value_1;
+
+		return ( true );
+	}
+	if ( valid_2 && valid_3 && ( value_2 == value_3 )) {
+		*result = value_2;
+
+		return ( true );
+	}
+	if ( valid_3 && valid_1 && ( value_3 == value_1 )) {
+		*result = value_3;
+
+		return ( true );
+	}
+
+	return ( false );
+}
+
 bool vote_byte( byte *result
 , bool valid_1, byte value_1
 , bool valid_2, byte value_2
@@ -33,16 +81,17 @@ bool vote_byte( byte *result
 {
 	if ( valid_1 && valid_2 && ( value_1 == value_2 )) {
 		*result = value_1;
+
 		return ( true );
 	}
-
 	if ( valid_2 && valid_3 && ( value_2 == value_3 )) {
 		*result = value_2;
+
 		return ( true );
 	}
-
 	if ( valid_3 && valid_1 && ( value_3 == value_1 )) {
 		*result = value_3;
+
 		return ( true );
 	}
 

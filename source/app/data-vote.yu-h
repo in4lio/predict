@@ -20,10 +20,9 @@
  *  \{
  */
 
-($macro vote_t (T)bool vote_($T)( ($T) *result, bool valid_1, ($T) value_1, bool valid_2, ($T) value_2, bool valid_3, ($T) value_3 ))
-
+($macro vote_t (T)
 /**
- *  \brief Voting of byte values (on exact matching).
+ *  \brief Voting of ($T) values (on exact matching).
  *  \param result Voted value pointer.
  *  \param valid_1 Validity flag of 1st channel.
  *  \param value_1 Value of 1st channel.
@@ -33,12 +32,16 @@
  *  \param value_3 Value of 3th channel.
  *  \return Validity flag of majority opinion.
  */
-($h-extern) ($vote_t,,byte);
+($h-extern) bool vote_($T)( ($T) *result, bool valid_1, ($T) value_1, bool valid_2, ($T) value_2, bool valid_3, ($T) value_3 );
+)
 
-($macro vote_bit_t (T)bool vote_bit_($T)( dword *result, bool _1, ($T) value_1, bool _2, ($T) value_2, bool _3, ($T) value_3 ))
+($vote_t,,dword)
+($vote_t,,word)
+($vote_t,,byte)
 
+($macro vote_bit_t (T)
 /**
- *  \brief Voting of dword values (bit-by-bit).
+ *  \brief Voting of ($T) values (bit-by-bit).
  *  \param result Voted value pointer.
  *  \param _1 (unused)
  *  \param value_1 Value of 1st channel.
@@ -48,7 +51,10 @@
  *  \param value_3 Value of 3th channel.
  *  \return true.
  */
-($h-extern) ($vote_bit_t,,dword);
+($h-extern) bool vote_bit_($T)( dword *result, bool _1, ($T) value_1, bool _2, ($T) value_2, bool _3, ($T) value_3 );
+)
+
+($vote_bit_t,,dword);
 
 /** \} */
 
