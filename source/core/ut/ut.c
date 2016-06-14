@@ -288,11 +288,12 @@ bool ut_stage_1( void ( *test )( void ))
 {
 	bool result;
 
+	__started_callback( 1 );
+
 	ut_failed[ 0 ] += __failed;
 	__failed = 0;
 	ut_loud();
 
-	__started_callback( 1 );
 	ut_start = __get_time();
 	test();
 	ut_stop = __get_time();
@@ -319,6 +320,8 @@ void ut_stage_2_start( int count )
 {
 	__executed = count;
 	ut_thread = ut_thread_START;
+
+	__started_callback( 2 );
 }
 
 bool ut_stage_2( int ( *test )( void ))
@@ -333,7 +336,6 @@ bool ut_stage_2( int ( *test )( void ))
 		__failed = 0;
 		ut_loud();
 
-		__started_callback( 2 );
 		ut_unit = "thread";
 		ut_start = __get_time();
 		ut_thread = ut_thread_EXEC;
