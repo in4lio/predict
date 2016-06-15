@@ -133,12 +133,12 @@ enum {
 /**
  *  \brief Warnings formats.
  */
-($h-extern) const char * const warn_format[];
+($h-extern) const char *const warn_format[];
 
 /**
  *  \brief Info messages formats.
  */
-($h-extern) const char * const info_format[];
+($h-extern) const char *const info_format[];
 
 /**
  *  \brief Error writing counters.

@@ -128,7 +128,7 @@ enum {
 /**
  *  \brief Error messages formats.
  */
-ERROR_EXT const char * const error_format[];
+ERROR_EXT const char *const error_format[];
 
 /** \} */
 

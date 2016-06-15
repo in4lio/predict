@@ -38,7 +38,7 @@
  *  \brief Debug interface title message.
  *  \hideinitializer
  */
-static const char * const TITLE = __CRLF__
+static const char *const TITLE = __CRLF__
 #ifdef __CONSOLE_TITLE__
 	__CONSOLE_TITLE__;
 #else
@@ -55,7 +55,7 @@ static const char * const TITLE = __CRLF__
  *  \brief Program version format.
  *  \hideinitializer
  */
-const char * const VERSION_STRING =
+const char *const VERSION_STRING =
 	__CRLF__ ($q ($PROGRAM)) " " ($q ($VERSION)) " (" ($q ($FRAMEWORK_VERSION)) ")"
 	__CRLF__ "Compiled with " ($q ($COMPILER)) " " __VERSION__;
 

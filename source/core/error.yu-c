@@ -15,7 +15,7 @@
 
 ($import "error-dict.yu")
 
-const char * const error_format[] = {
+const char *const error_format[] = {
 	($each-DATA_ERROR \i.]
 		($i ERROR_FORMAT),
 

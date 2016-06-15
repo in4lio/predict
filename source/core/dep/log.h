@@ -173,12 +173,12 @@ LOG_EXT char __log_str[ 32 ];
 /**
  *  \brief Warnings formats.
  */
-LOG_EXT const char * const warn_format[];
+LOG_EXT const char *const warn_format[];
 
 /**
  *  \brief Info messages formats.
  */
-LOG_EXT const char * const info_format[];
+LOG_EXT const char *const info_format[];
 
 /**
  *  \brief Error writing counters.

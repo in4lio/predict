@@ -25,7 +25,7 @@
 
 ($import "console-dict.yu")
 
-const char * const console_command[] = {
+const char *const console_command[] = {
 	"",
 	($each-CONSOLE_CMD \i.]
 		($q ($i CONSOLE_CMD)),

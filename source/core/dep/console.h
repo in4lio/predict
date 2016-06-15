@@ -144,7 +144,7 @@ extern "C" {
 /**
  *  \brief List of console commands.
  */
-CONSOLE_EXT const char * const console_command[];
+CONSOLE_EXT const char *const console_command[];
 
 /**
  *  \brief Index of selected from list command.

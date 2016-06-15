@@ -41,7 +41,7 @@
  *  \brief Debug interface title message.
  *  \hideinitializer
  */
-static const char * const TITLE = __CRLF__
+static const char *const TITLE = __CRLF__
 #ifdef __CONSOLE_TITLE__
 	__CONSOLE_TITLE__;
 #else
@@ -56,8 +56,8 @@ static const char * const TITLE = __CRLF__
  *  \brief Program version format.
  *  \hideinitializer
  */
-const char * const VERSION_STRING =
-	__CRLF__ "predict" " " "0.3b3" " (" "0.3b3" ")"
+const char *const VERSION_STRING =
+	__CRLF__ "predict" " " "0.3b4" " (" "0.3b4" ")"
 	__CRLF__ "Compiled with " "gcc" " " __VERSION__;
 
 /**

@@ -54,7 +54,7 @@
 /**
  *  \brief List of console commands.
  */
-($h-extern) const char * const console_command[];
+($h-extern) const char *const console_command[];
 
 /**
  *  \brief Index of selected from list command.

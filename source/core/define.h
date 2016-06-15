@@ -40,7 +40,7 @@ typedef unsigned long long qword;
  *  \param x Object.
  *  \hideinitializer
  */
-#define _AS_( type, x )    (( type* ) &( x ))
+#define _AS_( type, x )    (( type *) &( x ))
 
 #define _AS_PINT( x )      _AS_( int, x )
 #define _AS_INT( x )       ( *_AS_PINT( x ))
@@ -53,7 +53,7 @@ typedef unsigned long long qword;
 #define _AS_PBYTE( x )     _AS_( byte, x )
 #define _AS_BYTE( x )      ( *_AS_PBYTE( x ))
 
-#define _AS_VOID( x )      (( void * )( unsigned int )( x ))
+#define _AS_VOID( x )      (( void *)( unsigned int )( x ))
 
 #define HIGH_BYTE( w )     ( *( _AS_( byte, w ) + 1 ))
 #define LOW_BYTE( w )      (( byte )( w ))

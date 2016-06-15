@@ -8,7 +8,7 @@
 predict
 [ )
 ($set VERSION ]
-0.3b3
+0.3b4
 [ )
 ($set DESCRIPTION ]
 predict - portable C framework

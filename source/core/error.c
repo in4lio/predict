@@ -19,7 +19,7 @@
 
 #define ERROR_IMPLEMENT
 
-const char * const error_format[] = {
+const char *const error_format[] = {
 	"TEST_COUNT = %d (must be %d)",
 	"ut_stage_%d is failed",
 	"heap is overflowed",

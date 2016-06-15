@@ -26,7 +26,7 @@
  *  \{
  */
 
-const char * const console_command[] = {
+const char *const console_command[] = {
 	"",
 	"_delay",
 	"data",

@@ -26,12 +26,12 @@
  *  \{
  */
 
-const char * const warn_format[] = {
+const char *const warn_format[] = {
 	"Don't worry, be happy!",
 
 };
 
-const char * const info_format[] = {
+const char *const info_format[] = {
 	"Hello world!",
 
 };
