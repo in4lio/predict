@@ -24,12 +24,16 @@
 #define CLOCK_EXT
 #define CLOCK_EXT_INIT( dec, init ) \
 	dec = init
-#define CLOCK_INL extern inline
+#define CLOCK_INL
 #else
 #define CLOCK_EXT extern
 #define CLOCK_EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define CLOCK_INL extern inline
+#else
 #define CLOCK_INL inline
+#endif
 #endif
 
 #ifndef COMMA

@@ -24,12 +24,16 @@
 #define DATA_STR_EXT
 #define DATA_STR_EXT_INIT( dec, init ) \
 	dec = init
-#define DATA_STR_INL extern inline
+#define DATA_STR_INL
 #else
 #define DATA_STR_EXT extern
 #define DATA_STR_EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define DATA_STR_INL extern inline
+#else
 #define DATA_STR_INL inline
+#endif
 #endif
 
 #ifndef COMMA

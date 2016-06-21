@@ -24,12 +24,16 @@
 #define DATA_VOTE_EXT
 #define DATA_VOTE_EXT_INIT( dec, init ) \
 	dec = init
-#define DATA_VOTE_INL extern inline
+#define DATA_VOTE_INL
 #else
 #define DATA_VOTE_EXT extern
 #define DATA_VOTE_EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define DATA_VOTE_INL extern inline
+#else
 #define DATA_VOTE_INL inline
+#endif
 #endif
 
 #ifndef COMMA

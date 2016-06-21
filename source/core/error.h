@@ -24,12 +24,16 @@
 #define ERROR_EXT
 #define ERROR_EXT_INIT( dec, init ) \
 	dec = init
-#define ERROR_INL extern inline
+#define ERROR_INL
 #else
 #define ERROR_EXT extern
 #define ERROR_EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define ERROR_INL extern inline
+#else
 #define ERROR_INL inline
+#endif
 #endif
 
 #ifndef COMMA

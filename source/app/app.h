@@ -24,12 +24,16 @@
 #define APP_EXT
 #define APP_EXT_INIT( dec, init ) \
 	dec = init
-#define APP_INL extern inline
+#define APP_INL
 #else
 #define APP_EXT extern
 #define APP_EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define APP_INL extern inline
+#else
 #define APP_INL inline
+#endif
 #endif
 
 #ifndef COMMA

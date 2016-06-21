@@ -24,12 +24,16 @@
 #define CHAR_EXT
 #define CHAR_EXT_INIT( dec, init ) \
 	dec = init
-#define CHAR_INL extern inline
+#define CHAR_INL
 #else
 #define CHAR_EXT extern
 #define CHAR_EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define CHAR_INL extern inline
+#else
 #define CHAR_INL inline
+#endif
 #endif
 
 #ifndef COMMA

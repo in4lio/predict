@@ -24,12 +24,16 @@
 #define LOG_EXT
 #define LOG_EXT_INIT( dec, init ) \
 	dec = init
-#define LOG_INL extern inline
+#define LOG_INL
 #else
 #define LOG_EXT extern
 #define LOG_EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define LOG_INL extern inline
+#else
 #define LOG_INL inline
+#endif
 #endif
 
 #ifndef COMMA

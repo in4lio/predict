@@ -24,12 +24,16 @@
 #define INI_EXT
 #define INI_EXT_INIT( dec, init ) \
 	dec = init
-#define INI_INL extern inline
+#define INI_INL
 #else
 #define INI_EXT extern
 #define INI_EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define INI_INL extern inline
+#else
 #define INI_INL inline
+#endif
 #endif
 
 #ifndef COMMA

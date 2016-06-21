@@ -24,12 +24,16 @@
 #define UT_EXT
 #define UT_EXT_INIT( dec, init ) \
 	dec = init
-#define UT_INL extern inline
+#define UT_INL
 #else
 #define UT_EXT extern
 #define UT_EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define UT_INL extern inline
+#else
 #define UT_INL inline
+#endif
 #endif
 
 #ifndef COMMA

@@ -24,12 +24,16 @@
 #define CO_EXT
 #define CO_EXT_INIT( dec, init ) \
 	dec = init
-#define CO_INL extern inline
+#define CO_INL
 #else
 #define CO_EXT extern
 #define CO_EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define CO_INL extern inline
+#else
 #define CO_INL inline
+#endif
 #endif
 
 #ifndef COMMA

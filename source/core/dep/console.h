@@ -24,12 +24,16 @@
 #define CONSOLE_EXT
 #define CONSOLE_EXT_INIT( dec, init ) \
 	dec = init
-#define CONSOLE_INL extern inline
+#define CONSOLE_INL
 #else
 #define CONSOLE_EXT extern
 #define CONSOLE_EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define CONSOLE_INL extern inline
+#else
 #define CONSOLE_INL inline
+#endif
 #endif
 
 #ifndef COMMA
