@@ -13,10 +13,12 @@
 #ifndef DEFINE_H
 #define DEFINE_H
 
-typedef unsigned char byte;
-typedef unsigned short word;
-typedef unsigned int dword;
-typedef unsigned long long qword;
+#include <stdint.h>
+
+typedef uint8_t  byte;
+typedef uint16_t word;
+typedef uint32_t dword;
+typedef uint64_t qword;
 
 /**
  *  \brief Calculate n-byte aligned value.
@@ -53,7 +55,7 @@ typedef unsigned long long qword;
 #define _AS_PBYTE( x )     _AS_( byte, x )
 #define _AS_BYTE( x )      ( *_AS_PBYTE( x ))
 
-#define _AS_VOID( x )      (( void *)( unsigned int )( x ))
+#define _AS_VOID( x )      (( void *)( uintptr_t )( x ))
 
 #define HIGH_BYTE( w )     ( *( _AS_( byte, w ) + 1 ))
 #define LOW_BYTE( w )      (( byte )( w ))

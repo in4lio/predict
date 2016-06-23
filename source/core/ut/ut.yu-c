@@ -229,7 +229,7 @@ void ut_fault( const char *error, const char *path, const char *func, uint32_t l
 	++__failed;
 	__lock();
 	if ( ut_unit == NULL ) __print_header( __get_name( path ), console_col_count, '.' );
-	printf( __CRLF__"%-23s %-7d %s", func, line, error );
+	printf( __CRLF__"%-22s %-4d %s", func, line, error );
 	__unlock();
 }
 
