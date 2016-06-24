@@ -109,7 +109,7 @@ bool ut_assert_uint_equal( uint32_t expected, uint32_t actual, const char *path,
 {
 	bool test = ( expected == actual );
 	if ( !test ) {
-		ut_fault_format( "expected " UT_FORMAT_uint32_t " but " UT_FORMAT_uint32_t, expected, actual, path, func, line );
+		ut_fault_format( "expected " "%" PRIu32 " but " "%" PRIu32, expected, actual, path, func, line );
 	}
 	return ( !test );
 }

@@ -14,11 +14,23 @@
 #define DEFINE_H
 
 #include <stdint.h>
+#include <inttypes.h>
 
-typedef uint8_t  byte;
-typedef uint16_t word;
-typedef uint32_t dword;
-typedef uint64_t qword;
+typedef uint8_t    byte;
+typedef uint16_t   word;
+typedef uint32_t   dword;
+typedef uint64_t   qword;
+
+#define PRIWORD    PRIu16
+#define PRIXWORD   PRIX16
+#define PRIDWORD   PRIu32
+#define PRIXDWORD  PRIX32
+#define PRIQWORD   PRIu64
+#define PRIXQWORD  PRIX64
+
+#define FMT_WORD   "%" PRIWORD
+#define FMT_DWORD  "%" PRIDWORD
+#define FMT_QWORD  "%" PRIQWORD
 
 /**
  *  \brief Calculate n-byte aligned value.

@@ -52,12 +52,13 @@ extern "C" {
  *  \{
  */
 
+#include <inttypes.h>
+
 /**
  *  \brief Max length of message.
  *  \hideinitializer
  */
 #define UT_STR_LIMIT  100
-#define UT_FORMAT_uint32_t  "%u"
 
 UT_EXT bool ut_assert_true( bool test, const char *path, const char *func, uint32_t line );
 UT_EXT bool ut_assert_false( bool test, const char *path, const char *func, uint32_t line );
@@ -127,7 +128,7 @@ UT_EXT bool ut_assert_string_doesnt_contain( const char *expected, const char *a
 
 #define assert_uint_cmp( expected, actual, COND, op ) do { \
 	if ( !(( expected ) COND ( actual ))) { \
-		ut_fault_format( "expected " UT_FORMAT_uint32_t " " #COND " but " UT_FORMAT_uint32_t, expected, actual \
+		ut_fault_format( "expected %" PRIu32 " " #COND " but %" PRIu32, expected, actual \
 		, __FILE__, __FUNCTION__, __LINE__ ); \
 		op; \
 	} \

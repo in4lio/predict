@@ -23,12 +23,12 @@ char *string_byte_h( char *s, byte val )
 
 char *string_word_h( char *s, word val )
 {
-	sprintf( s, "0x%04X", val );
+	sprintf( s, "0x%04" PRIXWORD, val );
 	return ( s );
 }
 
 char *string_dword_h( char *s, dword val )
 {
-	sprintf( s, "0x%08X", val );
+	sprintf( s, "0x%08" PRIXDWORD, val );
 	return ( s );
 }

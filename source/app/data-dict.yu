@@ -47,8 +47,8 @@
 	(` DATA_TYPE  TYPE_FORMAT  TYPE_STRTO  )
 	(`
 	(  byte       "%u"         __strtoul   )
-	(  word       "%u"         __strtoul   )
-	(  dword      "%u"        __strtoll    )
+	(  word       FMT_WORD     __strtoul   )
+	(  dword      FMT_DWORD    __strtoll   )
 	(  float      "%.2f"       __strtof    )
 	(  int        "%d"         __strtol    )
 	)

@@ -149,12 +149,12 @@ char *string_byte( char *s, byte value )
 }
 char *string_word( char *s, word value )
 {
-	sprintf( s, "%u", value );
+	sprintf( s, FMT_WORD, value );
 	return ( s );
 }
 char *string_dword( char *s, dword value )
 {
-	sprintf( s, "%u", value );
+	sprintf( s, FMT_DWORD, value );
 	return ( s );
 }
 char *string_float( char *s, float value )
