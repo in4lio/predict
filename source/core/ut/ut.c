@@ -105,7 +105,7 @@ bool ut_assert_int_equal( int expected, int actual, const char *path, const char
 	return ( !test );
 }
 
-bool ut_assert_uint_equal( uint32_t expected, uint32_t actual, const char *path, const char *func, uint32_t line )
+bool ut_assert_u32_equal( uint32_t expected, uint32_t actual, const char *path, const char *func, uint32_t line )
 {
 	bool test = ( expected == actual );
 	if ( !test ) {

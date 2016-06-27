@@ -104,7 +104,7 @@ bool ut_assert_($name)_equal( ($T) expected, ($T) actual, const char *path, cons
 
 ($ut_assert_i_equal,,int,,int,,"%d")
 
-($ut_assert_i_equal,,uint,,uint32_t,,"%" PRIu32)
+($ut_assert_i_equal,,u32,,uint32_t,,"%" PRIu32)
 
 ($macro ut_assert_f_equal (T F)
 bool ut_assert_($T)_equal( ($T) expected, ($T) actual, ($T) delta, const char *path, const char *func, uint32_t line )

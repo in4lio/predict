@@ -64,7 +64,7 @@ UT_EXT bool ut_assert_true( bool test, const char *path, const char *func, uint3
 UT_EXT bool ut_assert_false( bool test, const char *path, const char *func, uint32_t line );
 UT_EXT bool ut_assert_assigned( int data, const char *path, const char *func, uint32_t line );
 UT_EXT bool ut_assert_int_equal( int expected, int actual, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_uint_equal( uint32_t expected, uint32_t actual, const char *path, const char *func, uint32_t line );
+UT_EXT bool ut_assert_u32_equal( uint32_t expected, uint32_t actual, const char *path, const char *func, uint32_t line );
 UT_EXT bool ut_assert_float_equal( float expected, float actual, float delta, const char *path, const char *func, uint32_t line );
 UT_EXT bool ut_assert_double_equal( double expected, double actual, double delta, const char *path, const char *func, uint32_t line );
 UT_EXT bool ut_assert_string_equal( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
@@ -109,8 +109,8 @@ UT_EXT bool ut_assert_string_doesnt_contain( const char *expected, const char *a
 	if ( ut_assert_int_equal( expected, actual, __FILE__, __FUNCTION__, __LINE__ )) { op; } \
 } while ( 0 )
 
-#define assert_uint_eq( expected, actual, op ) do { \
-	if ( ut_assert_uint_equal( expected, actual, __FILE__, __FUNCTION__, __LINE__ )) { op; } \
+#define assert_u32_eq( expected, actual, op ) do { \
+	if ( ut_assert_u32_equal( expected, actual, __FILE__, __FUNCTION__, __LINE__ )) { op; } \
 } while ( 0 )
 
 #define ut_fault_format( msg, expected, actual, ... ) do { \
@@ -126,7 +126,7 @@ UT_EXT bool ut_assert_string_doesnt_contain( const char *expected, const char *a
 	} \
 } while ( 0 )
 
-#define assert_uint_cmp( expected, actual, COND, op ) do { \
+#define assert_u32_cmp( expected, actual, COND, op ) do { \
 	if ( !(( expected ) COND ( actual ))) { \
 		ut_fault_format( "expected %" PRIu32 " " #COND " but %" PRIu32, expected, actual \
 		, __FILE__, __FUNCTION__, __LINE__ ); \
@@ -345,9 +345,9 @@ UT_EXT void ( *ut_unlock_callback )( void );
 #define assert_not( value, op ) NULL
 #define assert_assigned( value, op ) NULL
 #define assert_int_eq( expected, actual, op ) NULL
-#define assert_uint_eq( expected, actual, op ) NULL
+#define assert_u32_eq( expected, actual, op ) NULL
 #define assert_int_cmp( expected, actual, COND, op ) NULL
-#define assert_uint_cmp( expected, actual, COND, op ) NULL
+#define assert_u32_cmp( expected, actual, COND, op ) NULL
 #define assert_str_eq( expected, actual, op ) NULL
 #define assert_array_eq( expected, actual, count, op ) NULL
 #define assert_bit_1( bit, value, op ) NULL

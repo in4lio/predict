@@ -25,9 +25,9 @@ static void test_assert( void )
 	assert( 1 == 1, );
 	assert_not( 1 == 2, );
 	assert_int_eq( -1, -1, );
-	assert_uint_eq( 451, 451, );
+	assert_u32_eq( 451, 451, );
 	assert_int_cmp( -32, -33, >, );
-	assert_uint_cmp( 5u, 5u, <=, );
+	assert_u32_cmp( 5u, 5u, <=, );
 	assert_float_eq( 10.2, 10.0, 0.2, );
 	assert_double_eq( 20.1, 20.1, 0.0, );
 	assert_float_cmp( 0.500, 0.501, <, );
