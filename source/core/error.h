@@ -79,7 +79,7 @@ extern "C" {
  */
 #define ERROR_CLEAR( err ) do { \
 	do { \
-		data_set_word( var_error, CLEAR_VALUE( data_get_word( var_error ), BIT( err_bit_##err ) )); \
+		data_set_word( var_error, CLEAR_VALUE( data_get_word( var_error ), BIT( __concat( err_bit_, err )) )); \
 	} while ( 0 ); \
 } while ( 0 )
 
@@ -100,7 +100,7 @@ extern "C" {
  *  \hideinitializer
  */
 #define assert_unerring( err, op ) do { \
-	bool bit = ( BIT( err_bit_##err ) & data_get_word( var_error )); \
+	bool bit = ( BIT( __concat( err_bit_, err )) & data_get_word( var_error )); \
 	if ( bit ) { \
 		ut_fault( "expected unerring", __FILE__,  __FUNCTION__, __LINE__ ); \
 		op; \

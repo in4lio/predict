@@ -38,7 +38,7 @@ typedef uint64_t   qword;
  *  \param align Alignment boundary.
  *  \hideinitializer
  */
-#define ALIGNED( value, align ) ((( value ) + (( align ) - 1 )) / ( align ) * ( align ))
+#define ALIGNED( value, align ) ((( uintptr_t )( value ) + ( align ) - 1 ) / ( align ) * ( align ))
 
 /**
  *  \brief Calculate padding size.
