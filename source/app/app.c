@@ -40,12 +40,8 @@ static uint32_t ut_get_time( void )
  *  \brief Event handler of unit testing stage starting.
  *  \param t Stage of testing.
  */
-static void ut_started( int t )
+static void ut_started( int t __attribute__(( unused )))
 {
-#ifdef LINK_CONSOLE
-	if ( t == 1 ) char_retarding_fputc = 1;
-
-#endif
 }
 
 /**
@@ -55,11 +51,12 @@ static void ut_started( int t )
  */
 static void ut_finished( int t, bool result )
 {
+	if ( !result ) ERROR( ut, t );
+
 #ifdef LINK_CONSOLE
-	if ( t == 1 ) char_retarding_fputc = 0;
+		console_prompt();
 
 #endif
-	if ( !result ) ERROR( ut, t );
 }
 
 #endif

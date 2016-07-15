@@ -203,11 +203,20 @@ void __print_header( const char *s, int len, char ch )
 
 static void __print_result( bool result )
 {
+	($if ($eq predict-use-ftoa 1) ]
+		char s[ 16 ];
+	[ )
+
 	printf( __CRLF__ );
 	printf( "%.*s", ( int ) console_col_count, ________ );
 	printf( __CRLF__ __CRLF__"%*s", ( int )( console_col_count + strlen( __PASSED__ )) / 2, ( result ) ? __PASSED__ : __FAILED__ );
 	printf( __CRLF__ __CRLF__"  %d fault(s) in %d test(s)", __failed, __executed );
-	printf( " for %.1f sec"__CRLF__, ( float )( ut_stop - ut_start ) / 10 );
+
+	($if ($eq predict-use-ftoa 1) ]
+		printf( " for %s sec"__CRLF__, ftoa(( float )( ut_stop - ut_start ) / 10, s, 1 ));
+	[ \else ]
+		printf( " for %.1f sec"__CRLF__, ( float )( ut_stop - ut_start ) / 10 );
+	[ )
 	printf( "%.*s", ( int ) console_col_count, ________ );
 	flush();
 }
@@ -326,10 +335,6 @@ bool ut_stage_2( int ( *test )( void ))
 
 		test();
 
-#ifdef LINK_CONSOLE
-		console_prompt();
-
-#endif
 		return ( true );
 
 	case ut_thread_EXEC:
@@ -343,11 +348,6 @@ bool ut_stage_2( int ( *test )( void ))
 		result = ( __failed == 0 );
 		__print_result( result );
 		__finished_callback( 2, result );
-
-#ifdef LINK_CONSOLE
-		console_prompt();
-
-#endif
 		ut_executed[ 2 ] += __executed;
 		__executed = 0;
 		ut_failed[ 2 ] += __failed;

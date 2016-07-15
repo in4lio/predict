@@ -83,7 +83,7 @@ static int ut_2_schedule( void )
  */
 int coro_ut_2( co_t *co_p )
 {
-	
+	static struct timeval __t;
 	if ( *co_p ) goto **co_p;
 	/* begin */
 	ut_stage_2_start( 2 );  /* Start unit testing of 2nd stage */
@@ -96,12 +96,23 @@ int coro_ut_2( co_t *co_p )
 		L__0:;
 	} while ( 0 );
 
-	/* Test coroutines call loop */
+	__t = clock_t_set( 1 * TICK_PER_SEC );
 	do {
 		/* wait */
 		*co_p = &&L__1;
 
 		L__1:
+		if (!( clock_time_after( __t ))) { /* cond */
+		
+			return CO_WAIT;
+		}
+	} while ( 0 );  /* Pause before performing tests */
+	/* Test coroutines call loop */
+	do {
+		/* wait */
+		*co_p = &&L__2;
+
+		L__2:
 		if (!( !ut_stage_2( ut_2_schedule ))) { /* cond */
 		
 			return CO_WAIT;

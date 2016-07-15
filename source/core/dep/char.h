@@ -59,12 +59,6 @@ extern "C" {
 #define RX_SIZE  80  /**< Size of input buffer. \hideinitializer */
 
 /**
- *  \brief "Unretarding" (0) or "retarding" (1) output.
- *  \note "Retarding" output appends delays in program execution.
- */
-CHAR_EXT_INIT( int char_retarding_fputc, 0 );
-
-/**
  *  \brief Received message pointer.
  *  \note Must be reset in NULL after message handling.
  */

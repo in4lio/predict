@@ -57,7 +57,7 @@ static const char *const TITLE = __CRLF__
  *  \hideinitializer
  */
 const char *const VERSION_STRING =
-	__CRLF__ "predict" " " "0.3" " (" "0.3b5" ")"
+	__CRLF__ "predict" " " "0.3" " (" "0.3b6" ")"
 	__CRLF__ "Compiled with " "gcc" " " __VERSION__;
 
 /**

@@ -219,10 +219,12 @@ void __print_header( const char *s, int len, char ch )
 
 static void __print_result( bool result )
 {
+	
 	printf( __CRLF__ );
 	printf( "%.*s", ( int ) console_col_count, ________ );
 	printf( __CRLF__ __CRLF__"%*s", ( int )( console_col_count + strlen( __PASSED__ )) / 2, ( result ) ? __PASSED__ : __FAILED__ );
 	printf( __CRLF__ __CRLF__"  %d fault(s) in %d test(s)", __failed, __executed );
+
 	printf( " for %.1f sec"__CRLF__, ( float )( ut_stop - ut_start ) / 10 );
 	printf( "%.*s", ( int ) console_col_count, ________ );
 	flush();
@@ -342,10 +344,6 @@ bool ut_stage_2( int ( *test )( void ))
 
 		test();
 
-#ifdef LINK_CONSOLE
-		console_prompt();
-
-#endif
 		return ( true );
 
 	case ut_thread_EXEC:
@@ -359,11 +357,6 @@ bool ut_stage_2( int ( *test )( void ))
 		result = ( __failed == 0 );
 		__print_result( result );
 		__finished_callback( 2, result );
-
-#ifdef LINK_CONSOLE
-		console_prompt();
-
-#endif
 		ut_executed[ 2 ] += __executed;
 		__executed = 0;
 		ut_failed[ 2 ] += __failed;

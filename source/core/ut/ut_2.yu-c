@@ -83,8 +83,16 @@ static int ut_2_schedule( void )
 	ut_stage_2_start( ($len each-UT_2) );  /* Start unit testing of 2nd stage */
 	($coro-yield);
 
+	($if ($gt predict-ut_2-pause 0) ]
+		__t = clock_t_set( ($predict-ut_2-pause) * TICK_PER_SEC );
+		($coro-wait,, clock_time_after( __t ));  /* Pause before performing tests */
+	[ )
 	/* Test coroutines call loop */
 	($coro-wait,, !ut_stage_2( ut_2_schedule ));
+[ \enter ]
+	($if ($gt predict-ut_2-pause 0) ]
+		($coro-local) struct timeval __t;
+	[ )
 [ )
 
 void ut_2_restart( void )

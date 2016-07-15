@@ -46,3 +46,13 @@
 	Don't finish the program even in case all coroutines were completed.
 )
 ($set predict-alive-coro-completed 1)
+
+($!
+	Pause before unit testing of 2nd stage (seconds).
+)
+($set predict-ut_2-pause 1)
+
+($!
+	Use ftoa() instead of string format for floating numbers (%f).
+)
+($set predict-use-ftoa 0)
