@@ -8,8 +8,8 @@
 ($TITLE,,Unit testing of 2nd stage.)
 
 ($import stdlib)
-($import corolib)
 ($import "config.yu")
+($import corolib)
 
 #include "include.h"
 

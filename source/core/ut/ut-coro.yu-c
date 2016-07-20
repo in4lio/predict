@@ -8,8 +8,8 @@
 ($TITLE,,Unit test of coroutines.)
 
 ($import stdlib)
-($import corolib)
 ($import "config.yu")
+($import corolib)
 
 #include "include.h"
 
@@ -133,7 +133,7 @@ int test_3_init( void )
 	case -1:
 		i = 1;
 		--inside_test_3;
-		($coro-quit test_3);
+		($coro-quit);
 	}
 	assert_fail( "unreachable instruction" );
 	--inside_test_3;

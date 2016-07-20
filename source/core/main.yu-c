@@ -8,9 +8,9 @@
 ($TITLE,,predict - an embedded application framework.)
 
 ($import stdlib)
+($import "config.yu")
 ($import h)
 ($import corolib)
-($import "config.yu")
 
 ($implement co)
 

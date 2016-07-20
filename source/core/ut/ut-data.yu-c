@@ -8,8 +8,8 @@
 ($TITLE,,Unit test of application state-space.)
 
 ($import stdlib)
-($import corolib)
 ($import "config.yu")
+($import corolib)
 
 #include "include.h"
 

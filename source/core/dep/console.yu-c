@@ -8,9 +8,9 @@
 ($TITLE,,Debug console.)
 
 ($import stdlib)
+($import "config.yu")
 ($import h)
 ($import corolib)
-($import "config.yu")
 
 ($implement-named)
 

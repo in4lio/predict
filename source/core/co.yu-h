@@ -8,9 +8,9 @@
 ($TITLE,,Coroutines and unit tests declarations.)
 
 ($import stdlib)
+($import "config.yu")
 ($import h)
 ($import corolib)
-($import "config.yu")
 
 ($h-begin-named)
 
