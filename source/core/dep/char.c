@@ -57,7 +57,7 @@ static const char *const TITLE = __CRLF__
  *  \hideinitializer
  */
 const char *const VERSION_STRING =
-	__CRLF__ "predict" " " "0.3" " (" "0.3b6" ")"
+	__CRLF__ "predict" " " "0.3" " (" "0.3b7" ")"
 	__CRLF__ "Compiled with " "gcc" " " __VERSION__;
 
 /**
@@ -65,7 +65,7 @@ const char *const VERSION_STRING =
  */
 static char rx_buf[ RX_SIZE ];
 static uint32_t rx_pos;
-static bool is_msg;
+static uint8_t rx_buf_changed;
 
 #define FINE_BACKSPACE  "\x08\x20\x08"  /**< Sequence for delete last input char. \hideinitializer */
 #define CLEAR_CMD       "                    \r" CONSOLE_PROMPT /**< Clear command line. \hideinitializer */
@@ -106,7 +106,7 @@ int receive_char_init( void )
 	printf( __CRLF__ );
 
 	rx_pos = 0;
-	is_msg = false;
+	rx_buf_changed = 1;
 
 	char_echo = 1;
 	getch_init();
@@ -144,63 +144,74 @@ int coro_receive_char( co_t *co_p )
 		switch ( getch_escseq( chr )) {
 
 		case ESCSEQ_OK:
-			if ( console_command_waited()  /* Console is waiting for command, no cyclic command, */
-			&& ( rx_pos == 0 )) {          /* no one input character */
+			if ( console_command_waited()                    /* Console is waiting for command, no cyclic command, */
+			&& ( rx_pos == 0 )                               /* no characters received, */
+			&& (( chr == CHAR_UP ) || ( chr == CHAR_DOWN ))  /* UP or DOWN arrow pressed */
+			) { 
 				/* Choose console command from list */
 				printf( CLEAR_CMD );
-				flush();
-				switch ( chr ) {
 
-				case CHAR_UP:
+				if ( chr == CHAR_UP ) {
 					console_index = ( console_index > 1 ) ? console_index - 1 : CONSOLE_COMMAND_COUNT - 1;
-					goto up_or_down_l;
-
-				case CHAR_DOWN:
+				} else {
 					console_index = ( console_index < CONSOLE_COMMAND_COUNT - 1 ) ? console_index + 1 : 1;
-
-				up_or_down_l:
-					/* Print command */
-					printf( "%s\r" CONSOLE_PROMPT_LIST, console_command[ console_index ]);
-					flush();
-					break;
-
-				default:
-					console_index = 0;
 				}
-			} else {
-				char *p;
+				/* Print command */
+				printf( "%s\r" CONSOLE_PROMPT_LIST, console_command[ console_index ]);
+				flush();
 
-				/* Input message using only UP, DOWN and RIGHT arrows */
+			} else {
+				if ( console_index ) {
+					/* Reset command choice */
+					console_index = 0;
+					printf( CLEAR_CMD );
+					flush();
+				}
+				/* Input text using only UP, DOWN and RIGHT arrows,
+				   recall last content by LEFT */
 				switch ( chr ) {
 
-				case CHAR_UP:    /* increase last entered char */
-				case CHAR_DOWN:  /* decrease */
-					if ( rx_pos == 0 ) break;
-
-					p = strchr( USED_CHAR_LIST, rx_buf[ rx_pos - 1 ]);
-					if ( p ) {
-						if ( chr == CHAR_UP ) {
-							chr = ( p[ 1 ]) ? p[ 1 ] : USED_CHAR_LIST[ 0 ];
+				case CHAR_UP:    /* Increase last char */
+				case CHAR_DOWN:  /* Decrease */
+					if ( rx_pos ) {
+						char *p = strchr( USED_CHAR_LIST, rx_buf[ rx_pos - 1 ]);
+						if ( p ) {
+							if ( chr == CHAR_UP ) {
+								chr = ( p[ 1 ]) ? p[ 1 ] : USED_CHAR_LIST[ 0 ];
+							} else {
+								chr = ( p == USED_CHAR_LIST ) ? USED_CHAR_LIST[ sizeof( USED_CHAR_LIST ) - 2 ] : *( p - 1 );
+							}
 						} else {
-							chr = ( p == USED_CHAR_LIST ) ? USED_CHAR_LIST[ sizeof( USED_CHAR_LIST ) - 2 ] : *( p - 1 );
+							chr = '0';
 						}
-					} else {
-						chr = '0';
-					}
-					rx_buf[ rx_pos - 1 ] = chr;
-					if ( char_echo ) {
-						printf( "\x08%c", chr );
-						flush();
+						rx_buf[ rx_pos - 1 ] = chr;
+						rx_buf_changed = 1;
+						if ( char_echo ) {
+							printf( "\x08%c", chr );
+							flush();
+						}
 					}
 					break;
 
-				case CHAR_RIGHT: /* enter 0 */
+				case CHAR_RIGHT:  /* Enter 0 */
 					if ( rx_pos == RX_SIZE - 1 ) break;
 
 					chr = '0';
 					rx_buf[ rx_pos++ ] = chr;
+					rx_buf_changed = 1;
 					if ( char_echo ) {
 						printf( "%c", chr );
+						flush();
+					}
+					break;
+
+				case CHAR_LEFT:  /* Recall last content */
+					if ( rx_pos || rx_buf_changed ) break;
+					
+					rx_buf[ RX_SIZE - 1 ] = '\0';  /* Safety first */
+					rx_pos = strlen( rx_buf );
+					if ( rx_pos && char_echo ) {
+						printf( rx_buf );
 						flush();
 					}
 					break;
@@ -221,6 +232,7 @@ int coro_receive_char( co_t *co_p )
 
 			case CHAR_SPACE ... LAST_CHAR:
 				rx_buf[ rx_pos++ ] = chr;
+				rx_buf_changed = 1;
 				if ( char_echo ) {
 					printf( "%c", chr );
 					flush();
@@ -228,8 +240,23 @@ int coro_receive_char( co_t *co_p )
 				if ( rx_pos < RX_SIZE - 1 ) break;
 				/* fallthrough */
 
-			case CHAR_ENTER:
-				is_msg = true;
+			case CHAR_ENTER:  /* Prepare message */
+				rx_buf[ rx_pos ] = '\0';
+				rx_pos = 0;
+				char_received = rx_buf;
+				rx_buf_changed = 0;
+
+				/* Wait message is handled */
+				do {
+					/* wait */
+					*co_p = &&L__1;
+
+					L__1:
+					if (!( char_received == NULL )) { /* cond */
+		
+						return CO_WAIT;
+					}
+				} while ( 0 );
 				break;
 
 			case CHAR_BACKSPACE:
@@ -244,34 +271,15 @@ int coro_receive_char( co_t *co_p )
 			}
 			break;
 		}
+
 		do {
 			/* yield */
-			*co_p = &&L__1;
+			*co_p = &&L__2;
 	
 			return CO_YIELD;
 
-			L__1:;
+			L__2:;
 		} while ( 0 );
-
-		/* Prepare message */
-		if ( is_msg ) {
-			rx_buf[ rx_pos ] = 0;
-			rx_pos = 0;
-			char_received = rx_buf;
-			is_msg = false;
-
-			/* Wait message is handled */
-			do {
-				/* wait */
-				*co_p = &&L__2;
-
-				L__2:
-				if (!( char_received == NULL )) { /* cond */
-		
-					return CO_WAIT;
-				}
-			} while ( 0 );
-		}
 	}
 	/* end */
 	*co_p = &&L__END_receive_char;

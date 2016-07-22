@@ -8,7 +8,7 @@
 predict
 [ )
 ($set FRAMEWORK_VERSION ]
-0.3b6
+0.3b7
 [ )
 ($set FRAMEWORK_AUTHORS ]
 Vitaly Kravtsov (in4lio@gmail.com)
