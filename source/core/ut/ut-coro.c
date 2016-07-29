@@ -61,7 +61,7 @@ static int create_mark( void )
 
 static void check_mark( int mark )
 {
-	assert_int_eq( answer++, mark, );
+	assert_int_eq( answer++, mark );
 }
 
 int test_1_init( void )
@@ -172,7 +172,7 @@ int coro_test_3( co_t *co_p )
 
 			L__2:;
 		} while ( 0 );
-		assert_int_eq( 2, i, );
+		assert_int_eq( 2, i );
 
 		i = 3;
 		do {
@@ -183,7 +183,7 @@ int coro_test_3( co_t *co_p )
 
 			L__3:;
 		} while ( 0 );
-		assert_int_eq( 3, i, );
+		assert_int_eq( 3, i );
 
 		i = 4;
 		do {
@@ -194,7 +194,7 @@ int coro_test_3( co_t *co_p )
 
 			L__4:;
 		} while ( 0 );
-		assert_int_eq( 4, i, );
+		assert_int_eq( 4, i );
 
 		do {
 			/* wait */
@@ -216,7 +216,7 @@ int coro_test_3( co_t *co_p )
 				L__6:;
 			} while ( 0 );
 		}
-		assert_int_eq( 20, i, );
+		assert_int_eq( 20, i );
 
 		i = -1;
 		do {
@@ -263,7 +263,7 @@ int coro_test_4( co_t *co_p )
 	if ( *co_p ) goto **co_p;
 	/* begin */
 	do {
-		assert_not( inside_test_3, );
+		assert_not( inside_test_3 );
 		do {
 			/* yield */
 			*co_p = &&L__7;
@@ -329,7 +329,7 @@ int coro_ut_coro( co_t *co_p )
 			return CO_WAIT;
 		}
 	} while ( 0 );
-	assert_int_eq( answer_last, answer, );
+	assert_int_eq( answer_last, answer );
 
 	co_test_3 = NULL;
 	test_3_init();

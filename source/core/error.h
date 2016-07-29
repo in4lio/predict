@@ -96,14 +96,14 @@ extern "C" {
 /**
  *  \brief Verify error flag is cleared.
  *  \param err Identifier of error.
- *  \param op Operation if verification failed.
+ *  \param ... Operation if verification failed.
  *  \hideinitializer
  */
-#define assert_unerring( err, op ) do { \
+#define assert_unerring( err, ... ) do { \
 	bool bit = ( BIT( __concat( err_bit_, err )) & data_get_word( var_error )); \
 	if ( bit ) { \
 		ut_fault( "expected unerring", __FILE__,  __FUNCTION__, __LINE__ ); \
-		op; \
+		__VA_ARGS__; \
 	} \
 } while ( 0 )
 

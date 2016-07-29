@@ -107,7 +107,7 @@ int coro__ut_data_1( co_t *co_p )
 		} while ( 0 );
 		/* 3 */
 		data_reset( peek__ut_data_1, var__ut_word );
-		assert_u32_eq(( word ) i, data_get_word( var__ut_word ), );
+		assert_u32_eq(( word ) i, data_get_word( var__ut_word ));
 
 		data_set_dword( var__ut_array_1, i << 8 );
 
@@ -123,7 +123,7 @@ int coro__ut_data_1( co_t *co_p )
 		} while ( 0 );
 		/* 5 */
 		data_reset( peek__ut_data_1, var__ut_array_3 );
-		assert_u32_eq( data_get_dword( var__ut_array_1 ), data_get_dword( var__ut_array_3 ), );
+		assert_u32_eq( data_get_dword( var__ut_array_1 ), data_get_dword( var__ut_array_3 ));
 
 		data_set_dword( var__ut_array_0, data_get_dword( var__ut_array_2 ));
 		data_set_dword( var__ut_array_2, 0 );
@@ -141,7 +141,7 @@ int coro__ut_data_1( co_t *co_p )
 			}
 		} while ( 0 );
 	}
-	assert_u32_eq( 0x55555555, data_get_dword( var__ut_array_0 ), );
+	assert_u32_eq( 0x55555555, data_get_dword( var__ut_array_0 ));
 
 	/* Auxiliary operations */
 	data_set_all_changed( peek__ut_data_1 );
@@ -150,13 +150,13 @@ int coro__ut_data_1( co_t *co_p )
 	&& data_get_changed( peek__ut_data_1, var__ut_float )
 	&& !data_get_changed( peek__ut_data_1, var__ut_array_1 )
 	&& !data_get_changed( peek__ut_data_1, var__ut_array_2 ))
-	, );
+	);
 	data_reset_all( peek__ut_data_1 );
-	assert_not( data_get_changed_any( peek__ut_data_1 ), );
+	assert_not( data_get_changed_any( peek__ut_data_1 ));
 	data_set_changed( var__ut_byte );
-	assert_not( data_get_changed_any( peek__ut_data_1 ), );
+	assert_not( data_get_changed_any( peek__ut_data_1 ));
 	data_set_changed( var__ut_float );
-	assert( data_get_changed_any( peek__ut_data_1 ), );
+	assert( data_get_changed_any( peek__ut_data_1 ));
 
 	do {
 		/* yield */
@@ -168,20 +168,20 @@ int coro__ut_data_1( co_t *co_p )
 	} while ( 0 );
 
 	data_clear_watch( peek__ut_data_1 );
-	assert_not( data_get_changed_any( peek__ut_data_1 ), );
+	assert_not( data_get_changed_any( peek__ut_data_1 ));
 	data_watch_array( peek__ut_data_1, _ut_data_array_watch );
 	data_set_changed( var__ut_float );
 	data_set_changed( var__ut_word );
 	data_set_changed( var__ut_array_0 );
-	assert_not( data_get_changed_any( peek__ut_data_1 ), );
+	assert_not( data_get_changed_any( peek__ut_data_1 ));
 	data_set_changed( var__ut_array_1 );
-	assert( data_get_changed( peek__ut_data_1, var__ut_array_1 ), );
+	assert( data_get_changed( peek__ut_data_1, var__ut_array_1 ));
 	data_set_changed( var__ut_array_2 );
-	assert( data_get_changed( peek__ut_data_1, var__ut_array_2 ), );
+	assert( data_get_changed( peek__ut_data_1, var__ut_array_2 ));
 	data_set_changed( var__ut_array_3 );
-	assert( data_get_changed( peek__ut_data_1, var__ut_array_3 ), );
+	assert( data_get_changed( peek__ut_data_1, var__ut_array_3 ));
 	data_set_changed( var__ut_byte );
-	assert( data_get_changed( peek__ut_data_1, var__ut_byte ), );
+	assert( data_get_changed( peek__ut_data_1, var__ut_byte ));
 
 	do {
 		/* yield */
@@ -192,16 +192,16 @@ int coro__ut_data_1( co_t *co_p )
 		L__4:;
 	} while ( 0 );
 
-	assert_u32_eq( var__ut_array, data_atovar( data_vartoa( var__ut_array_0 )), );
-	assert_str_eq( "_ut_byte", data_vartoa( data_atovar( "_ut_byte" )), );
+	assert_u32_eq( var__ut_array, data_atovar( data_vartoa( var__ut_array_0 )));
+	assert_str_eq( "_ut_byte", data_vartoa( data_atovar( "_ut_byte" )));
 
 	i = 0x00ABCDEF;
 	data_set( var__ut_array_3, &i );
-	assert_str_eq( "0x00ABCDEF", data_get_string( __str, var__ut_array_3 ), );
+	assert_str_eq( "0x00ABCDEF", data_get_string( __str, var__ut_array_3 ));
 	data_set_string( var__ut_float, "8080.02" );
-	assert_str_eq( "8080.02", data_get_string( __str, var__ut_float ), );
+	assert_str_eq( "8080.02", data_get_string( __str, var__ut_float ));
 
-	assert_str_eq( "word", data_get_type( var__ut_word ), );
+	assert_str_eq( "word", data_get_type( var__ut_word ));
 	/* end */
 	*co_p = &&L__END__ut_data_1;
 
@@ -241,7 +241,7 @@ int coro__ut_data_2( co_t *co_p )
 		} while ( 0 );
 		/* 2 */
 		data_reset( peek__ut_data_2, var__ut_byte );
-		assert_u32_eq(( byte ) i, data_get_byte( var__ut_byte ), );
+		assert_u32_eq(( byte ) i, data_get_byte( var__ut_byte ));
 
 		data_set_word( var__ut_word, ( word ) i );
 
@@ -259,7 +259,7 @@ int coro__ut_data_2( co_t *co_p )
 		data_reset( peek__ut_data_2, var__ut_array_1 );
 
 		data_set_dword( var__ut_array_3, i << 8 );
-		assert_u32_eq( data_get_dword( var__ut_array_3 ), data_get_dword( var__ut_array_1 ), );
+		assert_u32_eq( data_get_dword( var__ut_array_3 ), data_get_dword( var__ut_array_1 ));
 
 		data_set_dword( var__ut_array_2, data_get_dword( var__ut_array_0 ));
 		data_set_dword( var__ut_array_0, 0 );
@@ -278,27 +278,27 @@ int coro__ut_data_2( co_t *co_p )
 		data_set_float( var__ut_float, data_get_float( var__ut_float ) + 0.25 );
 		data_reset( peek__ut_data_2, var__ut_float );
 	}
-	assert_float_eq(( float )( CYCLE_COUNT >> 1 ), data_get_float( var__ut_float ), 0.0, );
+	assert_float_eq(( float )( CYCLE_COUNT >> 1 ), data_get_float( var__ut_float ), 0.0 );
 
 	/* Voting operations */
 	/* I: -  II: -  III: -  M: -  */
-	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ), );
-	assert_not( voted_valid( var__ut_vote ), );
+	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ));
+	assert_not( voted_valid( var__ut_vote ));
 	/* I: -  II: 0  III: -  M: -  */
 	voted_set_byte( var__ut_vote, 2, 0, &vote_byte );
-	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ), );
-	assert_not( voted_valid( var__ut_vote ), );
+	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ));
+	assert_not( voted_valid( var__ut_vote ));
 	/* I: -  II: 0  III: 0  M: 0  */
 	voted_set_byte( var__ut_vote, 3, 0, &vote_byte );
-	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ));
 	data_reset( peek__ut_data_2, var__ut_vote );
-	assert( voted_valid( var__ut_vote ), );
-	assert_u32_eq( 0, data_get_byte( var__ut_vote ), );
+	assert( voted_valid( var__ut_vote ));
+	assert_u32_eq( 0, data_get_byte( var__ut_vote ));
 	/* I: -  II: 0  III: 1  M: -  */
 	voted_set_byte( var__ut_vote, 3, 1, &vote_byte );
-	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ));
 	data_reset( peek__ut_data_2, var__ut_vote );
-	assert_not( voted_valid( var__ut_vote ), );
+	assert_not( voted_valid( var__ut_vote ));
 
 	do {
 		/* yield */
@@ -311,28 +311,28 @@ int coro__ut_data_2( co_t *co_p )
 
 	/* I: 1  II: 0  III: 1  M: 1  */
 	voted_set_byte( var__ut_vote, 1, 1, &vote_byte );
-	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ));
 	data_reset( peek__ut_data_2, var__ut_vote );
-	assert( voted_valid( var__ut_vote ), );
-	assert_u32_eq( 1, data_get_byte( var__ut_vote ), );
+	assert( voted_valid( var__ut_vote ));
+	assert_u32_eq( 1, data_get_byte( var__ut_vote ));
 	/* I: 1  II: 0  III: 0  M: 0  */
 	voted_set_byte( var__ut_vote, 3, 0, &vote_byte );
-	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ));
 	data_reset( peek__ut_data_2, var__ut_vote );
-	assert( voted_valid( var__ut_vote ), );
-	assert_u32_eq( 0, data_get_byte( var__ut_vote ), );
+	assert( voted_valid( var__ut_vote ));
+	assert_u32_eq( 0, data_get_byte( var__ut_vote ));
 	/* I: 1  II: 2  III: 0  M: -  */
 	voted_set_byte( var__ut_vote, 2, 2, &vote_byte );
-	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ));
 	data_reset( peek__ut_data_2, var__ut_vote );
-	assert_not( voted_valid( var__ut_vote ), );
+	assert_not( voted_valid( var__ut_vote ));
 	/* I: 3  II: 2  III: 3  M: 3  */
 	voted_set_byte( var__ut_vote, 1, 3, &vote_byte );
 	voted_set_byte( var__ut_vote, 3, 3, &vote_byte );
-	assert( data_get_changed( peek__ut_data_2, var__ut_vote ), );
+	assert( data_get_changed( peek__ut_data_2, var__ut_vote ));
 	data_reset( peek__ut_data_2, var__ut_vote );
-	assert( voted_valid( var__ut_vote ), );
-	assert_u32_eq( 3, data_get_byte( var__ut_vote ), );
+	assert( voted_valid( var__ut_vote ));
+	assert_u32_eq( 3, data_get_byte( var__ut_vote ));
 
 	do {
 		/* yield */
@@ -345,14 +345,14 @@ int coro__ut_data_2( co_t *co_p )
 
 	/* I: 3  II: 3  III: 3  M: 3  */
 	voted_set_byte( var__ut_vote, 2, 3, &vote_byte );
-	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ), );
-	assert( voted_valid( var__ut_vote ), );
-	assert_u32_eq( 3, data_get_byte( var__ut_vote ), );
+	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ));
+	assert( voted_valid( var__ut_vote ));
+	assert_u32_eq( 3, data_get_byte( var__ut_vote ));
 	/* I: 4  II: 3  III: 3  M: 3  */
 	voted_set_byte( var__ut_vote, 1, 4, &vote_byte );
-	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ), );
-	assert( voted_valid( var__ut_vote ), );
-	assert_u32_eq( 3, data_get_byte( var__ut_vote ), );
+	assert_not( data_get_changed( peek__ut_data_2, var__ut_vote ));
+	assert( voted_valid( var__ut_vote ));
+	assert_u32_eq( 3, data_get_byte( var__ut_vote ));
 	/* RESET */
 	voted_set_byte( var__ut_vote, 3, 2, &vote_byte );
 	data_reset( peek__ut_data_2, var__ut_vote );

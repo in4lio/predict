@@ -22,22 +22,22 @@
 
 static void test_assert( void )
 {
-	assert( 1 == 1, );
-	assert_not( 1 == 2, );
-	assert_int_eq( -1, -1, );
-	assert_u32_eq( 451, 451, );
-	assert_int_cmp( -32, -33, >, );
-	assert_u32_cmp( 5u, 5u, <=, );
-	assert_float_eq( 10.2, 10.0, 0.2, );
-	assert_double_eq( 20.1, 20.1, 0.0, );
-	assert_float_cmp( 0.500, 0.501, <, );
+	assert( 1 == 1 );
+	assert_not( 1 == 2 );
+	assert_int_eq( -1, -1 );
+	assert_u32_eq( 451, 451 );
+	assert_int_cmp( -32, -33, > );
+	assert_u32_cmp( 5lu, 5lu, <= );
+	assert_float_eq( 10.2, 10.0, 0.2 );
+	assert_double_eq( 20.1, 20.1, 0.0 );
+	assert_float_cmp( 0.500, 0.501, < );
 }
 
 static void test_assert_fail( void )
 {
 	ut_quiet_begin();
 
-	assert( 1 == 2, );
+	assert( 1 == 2 );
 	assert_fail( "%d %d %d...", 1, 2, 3 );
 
 	ut_quiet_end( 2 );
@@ -52,26 +52,26 @@ static void test_array( void )
 	for ( i = 0; i < 5; i++ ) actual[ i ] = i + 1;
 
 	/* Check the first 3 bytes */
-	assert_array_eq( expected, actual, 3, );
+	assert_array_eq( expected, actual, 3 );
 }
 
 static void test_bit( void )
 {
-	assert_bit_1( 0, 0x01, );
-	assert_bit_1( 2, 0x04, );
-	assert_bit_0( 3, 0x02, );
+	assert_bit_1( 0, 0x01 );
+	assert_bit_1( 2, 0x04 );
+	assert_bit_0( 3, 0x02 );
 }
 
 static void test_str( void )
 {
 	char *s = "hello";
 
-	assert_str_eq( "hello", s, );
-	assert_str_eq( NULL, NULL, );
-	assert_str_has( "amazing", "hello amazing world!", );
-	assert_str_hasno( "wonderful", "hello amazing world!", );
-	assert_str_end( "world!", "hello amazing world!", );
-	assert_str_start( s, "hello amazing world!", );
+	assert_str_eq( "hello", s );
+	assert_str_eq( NULL, NULL );
+	assert_str_has( "amazing", "hello amazing world!" );
+	assert_str_hasno( "wonderful", "hello amazing world!" );
+	assert_str_end( "world!", "hello amazing world!" );
+	assert_str_start( s, "hello amazing world!" );
 }
 
 void ut_ut( void )
