@@ -339,6 +339,8 @@ UT_EXT void ( *ut_unlock_callback )( void );
 
 #else  /* LINK_UT */
 
+#include <stddef.h>
+
 #define assert_fail( msg, ... ) NULL
 #undef  assert
 #define assert( value, ... ) NULL
