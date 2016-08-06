@@ -6,7 +6,7 @@
 
 ($macro DOC__INI ()
 /**
- *  \page ini Configuration file options
+ *  \page ini Configuration options
  *
  *  \section i_cyclic_delay cyclic_delay
  *  Interval of cyclic command execution (seconds).

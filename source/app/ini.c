@@ -3,7 +3,7 @@
     out of ini.yu-c 
  *//**
  *  \file  ini.c (ini.yu-c)
- *  \brief  Configuration file.
+ *  \brief  Configuration options.
  *  \author  Vitaly Kravtsov (in4lio@gmail.com)
  *  \copyright  See the LICENSE file.
  */

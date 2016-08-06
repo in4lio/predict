@@ -5,7 +5,7 @@
     |_|                   |_)
 
 ($import "app.yu")
-($TITLE,,Configuration file.)
+($TITLE,,Configuration options.)
 
 ($import stdlib)
 ($import h)
@@ -16,7 +16,7 @@
 ($extern-c-begin)
 
 /**
- *  \defgroup ini Configuration file
+ *  \defgroup ini Configuration options
  *  \ingroup core
  *  \{
  */

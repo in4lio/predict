@@ -3,7 +3,7 @@
     out of ini.yu-h 
  *//**
  *  \file  ini.h (ini.yu-h)
- *  \brief  Configuration file.
+ *  \brief  Configuration options.
  *  \author  Vitaly Kravtsov (in4lio@gmail.com)
  *  \copyright  See the LICENSE file.
  */
@@ -45,13 +45,13 @@ extern "C" {
 #endif
 
 /**
- *  \defgroup ini Configuration file
+ *  \defgroup ini Configuration options
  *  \ingroup core
  *  \{
  */
 
 /**
- *  \page ini Configuration file options
+ *  \page ini Configuration options
  *
  *  \section i_cyclic_delay cyclic_delay
  *  Interval of cyclic command execution (seconds).

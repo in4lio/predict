@@ -5,7 +5,7 @@
     |_|                   |_)
 
 ($import "app.yu")
-($TITLE,,Configuration file.)
+($TITLE,,Configuration options.)
 
 ($import stdlib)
 ($import h)
