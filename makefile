@@ -3,15 +3,15 @@
 #   |   |  _   _|   | |  _   _|
 #   |  _|_| |___ ___|_|___  |
 #   |_|                   |_|
-#   makefile ( yupp, gcc )
+#   makefile (yupp, gcc)
 
-# -- binary name (without extension)
-BIN = predict
+# -- name of binary file without extension
+TARGET = predict
 
 # -- creating MAP file
 MAP = 0
 
-# -- platform (core)
+# -- platform
 ifeq ($(OS),Windows_NT)
 # MSDOS: __DJGPP__
 # WIN32: __MINGW__
@@ -24,7 +24,7 @@ endif
 
 TOP = .
 
-# -- compilers
+# -- compiler
 ifeq ($(PLATFORM),__DJGPP__)
 CC = $(DJGPP_HOME)/bin/gcc.exe
 CXX = $(DJGPP_HOME)/bin/gxx.exe
@@ -49,7 +49,7 @@ else
 PP = @echo makefile: warning: preprocessing step is skipped,
 endif
 
-# -- command to create 'object' and 'bin' directories and subdirectories
+# -- command to create directories
 MKDIR = mkdir -p
 
 # -- output subdirectory
@@ -63,24 +63,27 @@ D_PLATFORM = .
 endif
 endif
 
-# -- yupp import directories
-D_YU = source/app source/app/ut source/app/dep source/core source/core/ut source/core/dep
-D_YU := $(D_YU) source/platform/$(D_PLATFORM)
+D_SOU = source
+
+# -- import directories for yupp
+D_YU = $(D_SOU)/app $(D_SOU)/app/ut $(D_SOU)/app/dep \
+       $(D_SOU)/core $(D_SOU)/core/ut $(D_SOU)/core/dep \
+       $(D_SOU)/platform/$(D_PLATFORM)
 
 # -- source directories
 D_C = $(D_YU)
 D_CXX = $(D_C)
-D_ASM = source
+D_ASM = $(D_SOU)
 
 # -- include directories
 D_H = $(D_C) $(YUPP_HOME)/lib
 
-# -- binary directory
-D_BIN = bin
+# -- binary file directory
+D_BIN = $(TOP)/bin
 D_BIN := $(if $(D_PLATFORM), $(D_BIN)/$(D_PLATFORM), $(D_BIN))
 
 # -- object directory
-D_OBJ = object
+D_OBJ = $(TOP)/object
 D_OBJ := $(if $(D_PLATFORM), $(D_OBJ)/$(D_PLATFORM), $(D_OBJ))
 
 # -- LIST and MAP directories
@@ -101,15 +104,15 @@ E_ASM = .asm
 # -- object suffix
 E_OBJ = .o
 
-# -- binary suffix
+# -- binary file suffix
 ifeq ($(OS),Windows_NT)
 E_BIN = .exe
 else
 E_BIN =
 endif
 
-# -- binary full name
-F_BIN = $(D_BIN)/$(BIN)$(E_BIN)
+# -- full name of binary file
+F_BIN = $(D_BIN)/$(TARGET)$(E_BIN)
 
 # -- LIST and MAP suffixes
 E_MAP = .map
@@ -125,7 +128,7 @@ endif
 LFLAGS =
 
 ifeq ($(MAP),1)
-LFLAGS := $(LFLAGS) -Wl,-Map,$(D_MAP)/$(BIN)$(E_MAP)
+LFLAGS := $(LFLAGS) -Wl,-Map,$(D_MAP)/$(TARGET)$(E_MAP)
 endif
 
 # -- preprocessor flags
@@ -202,7 +205,7 @@ R := $(R) $(G_H) $(G_C) $(G_CXX)
 endif
 
 ifeq ($(MAP),1)
-R := $(R) $(D_MAP)/$(BIN)$(E_MAP)
+R := $(R) $(D_MAP)/$(TARGET)$(E_MAP)
 endif
 
 ifeq ($(OS),Windows_NT)
@@ -229,10 +232,10 @@ vpath %$(E_ASM) $(D_ASM)
 vpath %$(E_YUCXX) $(D_CXX)
 vpath %$(E_YUC) $(D_C)
 
-# -- build project
-.PHONY: all
+# -- build binary file
+.PHONY: default
 
-all: bindirs $(F_BIN)
+default: bindirs $(F_BIN)
 
 $(F_BIN): $(O)
 	$(call wrap,$(LINK),$(LFLAGS) $(LIBS) $^ -o $@)
@@ -281,13 +284,13 @@ yupp: $(G_C) $(G_CXX) $(G_H)
 clean:
 	$(CLEAN)
 
-# -- remove binary files
+# -- remove binary and object files
 .PHONY: clean-binary
 
 clean-binary:
 	$(CLEAN_BIN)
 
-# -- install project
+# -- install
 .PHONY: install
 
 install:
