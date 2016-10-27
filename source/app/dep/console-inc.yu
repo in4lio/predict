@@ -175,7 +175,6 @@ static uint16_t __cyclic_delay;
 	if ( msg_to__uint_0( 1 )) {
 		ini_data_prot = __uint;
 		printf( __CRLF__"  data_prot = %d", ini_data_prot );
-		//TODO: save
 	} else {
 		error = "value";
 	}

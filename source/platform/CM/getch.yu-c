@@ -17,6 +17,7 @@
 
 ($skip-if-not LINK_CONSOLE)
 
+#include "MDR32F9Qx_config.h"
 #include "SEGGER_RTT.h"
 
 /**
@@ -34,12 +35,13 @@ void getch_uninit( void )
 
 int getch( void )
 {
-	return ( SEGGER_RTT_HasKey() ? SEGGER_RTT_GetKey() : EOF );
-}
+	int res;
 
-__inline int getch_1( void )
-{
-	return getch();
+#ifdef LINK_RTT
+	res = ( SEGGER_RTT_HasKey()) ? SEGGER_RTT_GetKey() : EOF;
+
+#endif
+	return ( res );
 }
 
 int getch_escseq( int chr )

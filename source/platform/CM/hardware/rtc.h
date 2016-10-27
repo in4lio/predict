@@ -17,12 +17,16 @@
 #define _EXT
 #define _EXT_INIT( dec, init ) \
 	dec = init
-#define _INL extern inline
+#define _INL
 #else
 #define _EXT extern
 #define _EXT_INIT( dec, init ) \
 	extern dec
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#define _INL extern inline
+#else
 #define _INL inline
+#endif
 #endif
 
 #ifdef __cplusplus

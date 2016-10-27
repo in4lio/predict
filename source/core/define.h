@@ -187,6 +187,26 @@ typedef uint64_t   qword;
  */
 #define __stringify( x )   __stringify_1( x )
 
+/** \hideinitializer */
+#define __concat_2( h, t )  h##t
+
+/**
+ *  \brief Concatenate two atoms.
+ *  \param h Head.
+ *  \param t Tail.
+ *  \hideinitializer
+ */
+#define __concat( h, t )  __concat_2( h, t )
+
+/**
+ *  \brief Concatenate three atoms.
+ *  \param h Head.
+ *  \param b Body.
+ *  \param t Tail.
+ *  \hideinitializer
+ */
+#define __concat_3( h, b, t )  h##b##t
+
 /**
  *  \brief Length of array (vector).
  *  \param array Array.

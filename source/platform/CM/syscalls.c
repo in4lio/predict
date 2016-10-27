@@ -9,6 +9,7 @@ void *__dso_handle __attribute__ ((weak));
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/times.h>
+#include "MDR32F9Qx_config.h"
 #include "SEGGER_RTT.h"
 #include "rtc.h"
 
@@ -191,7 +192,13 @@ _wait(int* status __attribute__((unused)))
 
 int _write(int file __attribute__((unused)), char* ptr, int len)
 {
-  return SEGGER_RTT_Write(0, ptr, len);
+  int res;
+
+#ifdef LINK_RTT
+  res = (int) SEGGER_RTT_Write(0, ptr, len);
+
+#endif
+  return res;
 }
 
 #endif // __STDC_HOSTED__ == 1

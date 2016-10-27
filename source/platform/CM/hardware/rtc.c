@@ -27,7 +27,7 @@
 
 void rtc_init_clock( void )
 {
-	/* Enable HSI clock for BKP control */
+	/* Enable periph clock for BKP */
 	RST_CLK_PCLKcmd( RST_CLK_PCLK_BKP, ENABLE );
 	/* RTC reset */
 	BKP_RTC_Reset( ENABLE );
@@ -37,8 +37,8 @@ void rtc_init_clock( void )
 	BKP_RTCclkSource( BKP_RTC_LSIclk );
 	while ( RST_CLK_LSIstatus() != SUCCESS );
 	/* Set RTC prescaler value */
-	BKP_RTC_WaitForUpdate();
 	BKP_RTC_SetPrescaler( PRESCALER );
+	BKP_RTC_WaitForUpdate();
 	/* Set RTC counter value */
 	BKP_RTC_WaitForUpdate();
 	BKP_RTC_SetCounter( 0 );
