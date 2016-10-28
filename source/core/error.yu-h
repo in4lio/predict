@@ -91,7 +91,7 @@ enum {
 /**
  *  \brief Error messages formats.
  */
-($h-extern) const char *const error_format[];
+($extern-c) const char *const error_format[];
 
 /** \} */
 

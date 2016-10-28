@@ -21,22 +21,22 @@
 /**
  *  \brief Show-must-go-on flag.
  */
-($h-extern) int app_alive;
+($extern-c) int app_alive;
 
 /**
  *  \brief Application exit status.
  */
-($h-extern-init,,int app_return,,0)
+($extern-c-init,,int app_return,,0)
 
 /**
  *  \brief Initialize application.
  */
-($h-extern) int app_init( int argc, char *argv[]);
+($extern-c) int app_init( int argc, char *argv[]);
 
 /**
  *  \brief Uninitialize application.
  */
-($h-extern) void app_uninit( void );
+($extern-c) void app_uninit( void );
 
 /**
  *  \brief Debug interface title message.

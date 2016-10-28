@@ -24,11 +24,22 @@
 #define CONSOLE_EXT
 #define CONSOLE_EXT_INIT( dec, init ) \
 	dec = init
+#define CONSOLE_EXT_C
+#define CONSOLE_EXT_C_INIT( dec, init ) \
+	dec = init
 #define CONSOLE_INL
 #else
 #define CONSOLE_EXT extern
 #define CONSOLE_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define CONSOLE_C "C"
+#else
+#define CONSOLE_C
+#endif
+#define CONSOLE_EXT_C extern CONSOLE_C
+#define CONSOLE_EXT_C_INIT( dec, init ) \
+	extern CONSOLE_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define CONSOLE_INL extern inline
 #else
@@ -144,12 +155,12 @@
 /**
  *  \brief List of console commands.
  */
-CONSOLE_EXT const char *const console_command[];
+CONSOLE_EXT_C const char *const console_command[];
 
 /**
  *  \brief Index of selected from list command.
  */
-CONSOLE_EXT int console_index;
+CONSOLE_EXT_C int console_index;
 
 #define cyclic_delay_MIN  1
 #define cyclic_delay_MAX  600
@@ -157,16 +168,22 @@ CONSOLE_EXT int console_index;
 /**
  *  \brief Print prompt.
  */
-CONSOLE_EXT void console_prompt( void );
+CONSOLE_EXT_C void console_prompt( void );
 
 /**
  *  \brief Check console is waiting for command.
  */
-CONSOLE_EXT bool console_command_waited( void );
+CONSOLE_EXT_C bool console_command_waited( void );
 
 /** \} */
 
 #endif /* LINK_CONSOLE */
 
+#undef CONSOLE_EXT
+#undef CONSOLE_EXT_INIT
+#undef CONSOLE_EXT_C
+#undef CONSOLE_EXT_C_INIT
+#undef CONSOLE_INL
+#undef CONSOLE_C
 #endif
 

@@ -52,12 +52,12 @@
 /**
  *  \brief List of console commands.
  */
-($h-extern) const char *const console_command[];
+($extern-c) const char *const console_command[];
 
 /**
  *  \brief Index of selected from list command.
  */
-($h-extern) int console_index;
+($extern-c) int console_index;
 
 #define cyclic_delay_MIN  1
 #define cyclic_delay_MAX  600
@@ -65,12 +65,12 @@
 /**
  *  \brief Print prompt.
  */
-($h-extern) void console_prompt( void );
+($extern-c) void console_prompt( void );
 
 /**
  *  \brief Check console is waiting for command.
  */
-($h-extern) bool console_command_waited( void );
+($extern-c) bool console_command_waited( void );
 
 /** \} */
 

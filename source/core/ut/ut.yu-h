@@ -31,18 +31,18 @@
  */
 #define UT_STR_LIMIT  100
 
-($h-extern) bool ut_assert_true( bool test, const char *path, const char *func, uint32_t line );
-($h-extern) bool ut_assert_false( bool test, const char *path, const char *func, uint32_t line );
-($h-extern) bool ut_assert_assigned( int data, const char *path, const char *func, uint32_t line );
-($h-extern) bool ut_assert_int_equal( int expected, int actual, const char *path, const char *func, uint32_t line );
-($h-extern) bool ut_assert_u32_equal( uint32_t expected, uint32_t actual, const char *path, const char *func, uint32_t line );
-($h-extern) bool ut_assert_float_equal( float expected, float actual, float delta, const char *path, const char *func, uint32_t line );
-($h-extern) bool ut_assert_double_equal( double expected, double actual, double delta, const char *path, const char *func, uint32_t line );
-($h-extern) bool ut_assert_string_equal( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
-($h-extern) bool ut_assert_string_ends_with( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
-($h-extern) bool ut_assert_string_starts_with( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
-($h-extern) bool ut_assert_string_contains( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
-($h-extern) bool ut_assert_string_doesnt_contain( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_true( bool test, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_false( bool test, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_assigned( int data, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_int_equal( int expected, int actual, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_u32_equal( uint32_t expected, uint32_t actual, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_float_equal( float expected, float actual, float delta, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_double_equal( double expected, double actual, double delta, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_string_equal( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_string_ends_with( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_string_starts_with( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_string_contains( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
+($extern-c) bool ut_assert_string_doesnt_contain( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
 
 ($define,,ut_fault_format( msg, expected, actual, ... ),,($do ]
 	char _ut_s[ UT_STR_LIMIT ];
@@ -179,14 +179,14 @@
 	if ( ut_assert_string_ends_with( expected, actual, __FILE__, __FUNCTION__, __LINE__ )) { __VA_ARGS__; }
 [ ))
 
-($h-extern) void ut_fault( const char *error, const char *path, const char *func, uint32_t line );
-($h-extern) void ut_quiet( void );
-($h-extern) void ut_loud( void );
-($h-extern) uint32_t ut_get_quiet( void );
+($extern-c) void ut_fault( const char *error, const char *path, const char *func, uint32_t line );
+($extern-c) void ut_quiet( void );
+($extern-c) void ut_loud( void );
+($extern-c) uint32_t ut_get_quiet( void );
 
-($h-extern) void ut_1_unit_begin( const char *path );
-($h-extern) void ut_1_unit_end( void );
-($h-extern) void ut_2_unit_begin( const char *path );
+($extern-c) void ut_1_unit_begin( const char *path );
+($extern-c) void ut_1_unit_end( void );
+($extern-c) void ut_2_unit_begin( const char *path );
 
 /**
  *  \brief Verify quiet mode is off.
@@ -236,7 +236,7 @@
  *  \brief Run unit test of 1st stage.
  *  \param test Unit test.
  */
-($h-extern) void ut_1_exec( void ( *test )( void ));
+($extern-c) void ut_1_exec( void ( *test )( void ));
 
 /**
  *  \brief End of group of unit test.
@@ -250,7 +250,7 @@
  *  \brief 1st stage of unit testing.
  *  \param test Set of tests.
  */
-($h-extern) bool ut_stage_1( void ( *test )( void ));
+($extern-c) bool ut_stage_1( void ( *test )( void ));
 
 /**
  *  \brief Beginning of group of unit test of 2nd stage (coroutine).
@@ -264,47 +264,47 @@
  *  \brief Start unit testing of 2nd stage.
  *  \param count Tests count.
  */
-($h-extern) void ut_stage_2_start( int count );
+($extern-c) void ut_stage_2_start( int count );
 
 /**
  *  \brief Call test coroutines.
  *  \param test Schedule.
  *  \return true if testing is not complete.
  */
-($h-extern) bool ut_stage_2( int ( *test )( void ));
+($extern-c) bool ut_stage_2( int ( *test )( void ));
 
 /**
  *  \brief Print statistics of unit testing.
  */
-($h-extern) void ut_print_statistics( void );
+($extern-c) void ut_print_statistics( void );
 
 /**
 *  \brief Get timer value in centiseconds (callback).
  */
-($h-extern) uint32_t ( *ut_get_time_callback )( void );
+($extern-c) uint32_t ( *ut_get_time_callback )( void );
 
 /**
  *  \brief Event handler of testing stage starting (callback).
  *  \param t Stage of testing.
  */
-($h-extern) void ( *ut_started_callback )( int t );
+($extern-c) void ( *ut_started_callback )( int t );
 
 /**
  *  \brief Event handler of testing stage completion (callback).
  *  \param t Stage of testing.
  *  \param result Testing result.
  */
-($h-extern) void ( *ut_finished_callback )( int t, bool result );
+($extern-c) void ( *ut_finished_callback )( int t, bool result );
 
 /**
  *  \brief Lock common data access (callback).
  */
-($h-extern) void ( *ut_lock_callback )( void );
+($extern-c) void ( *ut_lock_callback )( void );
 
 /**
  *  \brief Unlock common data access (callback).
  */
-($h-extern) void ( *ut_unlock_callback )( void );
+($extern-c) void ( *ut_unlock_callback )( void );
 
 /** \} */
 

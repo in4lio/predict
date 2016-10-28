@@ -20,11 +20,11 @@
  *  \{
  */
 
-($h-extern) void getch_init( void );
-($h-extern) void getch_uninit( void );
-($h-extern) int getch( void );
-($h-extern) int getch_1( void );
-($h-extern) int getch_escseq( int chr );
+($extern-c) void getch_init( void );
+($extern-c) void getch_uninit( void );
+($extern-c) int getch( void );
+($extern-c) int getch_1( void );
+($extern-c) int getch_escseq( int chr );
 
 /** \} */
 

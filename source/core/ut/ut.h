@@ -24,11 +24,22 @@
 #define UT_EXT
 #define UT_EXT_INIT( dec, init ) \
 	dec = init
+#define UT_EXT_C
+#define UT_EXT_C_INIT( dec, init ) \
+	dec = init
 #define UT_INL
 #else
 #define UT_EXT extern
 #define UT_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define UT_C "C"
+#else
+#define UT_C
+#endif
+#define UT_EXT_C extern UT_C
+#define UT_EXT_C_INIT( dec, init ) \
+	extern UT_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define UT_INL extern inline
 #else
@@ -56,18 +67,18 @@
  */
 #define UT_STR_LIMIT  100
 
-UT_EXT bool ut_assert_true( bool test, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_false( bool test, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_assigned( int data, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_int_equal( int expected, int actual, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_u32_equal( uint32_t expected, uint32_t actual, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_float_equal( float expected, float actual, float delta, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_double_equal( double expected, double actual, double delta, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_string_equal( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_string_ends_with( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_string_starts_with( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_string_contains( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
-UT_EXT bool ut_assert_string_doesnt_contain( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_true( bool test, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_false( bool test, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_assigned( int data, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_int_equal( int expected, int actual, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_u32_equal( uint32_t expected, uint32_t actual, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_float_equal( float expected, float actual, float delta, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_double_equal( double expected, double actual, double delta, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_string_equal( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_string_ends_with( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_string_starts_with( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_string_contains( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
+UT_EXT_C bool ut_assert_string_doesnt_contain( const char *expected, const char *actual, const char *path, const char *func, uint32_t line );
 
 #define ut_fault_format( msg, expected, actual, ... ) do { \
 	char _ut_s[ UT_STR_LIMIT ]; \
@@ -204,14 +215,14 @@ UT_EXT bool ut_assert_string_doesnt_contain( const char *expected, const char *a
 	if ( ut_assert_string_ends_with( expected, actual, __FILE__, __FUNCTION__, __LINE__ )) { __VA_ARGS__; } \
 } while ( 0 )
 
-UT_EXT void ut_fault( const char *error, const char *path, const char *func, uint32_t line );
-UT_EXT void ut_quiet( void );
-UT_EXT void ut_loud( void );
-UT_EXT uint32_t ut_get_quiet( void );
+UT_EXT_C void ut_fault( const char *error, const char *path, const char *func, uint32_t line );
+UT_EXT_C void ut_quiet( void );
+UT_EXT_C void ut_loud( void );
+UT_EXT_C uint32_t ut_get_quiet( void );
 
-UT_EXT void ut_1_unit_begin( const char *path );
-UT_EXT void ut_1_unit_end( void );
-UT_EXT void ut_2_unit_begin( const char *path );
+UT_EXT_C void ut_1_unit_begin( const char *path );
+UT_EXT_C void ut_1_unit_end( void );
+UT_EXT_C void ut_2_unit_begin( const char *path );
 
 /**
  *  \brief Verify quiet mode is off.
@@ -261,7 +272,7 @@ UT_EXT void ut_2_unit_begin( const char *path );
  *  \brief Run unit test of 1st stage.
  *  \param test Unit test.
  */
-UT_EXT void ut_1_exec( void ( *test )( void ));
+UT_EXT_C void ut_1_exec( void ( *test )( void ));
 
 /**
  *  \brief End of group of unit test.
@@ -275,7 +286,7 @@ UT_EXT void ut_1_exec( void ( *test )( void ));
  *  \brief 1st stage of unit testing.
  *  \param test Set of tests.
  */
-UT_EXT bool ut_stage_1( void ( *test )( void ));
+UT_EXT_C bool ut_stage_1( void ( *test )( void ));
 
 /**
  *  \brief Beginning of group of unit test of 2nd stage (coroutine).
@@ -289,47 +300,47 @@ UT_EXT bool ut_stage_1( void ( *test )( void ));
  *  \brief Start unit testing of 2nd stage.
  *  \param count Tests count.
  */
-UT_EXT void ut_stage_2_start( int count );
+UT_EXT_C void ut_stage_2_start( int count );
 
 /**
  *  \brief Call test coroutines.
  *  \param test Schedule.
  *  \return true if testing is not complete.
  */
-UT_EXT bool ut_stage_2( int ( *test )( void ));
+UT_EXT_C bool ut_stage_2( int ( *test )( void ));
 
 /**
  *  \brief Print statistics of unit testing.
  */
-UT_EXT void ut_print_statistics( void );
+UT_EXT_C void ut_print_statistics( void );
 
 /**
 *  \brief Get timer value in centiseconds (callback).
  */
-UT_EXT uint32_t ( *ut_get_time_callback )( void );
+UT_EXT_C uint32_t ( *ut_get_time_callback )( void );
 
 /**
  *  \brief Event handler of testing stage starting (callback).
  *  \param t Stage of testing.
  */
-UT_EXT void ( *ut_started_callback )( int t );
+UT_EXT_C void ( *ut_started_callback )( int t );
 
 /**
  *  \brief Event handler of testing stage completion (callback).
  *  \param t Stage of testing.
  *  \param result Testing result.
  */
-UT_EXT void ( *ut_finished_callback )( int t, bool result );
+UT_EXT_C void ( *ut_finished_callback )( int t, bool result );
 
 /**
  *  \brief Lock common data access (callback).
  */
-UT_EXT void ( *ut_lock_callback )( void );
+UT_EXT_C void ( *ut_lock_callback )( void );
 
 /**
  *  \brief Unlock common data access (callback).
  */
-UT_EXT void ( *ut_unlock_callback )( void );
+UT_EXT_C void ( *ut_unlock_callback )( void );
 
 /** \} */
 
@@ -362,5 +373,11 @@ UT_EXT void ( *ut_unlock_callback )( void );
 
 #endif /* LINK_UT */
 
+#undef UT_EXT
+#undef UT_EXT_INIT
+#undef UT_EXT_C
+#undef UT_EXT_C_INIT
+#undef UT_INL
+#undef UT_C
 #endif
 

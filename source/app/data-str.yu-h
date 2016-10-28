@@ -30,7 +30,7 @@
  *  \param val Value.
  *  \return String.
  */
-($h-extern) char *string_byte_h( char *s, byte val );
+($extern-c) char *string_byte_h( char *s, byte val );
 
 /**
  *  \brief word-to-hex converting.
@@ -38,7 +38,7 @@
  *  \param val Value.
  *  \return String.
  */
-($h-extern) char *string_word_h( char *s, word val );
+($extern-c) char *string_word_h( char *s, word val );
 
 /**
  *  \brief dword-to-hex converting.
@@ -46,7 +46,7 @@
  *  \param val Value.
  *  \return String.
  */
-($h-extern) char *string_dword_h( char *s, dword val );
+($extern-c) char *string_dword_h( char *s, dword val );
 
 /** \} */
 

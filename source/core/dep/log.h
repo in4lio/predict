@@ -24,11 +24,22 @@
 #define LOG_EXT
 #define LOG_EXT_INIT( dec, init ) \
 	dec = init
+#define LOG_EXT_C
+#define LOG_EXT_C_INIT( dec, init ) \
+	dec = init
 #define LOG_INL
 #else
 #define LOG_EXT extern
 #define LOG_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define LOG_C "C"
+#else
+#define LOG_C
+#endif
+#define LOG_EXT_C extern LOG_C
+#define LOG_EXT_C_INIT( dec, init ) \
+	extern LOG_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define LOG_INL extern inline
 #else
@@ -166,60 +177,60 @@ enum {
 
 };
 
-LOG_EXT_INIT( FILE *log_file, NULL );
+LOG_EXT_C_INIT( FILE *log_file, NULL );
 
-LOG_EXT char __log_str[ 32 ];
+LOG_EXT_C char __log_str[ 32 ];
 
 /**
  *  \brief Warnings formats.
  */
-LOG_EXT const char *const warn_format[];
+LOG_EXT_C const char *const warn_format[];
 
 /**
  *  \brief Info messages formats.
  */
-LOG_EXT const char *const info_format[];
+LOG_EXT_C const char *const info_format[];
 
 /**
  *  \brief Error writing counters.
  */
-LOG_EXT uint8_t error_repeat[];
+LOG_EXT_C uint8_t error_repeat[];
 
 /**
  *  \brief Warning writing counters.
  */
-LOG_EXT uint8_t warn_repeat[];
+LOG_EXT_C uint8_t warn_repeat[];
 
 /**
  *  \brief Info message writing counters.
  */
-LOG_EXT uint8_t info_repeat[];
+LOG_EXT_C uint8_t info_repeat[];
 
 /**
  *  \brief Open log-file.
  *  \param mode "wa" or "a+".
  */
-LOG_EXT void log_open( const char *mode );
+LOG_EXT_C void log_open( const char *mode );
 
 /**
  *  \brief Close log-file.
  */
-LOG_EXT void log_close( void );
+LOG_EXT_C void log_close( void );
 
 /**
  *  \brief Clear log-file.
  */
-LOG_EXT void log_clear( void );
+LOG_EXT_C void log_clear( void );
 
 /**
  *  \brief Lock log-file access (callback).
  */
-LOG_EXT void ( *log_lock_callback )( void );
+LOG_EXT_C void ( *log_lock_callback )( void );
 
 /**
  *  \brief Unlock log-file access (callback).
  */
-LOG_EXT void ( *log_unlock_callback )( void );
+LOG_EXT_C void ( *log_unlock_callback )( void );
 
 /** \} */
 
@@ -232,5 +243,11 @@ LOG_EXT void ( *log_unlock_callback )( void );
 
 #endif /* LOGGING */
 
+#undef LOG_EXT
+#undef LOG_EXT_INIT
+#undef LOG_EXT_C
+#undef LOG_EXT_C_INIT
+#undef LOG_INL
+#undef LOG_C
 #endif
 

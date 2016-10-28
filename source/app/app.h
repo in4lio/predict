@@ -24,11 +24,22 @@
 #define APP_EXT
 #define APP_EXT_INIT( dec, init ) \
 	dec = init
+#define APP_EXT_C
+#define APP_EXT_C_INIT( dec, init ) \
+	dec = init
 #define APP_INL
 #else
 #define APP_EXT extern
 #define APP_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define APP_C "C"
+#else
+#define APP_C
+#endif
+#define APP_EXT_C extern APP_C
+#define APP_EXT_C_INIT( dec, init ) \
+	extern APP_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define APP_INL extern inline
 #else
@@ -48,22 +59,22 @@
 /**
  *  \brief Show-must-go-on flag.
  */
-APP_EXT int app_alive;
+APP_EXT_C int app_alive;
 
 /**
  *  \brief Application exit status.
  */
-APP_EXT_INIT( int app_return, 0 );
+APP_EXT_C_INIT( int app_return, 0 );
 
 /**
  *  \brief Initialize application.
  */
-APP_EXT int app_init( int argc, char *argv[]);
+APP_EXT_C int app_init( int argc, char *argv[]);
 
 /**
  *  \brief Uninitialize application.
  */
-APP_EXT void app_uninit( void );
+APP_EXT_C void app_uninit( void );
 
 /**
  *  \brief Debug interface title message.
@@ -72,5 +83,11 @@ APP_EXT void app_uninit( void );
 ;
 /** \} */
 
+#undef APP_EXT
+#undef APP_EXT_INIT
+#undef APP_EXT_C
+#undef APP_EXT_C_INIT
+#undef APP_INL
+#undef APP_C
 #endif
 

@@ -15,11 +15,22 @@
 #define CONFIG_EXT
 #define CONFIG_EXT_INIT( dec, init ) \
 	dec = init
+#define CONFIG_EXT_C
+#define CONFIG_EXT_C_INIT( dec, init ) \
+	dec = init
 #define CONFIG_INL
 #else
 #define CONFIG_EXT extern
 #define CONFIG_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define CONFIG_C "C"
+#else
+#define CONFIG_C
+#endif
+#define CONFIG_EXT_C extern CONFIG_C
+#define CONFIG_EXT_C_INIT( dec, init ) \
+	extern CONFIG_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define CONFIG_INL extern inline
 #else
@@ -48,5 +59,11 @@
 
 /** \} */
 
+#undef CONFIG_EXT
+#undef CONFIG_EXT_INIT
+#undef CONFIG_EXT_C
+#undef CONFIG_EXT_C_INIT
+#undef CONFIG_INL
+#undef CONFIG_C
 #endif
 

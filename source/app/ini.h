@@ -24,11 +24,22 @@
 #define INI_EXT
 #define INI_EXT_INIT( dec, init ) \
 	dec = init
+#define INI_EXT_C
+#define INI_EXT_C_INIT( dec, init ) \
+	dec = init
 #define INI_INL
 #else
 #define INI_EXT extern
 #define INI_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define INI_C "C"
+#else
+#define INI_C
+#endif
+#define INI_EXT_C extern INI_C
+#define INI_EXT_C_INIT( dec, init ) \
+	extern INI_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define INI_INL extern inline
 #else
@@ -68,25 +79,31 @@
  *  Logging level.
  */
 
-INI_EXT_INIT( int ini_cyclic_delay, 5 );
-INI_EXT_INIT( bool ini_data_prot, false );
-INI_EXT_INIT( char ini_data_prot_filter[ 128 ], "" );
-INI_EXT_INIT( char ini_data_prot_filter_skip[ 128 ], "_ut_" );
-INI_EXT_INIT( char ini_log_path[ 64 ], "predict.log" );
-INI_EXT_INIT( int ini_log_level, LOG_LEVEL_ERROR );
+INI_EXT_C_INIT( int ini_cyclic_delay, 5 );
+INI_EXT_C_INIT( bool ini_data_prot, false );
+INI_EXT_C_INIT( char ini_data_prot_filter[ 128 ], "" );
+INI_EXT_C_INIT( char ini_data_prot_filter_skip[ 128 ], "_ut_" );
+INI_EXT_C_INIT( char ini_log_path[ 64 ], "predict.log" );
+INI_EXT_C_INIT( int ini_log_level, LOG_LEVEL_ERROR );
 
 /**
  *  \brief Configuration file name.
  */
-INI_EXT_INIT( char *ini_path, "./predict.cfg" );
+INI_EXT_C_INIT( char *ini_path, "./predict.cfg" );
 
-INI_EXT bool ini_set_file( char *fn );
+INI_EXT_C bool ini_set_file( char *fn );
 
-INI_EXT void ini_load( void );
+INI_EXT_C void ini_load( void );
 
-INI_EXT void ini_save( void );
+INI_EXT_C void ini_save( void );
 
 /** \} */
 
+#undef INI_EXT
+#undef INI_EXT_INIT
+#undef INI_EXT_C
+#undef INI_EXT_C_INIT
+#undef INI_INL
+#undef INI_C
 #endif
 

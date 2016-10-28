@@ -31,24 +31,24 @@
  *  \brief Received message pointer.
  *  \note Must be reset in NULL after message handling.
  */
-($h-extern) char *char_received;
+($extern-c) char *char_received;
 
 /**
  *  \brief Flag of displaying of received characters.
  */
-($h-extern) int char_echo;
+($extern-c) int char_echo;
 
 /**
  *  \brief Clear input message.
  */
-($h-extern) void char_clear_input( void );
+($extern-c) void char_clear_input( void );
 
 /**
  *  \brief Print data in hex format.
  *  \param data Data pointer.
  *  \param len Data length.
  */
-($h-extern) void printh( byte *data, uint32_t len );
+($extern-c) void printh( byte *data, uint32_t len );
 
 /**
  *  \brief Print data in hex format by columns.
@@ -56,12 +56,12 @@
  *  \param len Data length.
  *  \param cols Columns count.
  */
-($h-extern) void printhr( byte *data, uint32_t len, uint32_t cols );
+($extern-c) void printhr( byte *data, uint32_t len, uint32_t cols );
 
 /**
  *  \brief Print program version.
  */
-($h-extern) void print_version( void );
+($extern-c) void print_version( void );
 
 /** \} */
 
@@ -128,11 +128,11 @@ extern void flush( void );
 /**
  *  \brief Console width.
  */
-($h-extern-init,,int console_col_count,,80)
+($extern-c-init,,int console_col_count,,80)
 
 /**
  *  \brief Console height.
  */
-($h-extern-init,,int console_row_count,,25)
+($extern-c-init,,int console_row_count,,25)
 
 ($h-end)

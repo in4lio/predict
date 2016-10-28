@@ -24,11 +24,22 @@
 #define CLOCK_EXT
 #define CLOCK_EXT_INIT( dec, init ) \
 	dec = init
+#define CLOCK_EXT_C
+#define CLOCK_EXT_C_INIT( dec, init ) \
+	dec = init
 #define CLOCK_INL
 #else
 #define CLOCK_EXT extern
 #define CLOCK_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define CLOCK_C "C"
+#else
+#define CLOCK_C
+#endif
+#define CLOCK_EXT_C extern CLOCK_C
+#define CLOCK_EXT_C_INIT( dec, init ) \
+	extern CLOCK_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define CLOCK_INL extern inline
 #else
@@ -53,7 +64,7 @@
 /**
  *  \brief Initialize clock.
  */
-CLOCK_EXT void clock_init( void );
+CLOCK_EXT_C void clock_init( void );
 
 /**
  *  \brief Time to string converting.
@@ -61,14 +72,14 @@ CLOCK_EXT void clock_init( void );
  *  \param s String buffer.
  *  \return String.
  */
-CLOCK_EXT const char *clock_stamp( const struct timeval *tval, char *s );
+CLOCK_EXT_C const char *clock_stamp( const struct timeval *tval, char *s );
 
 /**
  *  \brief Current time to string converting without centiseconds.
  *  \param s String buffer.
  *  \return String.
  */
-CLOCK_EXT const char *clock_stamp_short( char *s );
+CLOCK_EXT_C const char *clock_stamp_short( char *s );
 
 /**
  *  \brief Current datetime to string converting without centiseconds.
@@ -76,7 +87,7 @@ CLOCK_EXT const char *clock_stamp_short( char *s );
  *  \param st String buffer for time.
  *  \return Current datetime.
  */
-CLOCK_EXT time_t clock_stamp_datetime( char* sd, char* st );
+CLOCK_EXT_C time_t clock_stamp_datetime( char* sd, char* st );
 
 /**
  *  \brief Current time setup.
@@ -86,24 +97,24 @@ CLOCK_EXT time_t clock_stamp_datetime( char* sd, char* st );
  *  \param cs Centiseconds.
  *  Function is not implemented.
  */
-CLOCK_EXT void clock_set_time( uint32_t h, uint32_t m, uint32_t s, uint32_t cs );
+CLOCK_EXT_C void clock_set_time( uint32_t h, uint32_t m, uint32_t s, uint32_t cs );
 
 /**
  *  \brief Get time of program running (max 497 days).
  *  \return Time in centiseconds.
  */
-CLOCK_EXT uint32_t clock_time_running( void );
+CLOCK_EXT_C uint32_t clock_time_running( void );
 
 /**
  *  \brief Calculate time when timer interval has expired (timeout).
  *  \param ms Interval in milliseconds.
  *  \return Timeout.
  */
-CLOCK_EXT struct timeval clock_t_set( const int ms );
+CLOCK_EXT_C struct timeval clock_t_set( const int ms );
 
-CLOCK_EXT void __clock_t_add( struct timeval *t, const int ms );
-CLOCK_EXT int __clock_time_after( struct timeval *t );
-CLOCK_EXT int __clock_t_rest( struct timeval *t );
+CLOCK_EXT_C void __clock_t_add( struct timeval *t, const int ms );
+CLOCK_EXT_C int __clock_time_after( struct timeval *t );
+CLOCK_EXT_C int __clock_t_rest( struct timeval *t );
 
 /**
  *  \brief Prolong timeout.
@@ -137,5 +148,11 @@ CLOCK_EXT int __clock_t_rest( struct timeval *t );
 
 /** \} */
 
+#undef CLOCK_EXT
+#undef CLOCK_EXT_INIT
+#undef CLOCK_EXT_C
+#undef CLOCK_EXT_C_INIT
+#undef CLOCK_INL
+#undef CLOCK_C
 #endif
 

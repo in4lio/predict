@@ -24,11 +24,22 @@
 #define DATA_VOTE_EXT
 #define DATA_VOTE_EXT_INIT( dec, init ) \
 	dec = init
+#define DATA_VOTE_EXT_C
+#define DATA_VOTE_EXT_C_INIT( dec, init ) \
+	dec = init
 #define DATA_VOTE_INL
 #else
 #define DATA_VOTE_EXT extern
 #define DATA_VOTE_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define DATA_VOTE_C "C"
+#else
+#define DATA_VOTE_C
+#endif
+#define DATA_VOTE_EXT_C extern DATA_VOTE_C
+#define DATA_VOTE_EXT_C_INIT( dec, init ) \
+	extern DATA_VOTE_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define DATA_VOTE_INL extern inline
 #else
@@ -56,7 +67,7 @@
  *  \param value_3 Value of 3th channel.
  *  \return Validity flag of majority opinion.
  */
-DATA_VOTE_EXT bool vote_dword( dword *result, bool valid_1, dword value_1, bool valid_2, dword value_2, bool valid_3, dword value_3 );
+DATA_VOTE_EXT_C bool vote_dword( dword *result, bool valid_1, dword value_1, bool valid_2, dword value_2, bool valid_3, dword value_3 );
 
 /**
  *  \brief Voting of word values (on exact matching).
@@ -69,7 +80,7 @@ DATA_VOTE_EXT bool vote_dword( dword *result, bool valid_1, dword value_1, bool 
  *  \param value_3 Value of 3th channel.
  *  \return Validity flag of majority opinion.
  */
-DATA_VOTE_EXT bool vote_word( word *result, bool valid_1, word value_1, bool valid_2, word value_2, bool valid_3, word value_3 );
+DATA_VOTE_EXT_C bool vote_word( word *result, bool valid_1, word value_1, bool valid_2, word value_2, bool valid_3, word value_3 );
 
 /**
  *  \brief Voting of byte values (on exact matching).
@@ -82,7 +93,7 @@ DATA_VOTE_EXT bool vote_word( word *result, bool valid_1, word value_1, bool val
  *  \param value_3 Value of 3th channel.
  *  \return Validity flag of majority opinion.
  */
-DATA_VOTE_EXT bool vote_byte( byte *result, bool valid_1, byte value_1, bool valid_2, byte value_2, bool valid_3, byte value_3 );
+DATA_VOTE_EXT_C bool vote_byte( byte *result, bool valid_1, byte value_1, bool valid_2, byte value_2, bool valid_3, byte value_3 );
 
 /**
  *  \brief Voting of dword values (bit-by-bit).
@@ -95,10 +106,16 @@ DATA_VOTE_EXT bool vote_byte( byte *result, bool valid_1, byte value_1, bool val
  *  \param value_3 Value of 3th channel.
  *  \return true.
  */
-DATA_VOTE_EXT bool vote_bit_dword( dword *result, bool _1, dword value_1, bool _2, dword value_2, bool _3, dword value_3 );
+DATA_VOTE_EXT_C bool vote_bit_dword( dword *result, bool _1, dword value_1, bool _2, dword value_2, bool _3, dword value_3 );
 ;
 
 /** \} */
 
+#undef DATA_VOTE_EXT
+#undef DATA_VOTE_EXT_INIT
+#undef DATA_VOTE_EXT_C
+#undef DATA_VOTE_EXT_C_INIT
+#undef DATA_VOTE_INL
+#undef DATA_VOTE_C
 #endif
 

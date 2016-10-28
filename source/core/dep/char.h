@@ -24,11 +24,22 @@
 #define CHAR_EXT
 #define CHAR_EXT_INIT( dec, init ) \
 	dec = init
+#define CHAR_EXT_C
+#define CHAR_EXT_C_INIT( dec, init ) \
+	dec = init
 #define CHAR_INL
 #else
 #define CHAR_EXT extern
 #define CHAR_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define CHAR_C "C"
+#else
+#define CHAR_C
+#endif
+#define CHAR_EXT_C extern CHAR_C
+#define CHAR_EXT_C_INIT( dec, init ) \
+	extern CHAR_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define CHAR_INL extern inline
 #else
@@ -58,24 +69,24 @@
  *  \brief Received message pointer.
  *  \note Must be reset in NULL after message handling.
  */
-CHAR_EXT char *char_received;
+CHAR_EXT_C char *char_received;
 
 /**
  *  \brief Flag of displaying of received characters.
  */
-CHAR_EXT int char_echo;
+CHAR_EXT_C int char_echo;
 
 /**
  *  \brief Clear input message.
  */
-CHAR_EXT void char_clear_input( void );
+CHAR_EXT_C void char_clear_input( void );
 
 /**
  *  \brief Print data in hex format.
  *  \param data Data pointer.
  *  \param len Data length.
  */
-CHAR_EXT void printh( byte *data, uint32_t len );
+CHAR_EXT_C void printh( byte *data, uint32_t len );
 
 /**
  *  \brief Print data in hex format by columns.
@@ -83,12 +94,12 @@ CHAR_EXT void printh( byte *data, uint32_t len );
  *  \param len Data length.
  *  \param cols Columns count.
  */
-CHAR_EXT void printhr( byte *data, uint32_t len, uint32_t cols );
+CHAR_EXT_C void printhr( byte *data, uint32_t len, uint32_t cols );
 
 /**
  *  \brief Print program version.
  */
-CHAR_EXT void print_version( void );
+CHAR_EXT_C void print_version( void );
 
 /** \} */
 
@@ -155,12 +166,18 @@ extern void flush( void );
 /**
  *  \brief Console width.
  */
-CHAR_EXT_INIT( int console_col_count, 80 );
+CHAR_EXT_C_INIT( int console_col_count, 80 );
 
 /**
  *  \brief Console height.
  */
-CHAR_EXT_INIT( int console_row_count, 25 );
+CHAR_EXT_C_INIT( int console_row_count, 25 );
 
+#undef CHAR_EXT
+#undef CHAR_EXT_INIT
+#undef CHAR_EXT_C
+#undef CHAR_EXT_C_INIT
+#undef CHAR_INL
+#undef CHAR_C
 #endif
 

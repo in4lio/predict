@@ -124,60 +124,60 @@ enum {
 	[ )
 };
 
-($h-extern-init,,FILE *log_file,,NULL)
+($extern-c-init,,FILE *log_file,,NULL)
 
-($h-extern) char __log_str[ 32 ];
+($extern-c) char __log_str[ 32 ];
 
 /**
  *  \brief Warnings formats.
  */
-($h-extern) const char *const warn_format[];
+($extern-c) const char *const warn_format[];
 
 /**
  *  \brief Info messages formats.
  */
-($h-extern) const char *const info_format[];
+($extern-c) const char *const info_format[];
 
 /**
  *  \brief Error writing counters.
  */
-($h-extern) uint8_t error_repeat[];
+($extern-c) uint8_t error_repeat[];
 
 /**
  *  \brief Warning writing counters.
  */
-($h-extern) uint8_t warn_repeat[];
+($extern-c) uint8_t warn_repeat[];
 
 /**
  *  \brief Info message writing counters.
  */
-($h-extern) uint8_t info_repeat[];
+($extern-c) uint8_t info_repeat[];
 
 /**
  *  \brief Open log-file.
  *  \param mode "wa" or "a+".
  */
-($h-extern) void log_open( const char *mode );
+($extern-c) void log_open( const char *mode );
 
 /**
  *  \brief Close log-file.
  */
-($h-extern) void log_close( void );
+($extern-c) void log_close( void );
 
 /**
  *  \brief Clear log-file.
  */
-($h-extern) void log_clear( void );
+($extern-c) void log_clear( void );
 
 /**
  *  \brief Lock log-file access (callback).
  */
-($h-extern) void ( *log_lock_callback )( void );
+($extern-c) void ( *log_lock_callback )( void );
 
 /**
  *  \brief Unlock log-file access (callback).
  */
-($h-extern) void ( *log_unlock_callback )( void );
+($extern-c) void ( *log_unlock_callback )( void );
 
 /** \} */
 

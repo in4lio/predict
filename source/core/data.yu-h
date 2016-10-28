@@ -129,19 +129,19 @@ enum {
  *  \brief Set data changes flag.
  *  \param item Variable.
  */
-($h-extern) void data_set_changed( const var_t item );
+($extern-c) void data_set_changed( const var_t item );
 
 /**
  *  \brief Reset data changes flag for all watching threads.
  *  \param item Variable.
  */
-($h-extern) void data_reset_changed( const var_t item );
+($extern-c) void data_reset_changed( const var_t item );
 
 /**
  *  \brief Set data changes flags for all variables of watching thread.
  *  \param thread Watching thread.
  */
-($h-extern) void data_set_all_changed( const thread_t thread );
+($extern-c) void data_set_all_changed( const thread_t thread );
 
 /**
  *  \brief Get data changes flag of variable.
@@ -149,14 +149,14 @@ enum {
  *  \param item Variable.
  *  \return Change flag.
  */
-($h-extern) int data_get_changed( const thread_t thread, const var_t item );
+($extern-c) int data_get_changed( const thread_t thread, const var_t item );
 
 /**
  *  \brief At least one variable from watching list of thread has been changed.
  *  \param thread Watching thread.
  *  \return Change flag.
  */
-($h-extern) int data_get_changed_any( const thread_t thread );
+($extern-c) int data_get_changed_any( const thread_t thread );
 
 /**
  *  \brief Add variables to watching list of thread.
@@ -164,7 +164,7 @@ enum {
  *  \param vars Variables list (var_COUNT is list terminator).
  *  Only first variable of array will be added if array in list.
  */
-($h-extern) void data_watch( const thread_t thread, const var_t *vars );
+($extern-c) void data_watch( const thread_t thread, const var_t *vars );
 
 /**
  *  \brief Add arrays to watching list of thread.
@@ -172,39 +172,39 @@ enum {
  *  \param vars Arrays list (var_COUNT is list terminator).
  *  Variable and the rest of array will be added if variable in list.
  */
-($h-extern) void data_watch_array( const thread_t thread, const var_t *vars );
+($extern-c) void data_watch_array( const thread_t thread, const var_t *vars );
 
 /**
  *  \brief Clear watching list of thread.
  *  \param thread Watching thread.
  */
-($h-extern) void data_clear_watch( const thread_t thread );
+($extern-c) void data_clear_watch( const thread_t thread );
 
 /**
  *  \brief Reset data changes flag of variable.
  *  \param thread Watching thread.
  *  \param item Variable.
  */
-($h-extern) void data_reset( const thread_t thread, const var_t item );
+($extern-c) void data_reset( const thread_t thread, const var_t item );
 
 /**
  *  \brief Reset data changes flags of all variables of thread.
  *  \param thread Watching thread.
  */
-($h-extern) void data_reset_all( const thread_t thread );
+($extern-c) void data_reset_all( const thread_t thread );
 
 /**
  *  \brief Search variable by name.
  *  \param s Variable name.
  *  \return Variable or var_COUNT.
  */
-($h-extern) var_t data_atovar( const char *s );
+($extern-c) var_t data_atovar( const char *s );
 
 /**
  *  \brief Get variable name.
  *  \param item Variable.
  */
-($h-extern) char *data_vartoa( const var_t item );
+($extern-c) char *data_vartoa( const var_t item );
 
 ($each-DATA_TYPE \i.]
 
@@ -215,14 +215,14 @@ enum {
 	 *  \param value Value.
 	 *  \return String.
 	 */
-	($h-extern) char *string_($T)( char *s, ($T) value );
+	($extern-c) char *string_($T)( char *s, ($T) value );
 
 	/**
 	 *  \brief Get value of ($T) variable.
 	 *  \param item Variable.
 	 *  \return Value.
 	 */
-	($h-extern) ($T) data_get_($T)( const var_t item );
+	($extern-c) ($T) data_get_($T)( const var_t item );
 
 	/**
 	 *  \brief Get value of ($T) variable as string.
@@ -230,14 +230,14 @@ enum {
 	 *  \param item Variable.
 	 *  \return String.
 	 */
-	($h-extern) char *data_get_string_($T)( char *s, const var_t item );
+	($extern-c) char *data_get_string_($T)( char *s, const var_t item );
 
 	/**
 	 *  \brief Set value of ($T) variable.
 	 *  \param item Variable.
 	 *  \param value Value.
 	 */
-	($h-extern) void data_set_($T)( const var_t item, ($T) value );
+	($extern-c) void data_set_($T)( const var_t item, ($T) value );
 
 	/**
 	 *  \brief Set channel value of ($T) variable and recalculate voted value.
@@ -246,7 +246,7 @@ enum {
 	 *  \param value Channel value.
 	 *  \param voter Vote function.
 	 */
-	($h-extern) void voted_set_($T)( const var_t item, byte h, ($T) value
+	($extern-c) void voted_set_($T)( const var_t item, byte h, ($T) value
 	, bool ( *voter )( ($T) *, bool, ($T), bool, ($T), bool, ($T) ));
 
 	/**
@@ -254,7 +254,7 @@ enum {
 	 *  \param item Variable.
 	 *  \param value Channel value.
 	 */
-	($h-extern) void joint_set_($T)( const var_t item, ($T) value );
+	($extern-c) void joint_set_($T)( const var_t item, ($T) value );
 
 [ )
 
@@ -264,7 +264,7 @@ enum {
  *  \param value Value pointer.
  *  Useful only in case variable type is unknown in compile-time.
  */
-($h-extern) void data_set( const var_t item, void *value );
+($extern-c) void data_set( const var_t item, void *value );
 
 /**
  *  \brief Set taken from string value of variable.
@@ -272,7 +272,7 @@ enum {
  *  \param s String.
  *  Useful only in case variable type is unknown in compile-time.
  */
-($h-extern) void data_set_string( const var_t item, const char *s );
+($extern-c) void data_set_string( const var_t item, const char *s );
 
 /**
  *  \brief Get value of variable as string.
@@ -281,30 +281,30 @@ enum {
  *  \return String.
  *  Useful only in case variable type is unknown in compile-time.
  */
-($h-extern) char *data_get_string( char *s, const var_t item );
+($extern-c) char *data_get_string( char *s, const var_t item );
 
 /**
  *  \brief Get variable type as string.
  *  \param item Variable.
  */
-($h-extern) char *data_get_type( const var_t item );
+($extern-c) char *data_get_type( const var_t item );
 
 /**
  *  \brief Check voted value of variable is valid.
  *  \param item Variable.
  *  \return Validity flag.
  */
-($h-extern) bool voted_valid( const var_t item );
+($extern-c) bool voted_valid( const var_t item );
 
 /**
  *  \brief Lock data access (callback).
  */
-($h-extern) void ( *data_lock_callback )( void );
+($extern-c) void ( *data_lock_callback )( void );
 
 /**
  *  \brief Unlock data access (callback).
  */
-($h-extern) void ( *data_unlock_callback )( void );
+($extern-c) void ( *data_unlock_callback )( void );
 
 /** \} */
 

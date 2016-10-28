@@ -24,11 +24,22 @@
 #define DATA_STR_EXT
 #define DATA_STR_EXT_INIT( dec, init ) \
 	dec = init
+#define DATA_STR_EXT_C
+#define DATA_STR_EXT_C_INIT( dec, init ) \
+	dec = init
 #define DATA_STR_INL
 #else
 #define DATA_STR_EXT extern
 #define DATA_STR_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define DATA_STR_C "C"
+#else
+#define DATA_STR_C
+#endif
+#define DATA_STR_EXT_C extern DATA_STR_C
+#define DATA_STR_EXT_C_INIT( dec, init ) \
+	extern DATA_STR_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define DATA_STR_INL extern inline
 #else
@@ -57,7 +68,7 @@
  *  \param val Value.
  *  \return String.
  */
-DATA_STR_EXT char *string_byte_h( char *s, byte val );
+DATA_STR_EXT_C char *string_byte_h( char *s, byte val );
 
 /**
  *  \brief word-to-hex converting.
@@ -65,7 +76,7 @@ DATA_STR_EXT char *string_byte_h( char *s, byte val );
  *  \param val Value.
  *  \return String.
  */
-DATA_STR_EXT char *string_word_h( char *s, word val );
+DATA_STR_EXT_C char *string_word_h( char *s, word val );
 
 /**
  *  \brief dword-to-hex converting.
@@ -73,9 +84,15 @@ DATA_STR_EXT char *string_word_h( char *s, word val );
  *  \param val Value.
  *  \return String.
  */
-DATA_STR_EXT char *string_dword_h( char *s, dword val );
+DATA_STR_EXT_C char *string_dword_h( char *s, dword val );
 
 /** \} */
 
+#undef DATA_STR_EXT
+#undef DATA_STR_EXT_INIT
+#undef DATA_STR_EXT_C
+#undef DATA_STR_EXT_C_INIT
+#undef DATA_STR_INL
+#undef DATA_STR_C
 #endif
 

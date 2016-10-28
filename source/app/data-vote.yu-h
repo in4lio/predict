@@ -30,7 +30,7 @@
  *  \param value_3 Value of 3th channel.
  *  \return Validity flag of majority opinion.
  */
-($h-extern) bool vote_($T)( ($T) *result, bool valid_1, ($T) value_1, bool valid_2, ($T) value_2, bool valid_3, ($T) value_3 );
+($extern-c) bool vote_($T)( ($T) *result, bool valid_1, ($T) value_1, bool valid_2, ($T) value_2, bool valid_3, ($T) value_3 );
 )
 
 ($vote_t,,dword)
@@ -49,7 +49,7 @@
  *  \param value_3 Value of 3th channel.
  *  \return true.
  */
-($h-extern) bool vote_bit_($T)( dword *result, bool _1, ($T) value_1, bool _2, ($T) value_2, bool _3, ($T) value_3 );
+($extern-c) bool vote_bit_($T)( dword *result, bool _1, ($T) value_1, bool _2, ($T) value_2, bool _3, ($T) value_3 );
 )
 
 ($vote_bit_t,,dword);

@@ -24,11 +24,22 @@
 #define ERROR_EXT
 #define ERROR_EXT_INIT( dec, init ) \
 	dec = init
+#define ERROR_EXT_C
+#define ERROR_EXT_C_INIT( dec, init ) \
+	dec = init
 #define ERROR_INL
 #else
 #define ERROR_EXT extern
 #define ERROR_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define ERROR_C "C"
+#else
+#define ERROR_C
+#endif
+#define ERROR_EXT_C extern ERROR_C
+#define ERROR_EXT_C_INIT( dec, init ) \
+	extern ERROR_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define ERROR_INL extern inline
 #else
@@ -128,9 +139,15 @@ enum {
 /**
  *  \brief Error messages formats.
  */
-ERROR_EXT const char *const error_format[];
+ERROR_EXT_C const char *const error_format[];
 
 /** \} */
 
+#undef ERROR_EXT
+#undef ERROR_EXT_INIT
+#undef ERROR_EXT_C
+#undef ERROR_EXT_C_INIT
+#undef ERROR_INL
+#undef ERROR_C
 #endif
 

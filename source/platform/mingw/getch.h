@@ -24,11 +24,22 @@
 #define GETCH_EXT
 #define GETCH_EXT_INIT( dec, init ) \
 	dec = init
+#define GETCH_EXT_C
+#define GETCH_EXT_C_INIT( dec, init ) \
+	dec = init
 #define GETCH_INL
 #else
 #define GETCH_EXT extern
 #define GETCH_EXT_INIT( dec, init ) \
 	extern dec
+#ifdef __cplusplus
+#define GETCH_C "C"
+#else
+#define GETCH_C
+#endif
+#define GETCH_EXT_C extern GETCH_C
+#define GETCH_EXT_C_INIT( dec, init ) \
+	extern GETCH_C dec
 #if __GNUC__ && !__GNUC_STDC_INLINE__
 #define GETCH_INL extern inline
 #else
@@ -49,10 +60,10 @@
  *  \{
  */
 
-GETCH_EXT void getch_init( void );
-GETCH_EXT void getch_uninit( void );
-GETCH_EXT int getch_1( void );
-GETCH_EXT int getch_escseq( int chr );
+GETCH_EXT_C void getch_init( void );
+GETCH_EXT_C void getch_uninit( void );
+GETCH_EXT_C int getch_1( void );
+GETCH_EXT_C int getch_escseq( int chr );
 
 /** \} */
 
@@ -80,5 +91,11 @@ GETCH_EXT int getch_escseq( int chr );
 
 /** \} */
 
+#undef GETCH_EXT
+#undef GETCH_EXT_INIT
+#undef GETCH_EXT_C
+#undef GETCH_EXT_C_INIT
+#undef GETCH_INL
+#undef GETCH_C
 #endif
 
