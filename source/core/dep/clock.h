@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
  *  \defgroup hardware Hardware
  *  \{
@@ -140,10 +136,6 @@ CLOCK_EXT int __clock_t_rest( struct timeval *t );
 /** \} */
 
 /** \} */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

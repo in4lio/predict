@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 ($! based on Andrey Panin (pazke@donpac.ru) timeout.c )
 
 /**
@@ -113,7 +111,5 @@
 /** \} */
 
 /** \} */
-
-($extern-c-end)
 
 ($h-end)

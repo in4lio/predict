@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 /**
  *  \defgroup app Application
  *  \{
@@ -49,7 +47,5 @@
 "" __CRLF__
 "" __CRLF__);
 /** \} */
-
-($extern-c-end)
 
 ($h-end)

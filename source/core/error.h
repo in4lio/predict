@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
  *  \defgroup error Error messages
  *  \ingroup core
@@ -135,10 +131,6 @@ enum {
 ERROR_EXT const char *const error_format[];
 
 /** \} */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

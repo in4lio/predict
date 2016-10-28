@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
  *  \defgroup data Application state-space representation
  *  \ingroup core
@@ -527,10 +523,6 @@ DATA_EXT void ( *data_lock_callback )( void );
 DATA_EXT void ( *data_unlock_callback )( void );
 
 /** \} */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

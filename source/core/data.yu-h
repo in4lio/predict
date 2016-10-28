@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 /**
  *  \defgroup data Application state-space representation
  *  \ingroup core
@@ -309,7 +307,5 @@ enum {
 ($h-extern) void ( *data_unlock_callback )( void );
 
 /** \} */
-
-($extern-c-end)
 
 ($h-end)

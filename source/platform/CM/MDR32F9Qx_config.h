@@ -42,12 +42,12 @@
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MDR32F9Qx_CONFIG_H
 #define __MDR32F9Qx_CONFIG_H
+#include <stdint.h>
 
 #if ((__CC_ARM == 0) || (__ARMCC_VERSION < 5000000))
     #include "MDR32F9Qx_board.h"
 #endif
 #include "MDR32F9Qx_lib.h"
-#include <stdint.h>
 
 #if defined (USE_MDR32F9Q1_Rev0) || defined (USE_MDR32F9Q1_Rev1) ||\
     defined (USE_MDR32F9Q2_Rev0) || defined (USE_MDR32F9Q2_Rev1) ||\

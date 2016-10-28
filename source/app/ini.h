@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
  *  \defgroup ini Configuration options
  *  \ingroup core
@@ -91,10 +87,6 @@ INI_EXT void ini_load( void );
 INI_EXT void ini_save( void );
 
 /** \} */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 /**
  *  \addtogroup data
  *  \{
@@ -57,7 +55,5 @@
 ($vote_bit_t,,dword);
 
 /** \} */
-
-($extern-c-end)
 
 ($h-end)

@@ -29,10 +29,6 @@
 #endif
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
  *  \defgroup rtc Real-time clock
  *  \ingroup hardware
@@ -43,10 +39,6 @@ _EXT void rtc_init_clock( void );
 _EXT int rtc_gettimeofday( struct timeval *ptimeval, void *ptimezone );
 
 /** \} */
-
-#ifdef __cplusplus
-}
-#endif
 
 #undef _EXT
 #undef _EXT_INIT

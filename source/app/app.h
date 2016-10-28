@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
  *  \defgroup app Application
  *  \{
@@ -75,10 +71,6 @@ APP_EXT void app_uninit( void );
  */
 ;
 /** \} */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

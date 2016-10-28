@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef void * co_t;
 typedef unsigned int semaphore_t;
 
@@ -145,10 +141,6 @@ extern int ut_data_alive;
 /** \} */
 
 #endif /* LINK_UT */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

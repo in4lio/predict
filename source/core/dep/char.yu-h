@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 #ifdef LINK_CONSOLE
 
 /**
@@ -136,7 +134,5 @@ extern void flush( void );
  *  \brief Console height.
  */
 ($h-extern-init,,int console_row_count,,25)
-
-($extern-c-end)
 
 ($h-end)

@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifdef LINK_UT
 
 /**
@@ -365,10 +361,6 @@ UT_EXT void ( *ut_unlock_callback )( void );
 #define assert_str_end( expected, actual, ... ) NULL
 
 #endif /* LINK_UT */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

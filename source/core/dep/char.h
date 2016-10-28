@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifdef LINK_CONSOLE
 
 /**
@@ -165,10 +161,6 @@ CHAR_EXT_INIT( int console_col_count, 80 );
  *  \brief Console height.
  */
 CHAR_EXT_INIT( int console_row_count, 25 );
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

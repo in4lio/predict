@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
  *  \addtogroup data
  *  \{
@@ -103,10 +99,6 @@ DATA_VOTE_EXT bool vote_bit_dword( dword *result, bool _1, dword value_1, bool _
 ;
 
 /** \} */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

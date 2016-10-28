@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 /**
  *  \addtogroup data
  *  \{
@@ -51,7 +49,5 @@
 ($h-extern) char *string_dword_h( char *s, dword val );
 
 /** \} */
-
-($extern-c-end)
 
 ($h-end)

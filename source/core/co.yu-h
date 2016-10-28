@@ -14,8 +14,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 ($coro-h)
 
 /**
@@ -74,7 +72,5 @@ extern void ut_2_restart( void );
 /** \} */
 
 #endif /* LINK_UT */
-
-($extern-c-end)
 
 ($h-end)

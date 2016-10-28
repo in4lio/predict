@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 /**
  *  \defgroup error Error messages
  *  \ingroup core
@@ -96,7 +94,5 @@ enum {
 ($h-extern) const char *const error_format[];
 
 /** \} */
-
-($extern-c-end)
 
 ($h-end)

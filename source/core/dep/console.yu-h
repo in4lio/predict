@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 #ifdef LINK_CONSOLE
 
 /**
@@ -77,7 +75,5 @@
 /** \} */
 
 #endif /* LINK_CONSOLE */
-
-($extern-c-end)
 
 ($h-end)

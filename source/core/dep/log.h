@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
  *  \defgroup log_level Logging level
  *  \ingroup log
@@ -235,10 +231,6 @@ LOG_EXT void ( *log_unlock_callback )( void );
 #define LOG_INFO( name, ... ) NULL
 
 #endif /* LOGGING */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 /**
  *  \defgroup log_level Logging level
  *  \ingroup log
@@ -191,7 +189,5 @@ enum {
 #define LOG_INFO( name, ... ) NULL
 
 #endif /* LOGGING */
-
-($extern-c-end)
 
 ($h-end)

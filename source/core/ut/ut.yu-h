@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 #ifdef LINK_UT
 
 ($! based on Keith Nicholas http://code.google.com/p/seatest/ )
@@ -338,7 +336,5 @@
 #define assert_str_end( expected, actual, ... ) NULL
 
 #endif /* LINK_UT */
-
-($extern-c-end)
 
 ($h-end)

@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
  *  \addtogroup data
  *  \{
@@ -80,10 +76,6 @@ DATA_STR_EXT char *string_word_h( char *s, word val );
 DATA_STR_EXT char *string_dword_h( char *s, dword val );
 
 /** \} */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 #ifdef LINK_CONSOLE
 
 /**
@@ -53,7 +51,5 @@
 #define __CRLF__        "\x0A"
 
 /** \} */
-
-($extern-c-end)
 
 ($h-end)

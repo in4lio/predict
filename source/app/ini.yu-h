@@ -13,8 +13,6 @@
 
 ($h-begin-named)
 
-($extern-c-begin)
-
 /**
  *  \defgroup ini Configuration options
  *  \ingroup core
@@ -42,7 +40,5 @@
 ($h-extern) void ini_save( void );
 
 /** \} */
-
-($extern-c-end)
 
 ($h-end)

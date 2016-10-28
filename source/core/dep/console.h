@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifdef LINK_CONSOLE
 
 /**
@@ -171,10 +167,6 @@ CONSOLE_EXT bool console_command_waited( void );
 /** \} */
 
 #endif /* LINK_CONSOLE */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

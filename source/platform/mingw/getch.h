@@ -40,10 +40,6 @@
 #define COMMA   ,
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifdef LINK_CONSOLE
 
 #include <conio.h>
@@ -83,10 +79,6 @@ GETCH_EXT int getch_escseq( int chr );
 #define __CRLF__        "\x0A"
 
 /** \} */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

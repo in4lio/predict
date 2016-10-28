@@ -37,10 +37,6 @@
 #include <time.h>
 #include <sys/time.h>
 
-#ifdef __cplusplus
-
-#endif
-
 /* * * * * * * * * * * * * * * * * * * * * * * * *
  *                                               *
  *          C O N F I G U R A T I O N            *
@@ -81,10 +77,6 @@
 #include "char.h"
 #include "console.h"
 
-#ifdef __cplusplus
-
-#endif
-
 /* * * * * * * * * * * * * * * * * * * * * * * * *
  *                                               *
  *            A P P L I C A T I O N              *
@@ -94,7 +86,3 @@
 #include "data-str.h"
 #include "data-vote.h"
 #include "ini.h"
-
-#ifdef __cplusplus
-
-#endif
