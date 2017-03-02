@@ -81,7 +81,7 @@
  *  if ( data_get_changed( peek_thread, var_name )) {
  *
  *      // Get value
- *      value = data_get_word( var_name )
+ *      value = data_get_word( var_name );
  *
  *      // Reset data changes flag of variable
  *      data_reset( peek_thread, var_name );
