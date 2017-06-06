@@ -17,7 +17,7 @@
     –  application template
 
     Supported platforms:
-    –  Windows (x86)
-    –  GNU/Linux (x86, ARM9E)
-    –  DOS (x86)
-    –  bare hardware (ARM Cortex-M3, CM1)
+    –  Windows (tested on x86)
+    –  GNU/Linux (tested on x86, ARM9E)
+    –  DOS (tested on x86)
+    –  bare metal (ARM Cortex-M3, CM1)
