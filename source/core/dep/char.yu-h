@@ -27,16 +27,20 @@
 
 #define RX_SIZE  80  /**< Size of input buffer. \hideinitializer */
 
+#ifndef COMMA
+#define COMMA ,
+#endif
+
 /**
  *  \brief Received message pointer.
  *  \note Must be reset in NULL after message handling.
  */
-($extern-c) char *char_received;
+($var-c,,char *char_received)
 
 /**
  *  \brief Flag of displaying of received characters.
  */
-($extern-c) int char_echo;
+($var-c,,int char_echo)
 
 /**
  *  \brief Clear input message.
@@ -70,7 +74,7 @@
 /**
  *  \brief Flush output.
  */
-extern void flush( void );
+($extern-c) void flush( void );
 
 /**
  *  \brief Print message.
@@ -128,11 +132,11 @@ extern void flush( void );
 /**
  *  \brief Console width.
  */
-($extern-c-init,,int console_col_count,,80)
+($var-c-init,,int console_col_count,,80)
 
 /**
  *  \brief Console height.
  */
-($extern-c-init,,int console_row_count,,25)
+($var-c-init,,int console_row_count,,25)
 
 ($h-end)

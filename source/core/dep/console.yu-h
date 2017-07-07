@@ -57,7 +57,7 @@
 /**
  *  \brief Index of selected from list command.
  */
-($extern-c) int console_index;
+($var-c,,int console_index)
 
 #define cyclic_delay_MIN  1
 #define cyclic_delay_MAX  600

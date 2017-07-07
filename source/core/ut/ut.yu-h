@@ -281,30 +281,30 @@
 /**
 *  \brief Get timer value in centiseconds (callback).
  */
-($extern-c) uint32_t ( *ut_get_time_callback )( void );
+($var-c,,uint32_t ( *ut_get_time_callback )( void ))
 
 /**
  *  \brief Event handler of testing stage starting (callback).
  *  \param t Stage of testing.
  */
-($extern-c) void ( *ut_started_callback )( int t );
+($var-c,,void ( *ut_started_callback )( int t ))
 
 /**
  *  \brief Event handler of testing stage completion (callback).
  *  \param t Stage of testing.
  *  \param result Testing result.
  */
-($extern-c) void ( *ut_finished_callback )( int t, bool result );
+($var-c,,void ( *ut_finished_callback )( int t, bool result ))
 
 /**
  *  \brief Lock common data access (callback).
  */
-($extern-c) void ( *ut_lock_callback )( void );
+($var-c,,void ( *ut_lock_callback )( void ))
 
 /**
  *  \brief Unlock common data access (callback).
  */
-($extern-c) void ( *ut_unlock_callback )( void );
+($var-c,,void ( *ut_unlock_callback )( void ))
 
 /** \} */
 

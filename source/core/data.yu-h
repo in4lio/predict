@@ -299,12 +299,12 @@ enum {
 /**
  *  \brief Lock data access (callback).
  */
-($extern-c) void ( *data_lock_callback )( void );
+($var-c,,void ( *data_lock_callback )( void ))
 
 /**
  *  \brief Unlock data access (callback).
  */
-($extern-c) void ( *data_unlock_callback )( void );
+($var-c,,void ( *data_unlock_callback )( void ))
 
 /** \} */
 

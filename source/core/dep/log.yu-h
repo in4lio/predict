@@ -124,9 +124,9 @@ enum {
 	[ )
 };
 
-($extern-c-init,,FILE *log_file,,NULL)
+($var-c-init,,FILE *log_file,,NULL)
 
-($extern-c) char __log_str[ 32 ];
+($var-c,,char __log_str[ 32 ])
 
 /**
  *  \brief Warnings formats.
@@ -172,12 +172,12 @@ enum {
 /**
  *  \brief Lock log-file access (callback).
  */
-($extern-c) void ( *log_lock_callback )( void );
+($var-c,,void ( *log_lock_callback )( void ))
 
 /**
  *  \brief Unlock log-file access (callback).
  */
-($extern-c) void ( *log_unlock_callback )( void );
+($var-c,,void ( *log_unlock_callback )( void ))
 
 /** \} */
 

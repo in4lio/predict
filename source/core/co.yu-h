@@ -29,15 +29,15 @@
 ($each-CORO \i.]
 	($set C ($i CORO))
 	/** ($q C) coroutine local context. */
-	($extern-c-init,,($coro-context ($C)),,NULL)
+	($var-c-init,,($coro-context ($C)),,NULL)
 	/** ($q C) coroutine alive flag. */
-	($extern-c-init,,int ($C)_alive,,CO_SKIP)
+	($var-c-init,,int ($C)_alive,,CO_SKIP)
 	/** ($q C) coroutine. */
-	extern ($coro-declare ($C));
+	($extern-c) ($coro-declare ($C));
 	/** Initialize ($q C) coroutine. */
-	extern int ($C)_init( void );
+	($extern-c) int ($C)_init( void );
 	/** Uninitialize ($q C) coroutine. */
-	extern void ($C)_uninit( void );
+	($extern-c) void ($C)_uninit( void );
 
 [ )
 
@@ -53,19 +53,19 @@
 /**
  * \brief Restart unit testing of 2nd stage.
  */
-extern void ut_2_restart( void );
+($extern-c) void ut_2_restart( void );
 
 ($import "ut-dict.yu")
 
 ($each-UT_1 \i.]
 	/** ($q,,ut_($i UT_1)) unit test of 1st stage. */
-	extern void ut_($i UT_1)( void );
+	($extern-c) void ut_($i UT_1)( void );
 
 [ )
 
 ($each-UT_2 \i.]
 	/** ($q,,ut_($i UT_2)) test coroutine alive flag. */
-	extern int ut_($i UT_2)_alive;
+	($extern-c) int ut_($i UT_2)_alive;
 
 [ )
 

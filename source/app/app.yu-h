@@ -21,12 +21,12 @@
 /**
  *  \brief Show-must-go-on flag.
  */
-($extern-c) int app_alive;
+($var-c,,int app_alive)
 
 /**
  *  \brief Application exit status.
  */
-($extern-c-init,,int app_return,,0)
+($var-c-init,,int app_return,,0)
 
 /**
  *  \brief Initialize application.
