@@ -87,8 +87,8 @@ D_OBJ = $(TOP)/object
 D_OBJ := $(if $(D_PLATFORM), $(D_OBJ)/$(D_PLATFORM), $(D_OBJ))
 
 # -- LIST and MAP directories
-D_MAP = object
-D_LIST = object
+D_MAP = $(TOP)/object
+D_LIST = $(TOP)/object
 
 # -- source code suffix
 E_YU = .yu
@@ -238,7 +238,7 @@ vpath %$(E_YUC) $(D_C)
 default: bindirs $(F_BIN)
 
 $(F_BIN): $(O)
-	$(call wrap,$(LINK),$(LFLAGS) $(LIBS) $^ -o $@)
+	$(call wrap,$(LINK),$^ -o $@ $(LIBS) $(LFLAGS))
 	$(call final,$@)
 	@echo "*** $(F_BIN) ***"
 
