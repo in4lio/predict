@@ -9,7 +9,7 @@
 
 ($import stdlib)
 ($import "config.yu")
-($import h)
+($import hlib)
 ($import corolib)
 
 ($implement-named)

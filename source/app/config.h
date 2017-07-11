@@ -8,82 +8,6 @@
  *  \copyright  See the LICENSE file.
  */
 
-#ifndef CONFIG_H
-#define CONFIG_H
-
-#ifdef  CONFIG_IMPLEMENT
-#define CONFIG_EXT
-#define CONFIG_INIT( ... ) \
-	= __VA_ARGS__
-
-#ifdef __cplusplus
-#define CONFIG_EXT_C \
-	extern "C"
-#else
-#define CONFIG_EXT_C \
-	extern
-#endif
-
-#define CONFIG_VAR( decl ) \
-	decl
-#define CONFIG_VAR_INIT( decl, ... ) \
-	decl = __VA_ARGS__
-
-#ifdef __cplusplus
-#define CONFIG_VAR_C( decl ) \
-	extern "C" decl; decl
-#define CONFIG_VAR_C_INIT( decl, ... ) \
-	extern "C" decl; decl = __VA_ARGS__
-#else
-#define CONFIG_VAR_C( decl ) \
-	decl
-#define CONFIG_VAR_C_INIT( decl, ... ) \
-	decl = __VA_ARGS__
-#endif
-
-#define CONFIG_INL
-
-#else  /* CONFIG_IMPLEMENT */
-
-#define CONFIG_EXT \
-	extern
-#define CONFIG_INIT( ... )
-
-#ifdef __cplusplus
-#define CONFIG_EXT_C \
-	extern "C"
-#else
-#define CONFIG_EXT_C \
-	extern
-#endif
-
-#define CONFIG_VAR( decl ) \
-	extern decl
-#define CONFIG_VAR_INIT( decl, ... ) \
-	extern decl
-
-#ifdef __cplusplus
-#define CONFIG_VAR_C( decl ) \
-	extern "C" decl
-#define CONFIG_VAR_C_INIT( decl, ... ) \
-	extern "C" decl
-#else
-#define CONFIG_VAR_C( decl ) \
-	extern decl
-#define CONFIG_VAR_C_INIT( decl, ... ) \
-	extern decl
-#endif
-
-#if __GNUC__ && !__GNUC_STDC_INLINE__
-#define CONFIG_INL \
-	extern inline
-#else
-#define CONFIG_INL \
-	inline
-#endif
-
-#endif /* CONFIG_IMPLEMENT */
-
 /**
  *  \defgroup config Configuration
  *  \ingroup app
@@ -100,14 +24,3 @@
 #define LINK_UT_DATA
 
 /** \} */
-
-#undef CONFIG_EXT
-#undef CONFIG_INIT
-#undef CONFIG_EXT_C
-#undef CONFIG_VAR
-#undef CONFIG_VAR_INIT
-#undef CONFIG_VAR_C
-#undef CONFIG_VAR_C_INIT
-#undef CONFIG_INL
-#endif
-

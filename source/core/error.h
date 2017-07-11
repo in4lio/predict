@@ -53,7 +53,6 @@
 #define ERROR_INL
 
 #else  /* ERROR_IMPLEMENT */
-
 #define ERROR_EXT \
 	extern
 #define ERROR_INIT( ... )

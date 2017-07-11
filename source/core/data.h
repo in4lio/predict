@@ -53,7 +53,6 @@
 #define DATA_INL
 
 #else  /* DATA_IMPLEMENT */
-
 #define DATA_EXT \
 	extern
 #define DATA_INIT( ... )

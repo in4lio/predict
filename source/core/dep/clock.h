@@ -53,7 +53,6 @@
 #define CLOCK_INL
 
 #else  /* CLOCK_IMPLEMENT */
-
 #define CLOCK_EXT \
 	extern
 #define CLOCK_INIT( ... )

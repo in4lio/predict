@@ -53,7 +53,6 @@
 #define UT_INL
 
 #else  /* UT_IMPLEMENT */
-
 #define UT_EXT \
 	extern
 #define UT_INIT( ... )

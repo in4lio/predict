@@ -57,7 +57,7 @@ static const char *const TITLE = __CRLF__
  *  \hideinitializer
  */
 const char *const VERSION_STRING =
-	__CRLF__ "predict" " " "0.4" " (" "0.4b2" ")"
+	__CRLF__ "predict" " " "0.4" " (" "0.4b3" ")"
 	__CRLF__ "Compiled with " "gcc" " " __VERSION__;
 
 /**
@@ -147,7 +147,7 @@ int coro_receive_char( co_t *co_p )
 			if ( console_command_waited()                    /* Console is waiting for command, no cyclic command, */
 			&& ( rx_pos == 0 )                               /* no characters received, */
 			&& (( chr == CHAR_UP ) || ( chr == CHAR_DOWN ))  /* UP or DOWN arrow pressed */
-			) { 
+			) {
 				/* Choose console command from list */
 				printf( CLEAR_CMD );
 
@@ -207,7 +207,7 @@ int coro_receive_char( co_t *co_p )
 
 				case CHAR_LEFT:  /* Recall last content */
 					if ( rx_pos || rx_buf_changed ) break;
-					
+
 					rx_buf[ RX_SIZE - 1 ] = '\0';  /* Safety first */
 					rx_pos = strlen( rx_buf );
 					if ( rx_pos && char_echo ) {

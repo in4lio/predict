@@ -53,7 +53,6 @@
 #define INI_INL
 
 #else  /* INI_IMPLEMENT */
-
 #define INI_EXT \
 	extern
 #define INI_INIT( ... )

@@ -53,7 +53,6 @@
 #define DATA_VOTE_INL
 
 #else  /* DATA_VOTE_IMPLEMENT */
-
 #define DATA_VOTE_EXT \
 	extern
 #define DATA_VOTE_INIT( ... )

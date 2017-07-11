@@ -8,8 +8,8 @@
 ($TITLE,,Data voting.)
 
 ($import stdlib)
-($import h)
 ($import "config.yu")
+($import hlib)
 
 ($implement-named)
 

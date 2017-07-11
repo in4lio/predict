@@ -53,7 +53,6 @@
 #define CO_INL
 
 #else  /* CO_IMPLEMENT */
-
 #define CO_EXT \
 	extern
 #define CO_INIT( ... )

@@ -53,7 +53,6 @@
 #define GETCH_INL
 
 #else  /* GETCH_IMPLEMENT */
-
 #define GETCH_EXT \
 	extern
 #define GETCH_INIT( ... )

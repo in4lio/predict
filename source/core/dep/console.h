@@ -53,7 +53,6 @@
 #define CONSOLE_INL
 
 #else  /* CONSOLE_IMPLEMENT */
-
 #define CONSOLE_EXT \
 	extern
 #define CONSOLE_INIT( ... )

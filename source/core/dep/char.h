@@ -53,7 +53,6 @@
 #define CHAR_INL
 
 #else  /* CHAR_IMPLEMENT */
-
 #define CHAR_EXT \
 	extern
 #define CHAR_INIT( ... )

@@ -8,9 +8,6 @@
 ($TITLE,,Configuration.)
 
 ($import stdlib)
-($import h)
-
-($h-begin-named)
 
 /**
  *  \defgroup config Configuration
@@ -21,5 +18,3 @@
 ($import "config.yu")
 
 /** \} */
-
-($h-end)

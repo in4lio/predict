@@ -8,8 +8,8 @@
 ($TITLE,,Debug interface.)
 
 ($import stdlib)
-($import h)
 ($import "config.yu")
+($import hlib)
 
 ($h-begin-named)
 

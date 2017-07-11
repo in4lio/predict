@@ -53,7 +53,6 @@
 #define APP_INL
 
 #else  /* APP_IMPLEMENT */
-
 #define APP_EXT \
 	extern
 #define APP_INIT( ... )

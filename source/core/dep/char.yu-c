@@ -9,7 +9,7 @@
 
 ($import stdlib)
 ($import "config.yu")
-($import h)
+($import hlib)
 ($import corolib)
 
 ($implement-named)
@@ -133,7 +133,7 @@ void receive_char_uninit( void )
 			if ( console_command_waited()                    /* Console is waiting for command, no cyclic command, */
 			&& ( rx_pos == 0 )                               /* no characters received, */
 			&& (( chr == CHAR_UP ) || ( chr == CHAR_DOWN ))  /* UP or DOWN arrow pressed */
-			) { 
+			) {
 				/* Choose console command from list */
 				printf( CLEAR_CMD );
 
@@ -193,7 +193,7 @@ void receive_char_uninit( void )
 
 				case CHAR_LEFT:  /* Recall last content */
 					if ( rx_pos || rx_buf_changed ) break;
-					
+
 					rx_buf[ RX_SIZE - 1 ] = '\0';  /* Safety first */
 					rx_pos = strlen( rx_buf );
 					if ( rx_pos && char_echo ) {

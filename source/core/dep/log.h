@@ -53,7 +53,6 @@
 #define LOG_INL
 
 #else  /* LOG_IMPLEMENT */
-
 #define LOG_EXT \
 	extern
 #define LOG_INIT( ... )

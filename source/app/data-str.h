@@ -53,7 +53,6 @@
 #define DATA_STR_INL
 
 #else  /* DATA_STR_IMPLEMENT */
-
 #define DATA_STR_EXT \
 	extern
 #define DATA_STR_INIT( ... )
