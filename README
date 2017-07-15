@@ -3,21 +3,30 @@
     |   |  _   _|   | |  _   _|
     |  _|_| |___ ___|_|___  |
     |_|                   |_|
+    ___         __________________________________
+    ___ VERSION __________________________________
+
+    predict     0.4b3
+                2017-07-11
+    yupp        1.0c2
+
+    ___             ______________________________
+    ___ WHAT IS IT? ______________________________
 
     predict is a portable C framework for embedded applications development.
     yupp lexical preprocessor (https://github.com/in4lio/yupp/) is required.
 
     The framework contains:
+    –  application template
     –  application state-space (data)
     –  coroutines (co)
     –  unit testing (ut)
     –  debug console (console)
     –  logging (log)
     –  configuration (ini)
-    –  application template
 
     Supported platforms:
-    –  Windows (tested on x86)
-    –  GNU/Linux (tested on x86, ARM9E)
-    –  DOS (tested on x86)
-    –  bare metal (ARM Cortex-M3, CM1)
+    –  Windows (MinGW)
+    –  GNU/Linux
+    –  DOS (DJGPP)
+    –  bare metal: ARM Cortex-M3, CM1
