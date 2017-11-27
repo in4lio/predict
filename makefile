@@ -172,13 +172,29 @@ O = $(O_CXX) $(O_C) $(O_ASM)
 #   commands
 # ---------------------------------
 
+_BASH = 1
+
+ifeq ($(OS),Windows_NT)
+ifdef ComSpec
+_BASH = 0
+endif
+endif
+
+ifeq ($(_BASH),0)
+# -- cmd
+RM = cmd /c del /f
+else
+# -- sh (MSYS)
+RM = rm -rf
+endif
+
 # -- wrap compiler arguments
 ifeq ($(OS),Windows_NT)
 # -- too long command line workaround
 define wrap
 	echo $2 > args
 	$1 @args
-	-rm args
+	-$(RM) args
 endef
 else
 define wrap
@@ -208,14 +224,16 @@ ifeq ($(MAP),1)
 R := $(R) $(D_MAP)/$(TARGET)$(E_MAP)
 endif
 
-ifeq ($(OS),Windows_NT)
-#CLEAN = cmd /c "del $(subst /,\,$(R))"
-CLEAN = rm -rf $(R)
+ifeq ($(_BASH),0)
+# -- cmd
+CLEAN = cmd /c del /f $(subst /,\,$(R))
+CLEAN_BIN = cmd /c del /f $(R_BIN)
 else
+# -- sh (MSYS)
 CLEAN = rm -rf $(R)
+CLEAN_BIN = rm -rf $(R_BIN)
 endif
 
-CLEAN_BIN = rm -rf $(R_BIN)
 
 # -- install
 define install

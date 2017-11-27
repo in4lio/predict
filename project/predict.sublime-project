@@ -18,13 +18,13 @@
 			"name": "Make project",
 			"working_dir": "${project_path}/../",
 			"file_regex": "(?:^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$)|(?:^[ ]*File \"(...*?)\", line ([0-9]*))",
-			"cmd": ["mingw32-make"],
+			"cmd": ["mingw32-make", "ComSpec=%COMSPEC%"],
 			"shell": true,
 			"variants": [
 				{
 					"name": "Make project - CLEAN",
 					"working_dir": "${project_path}/../",
-					"cmd": ["mingw32-make", "clean"],
+					"cmd": ["mingw32-make", "clean", "ComSpec=%COMSPEC%"],
 					"shell": true
 				}
 			]
