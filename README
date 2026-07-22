@@ -8,13 +8,14 @@
 
     predict     0.4b3
                 2017-07-11
-    yupp        1.0c2
+    yupp        2.0rc1
 
     ___             ______________________________
     ___ WHAT IS IT? ______________________________
 
     predict is a portable C framework for embedded applications development.
-    yupp lexical preprocessor (https://github.com/in4lio/yupp/) is required.
+    yupp lexical preprocessor (https://github.com/in4lio/yupp/) is included as
+    a Git submodule and requires Python 3.11 or newer.
 
     The framework contains:
     –  application template

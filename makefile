@@ -35,16 +35,18 @@ CXX = g++
 LINK = $(CC)
 endif
 
-# -- yupp preprocessor
-YUPP_HOME = $(TOP)/yupp
-
 # -- perform preprocessing
 SKIP_PP = 0
 # -- skip preprocessing
 # SKIP_PP = 1
 
+# -- yupp preprocessor
+YUPP_HOME = yupp
+YUPP_SRC = $(YUPP_HOME)/src
+PYTHON ?= python3.11
+
 ifeq ($(SKIP_PP),0)
-PP = python -u $(YUPP_HOME)/yup.py
+PP = PYTHONPATH=$(YUPP_SRC) $(PYTHON) -m yupp
 else
 PP = @echo makefile: warning: preprocessing step is skipped,
 endif
@@ -76,7 +78,7 @@ D_CXX = $(D_C)
 D_ASM = $(D_SOU)
 
 # -- include directories
-D_H = $(D_C) $(YUPP_HOME)/lib
+D_H = $(D_C) $(YUPP_SRC)/yupp/lib
 
 # -- binary file directory
 D_BIN = $(TOP)/bin

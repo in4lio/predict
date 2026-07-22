@@ -6,4 +6,7 @@
 *.json
 *.sublime-workspace
 
+.DS_Store
+/bin/
+
 .tags
