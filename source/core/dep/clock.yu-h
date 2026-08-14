@@ -1,0 +1,115 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "core.yu")
+($TITLE,,Real-time clock.)
+
+($import stdlib)
+($import "config.yu")
+($import hlib)
+
+($h-begin-named)
+
+($! based on Andrey Panin (pazke@donpac.ru) timeout.c )
+
+/**
+ *  \defgroup hardware Hardware
+ *  \{
+ *
+ *  \defgroup clock Real-time clock
+ *  \{
+ */
+
+#define TICK_PER_SEC  1000  /**< Ticks per second. \hideinitializer */
+
+/**
+ *  \brief Initialize clock.
+ */
+($extern-c) void clock_init( void );
+
+/**
+ *  \brief Time to string converting.
+ *  \param tval time pointer (current time is used in case of NULL).
+ *  \param s String buffer.
+ *  \return String.
+ */
+($extern-c) const char *clock_stamp( const struct timeval *tval, char *s );
+
+/**
+ *  \brief Current time to string converting without centiseconds.
+ *  \param s String buffer.
+ *  \return String.
+ */
+($extern-c) const char *clock_stamp_short( char *s );
+
+/**
+ *  \brief Current datetime to string converting without centiseconds.
+ *  \param sd String buffer for date.
+ *  \param st String buffer for time.
+ *  \return Current datetime.
+ */
+($extern-c) time_t clock_stamp_datetime( char* sd, char* st );
+
+/**
+ *  \brief Current time setup.
+ *  \param Hours.
+ *  \param m Minutes.
+ *  \param s Seconds.
+ *  \param cs Centiseconds.
+ *  Function is not implemented.
+ */
+($extern-c) void clock_set_time( uint32_t h, uint32_t m, uint32_t s, uint32_t cs );
+
+/**
+ *  \brief Get time of program running (max 497 days).
+ *  \return Time in centiseconds.
+ */
+($extern-c) uint32_t clock_time_running( void );
+
+/**
+ *  \brief Calculate time when timer interval has expired (timeout).
+ *  \param ms Interval in milliseconds.
+ *  \return Timeout.
+ */
+($extern-c) struct timeval clock_t_set( const int ms );
+
+($extern-c) void __clock_t_add( struct timeval *t, const int ms );
+($extern-c) int __clock_time_after( struct timeval *t );
+($extern-c) int __clock_t_rest( struct timeval *t );
+
+/**
+ *  \brief Prolong timeout.
+ *  \param t Timeout.
+ *  \param ms Additional interval in milliseconds.
+ */
+#define clock_t_add( t, ms ) __clock_t_add(&( t ), ( ms ))
+
+/**
+ *  \brief Check timeout.
+ *  \param t Timeout.
+ *  \return Timeout flag.
+ */
+#define clock_time_after( t ) __clock_time_after( &( t ))
+
+/**
+ *  \brief Check timeout.
+ *  \param t Timeout.
+ *  \return NO timeout flag.
+ */
+#define clock_time_before( t ) ( !clock_time_after( t ))
+
+/**
+ *  \brief Calculate remaining time until timeout.
+ *  \param t Timeout.
+ *  \return Remaining time.
+ */
+#define clock_t_rest( t ) __clock_t_rest( &( t ))
+
+/** \} */
+
+/** \} */
+
+($h-end)

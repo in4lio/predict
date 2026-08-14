@@ -1,0 +1,29 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($set FRAMEWORK ]
+predict
+[ )
+($set FRAMEWORK_VERSION ]
+0.4b3
+[ )
+($set FRAMEWORK_AUTHORS ]
+Vitaly Kravtsov (in4lio@gmail.com)
+[ )
+($set FRAMEWORK_LICENSE ]
+See the LICENSE file.
+[ )
+
+($macro TITLE (brief)($__TITLE__ 0)/**
+ *  \file  ($unq ($__OUTPUT_FILE__)) (($unq ($__FILE__)))
+ *  \brief  ($brief)
+ *  \author  ($FRAMEWORK_AUTHORS)
+ *  \copyright  ($FRAMEWORK_LICENSE)
+ */
+)
+
+($set EOL,,
+)

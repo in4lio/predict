@@ -1,0 +1,106 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "core.yu")
+($TITLE,,Unit testing of 2nd stage.)
+
+($import stdlib)
+($import "config.yu")
+($import corolib)
+
+#include "include.h"
+
+($skip-if-not LINK_UT)
+
+/**
+ *  \addtogroup ut
+ *  \{
+ */
+
+($import "ut-dict.yu")
+
+($each-UT_2 \i.]
+	($set T,,ut_($i UT_2))
+	/** ($T) test coroutine alive flag. */
+	int ($T)_alive;
+	/** ($T) test coroutine local context. */
+	static ($coro-context ($T));
+	/** ($T) test coroutine. */
+	extern ($coro-declare ($T));
+	/** Initialize ($T) test coroutine. */
+	extern int ($T)_init( void );
+	/** Uninitialize ($T) coroutine. */
+	extern void ($T)_uninit( void );
+
+[ )
+
+int ut_2_init( void )
+{
+	($each-UT_2 \i.]
+		($set T,,ut_($i UT_2))
+		($coro-context-init ($T));
+		($T)_alive = ($T)_init();
+
+	[ )
+
+	return ( CO_READY ); /* CO_SKIP */
+}
+
+void ut_2_uninit( void )
+{
+	($each-UT_2 \i.]
+		ut_($i UT_2)_uninit();
+
+	[ )
+}
+
+/**
+ *  \brief Schedule of test coroutines.
+ *  \return true if testing is not complete.
+ */
+static int ut_2_schedule( void )
+{
+	($each-UT_2 \i.]
+		($set T,,ut_($i UT_2))
+		if ($coro-alive [($T)_alive]) ($T)_alive = ($coro-call ($T));
+
+	[ )
+	return ( 0
+	($each-UT_2 \i.]
+		|| ($coro-alive [ut_($i UT_2)_alive])
+
+	[ )
+	);
+}
+
+/**
+ *  \brief Coroutine of unit testing of 2nd stage.
+ */
+($coro-define ut_2 ]
+	ut_stage_2_start( ($len each-UT_2) );  /* Start unit testing of 2nd stage */
+	($coro-yield);
+
+	($if ($gt predict-ut_2-pause 0) ]
+		__t = clock_t_set( ($predict-ut_2-pause) * TICK_PER_SEC );
+		($coro-wait,, clock_time_after( __t ));  /* Pause before performing tests */
+	[ )
+	/* Test coroutines call loop */
+	($coro-wait,, !ut_stage_2( ut_2_schedule ));
+[ \enter ]
+	($if ($gt predict-ut_2-pause 0) ]
+		($coro-local) struct timeval __t;
+	[ )
+[ )
+
+void ut_2_restart( void )
+{
+	if ( ut_2_alive == CO_END ) {
+		($coro-context-init ut_2);
+		ut_2_alive = ut_2_init();
+	}
+}
+
+/** \} */

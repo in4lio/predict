@@ -1,0 +1,38 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($set PROGRAM ]
+predict
+[ )
+($set VERSION ]
+0.4
+[ )
+($set DESCRIPTION ]
+predict - portable C framework
+[ )
+($set AUTHORS ]
+Vitaly Kravtsov (in4lio@gmail.com)
+[ )
+($set LICENSE ]
+See the LICENSE file.
+[ )
+($set URL ]
+
+[ )
+($set COMPILER ]
+gcc
+[ )
+
+($macro TITLE (brief)($__TITLE__ 0)/**
+ *  \file  ($unq ($__OUTPUT_FILE__)) (($unq ($__FILE__)))
+ *  \brief  ($brief)
+ *  \author  ($AUTHORS)
+ *  \copyright  ($LICENSE)
+ */
+)
+
+($set EOL,,
+)

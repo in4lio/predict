@@ -1,0 +1,23 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "core.yu")
+($TITLE,,Error messages.)
+
+($import stdlib)
+($import "config.yu")
+($import hlib)
+
+($implement-named)
+
+($import "error-dict.yu")
+
+const char *const error_format[] = {
+	($each-DATA_ERROR \i.]
+		($i ERROR_FORMAT),
+
+	[ )
+};

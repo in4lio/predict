@@ -1,0 +1,12 @@
+*.ast
+*.bak
+*.exe
+*.log
+*.o
+*.json
+*.sublime-workspace
+
+.DS_Store
+/bin/
+
+.tags

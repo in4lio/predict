@@ -1,0 +1,51 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "app.yu")
+($TITLE,,Application.)
+
+($import stdlib)
+($import "config.yu")
+($import hlib)
+
+($h-begin-named)
+
+/**
+ *  \defgroup app Application
+ *  \{
+ */
+
+/**
+ *  \brief Show-must-go-on flag.
+ */
+($var-c,,int app_alive)
+
+/**
+ *  \brief Application exit status.
+ */
+($var-c-init,,int app_return,,0)
+
+/**
+ *  \brief Initialize application.
+ */
+($extern-c) int app_init( int argc, char *argv[]);
+
+/**
+ *  \brief Uninitialize application.
+ */
+($extern-c) void app_uninit( void );
+
+/**
+ *  \brief Debug interface title message.
+ *  \hideinitializer
+ */
+($!define,,__CONSOLE_TITLE__,,__CRLF__
+"" __CRLF__
+"" __CRLF__
+"" __CRLF__);
+/** \} */
+
+($h-end)

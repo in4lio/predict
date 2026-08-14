@@ -1,0 +1,79 @@
+($!                _ _     _
+     ___ ___ ___ _| |_|___| |_
+    |   |  _   _|   | |  _   _|
+    |  _|_| |___ ___|_|___  |
+    |_|                   |_)
+
+($import "core.yu")
+($TITLE,,Debug console.)
+
+($import stdlib)
+($import "config.yu")
+($import hlib)
+
+($h-begin-named)
+
+#ifdef LINK_CONSOLE
+
+/**
+ *  \defgroup console Debug console.
+ *  \ingroup core
+ *
+ *	Structure of <b>console-dict.yu</b> file:
+ *
+ *  <b>CONSOLE_CMD</b> - Dictionary of console commands.
+ *  \param CONSOLE_CMD Console command.
+ *  \param CMD_PAR_N Command parameters count.
+ *  \param CMD_CYCLIC Cyclic command flag.
+ *  \{
+ */
+
+/**
+ *  \brief Command line prompt.
+ *  \hideinitializer
+ */
+#define CONSOLE_PROMPT       "$"
+
+/**
+ *  \brief Command line prompt in case of selecting command from list.
+ *  \hideinitializer
+ */
+#define CONSOLE_PROMPT_LIST  "#"
+
+($import "console-dict.yu")
+
+($DOC__CONSOLE)
+
+/**
+ *  \brief Console commands count.
+ */
+#define CONSOLE_COMMAND_COUNT  (($len each-CONSOLE_CMD) + 1 )
+
+/**
+ *  \brief List of console commands.
+ */
+($extern-c) const char *const console_command[];
+
+/**
+ *  \brief Index of selected from list command.
+ */
+($var-c,,int console_index)
+
+#define cyclic_delay_MIN  1
+#define cyclic_delay_MAX  600
+
+/**
+ *  \brief Print prompt.
+ */
+($extern-c) void console_prompt( void );
+
+/**
+ *  \brief Check console is waiting for command.
+ */
+($extern-c) bool console_command_waited( void );
+
+/** \} */
+
+#endif /* LINK_CONSOLE */
+
+($h-end)
